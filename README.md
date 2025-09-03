@@ -169,6 +169,12 @@ The OpenAPIA specification is defined in YAML format and includes these core sec
 - **`context`** - State management and memory configuration
 - **`evaluation`** - Metrics, tests, and performance monitoring
 
+### Documentation
+
+- **[OpenAPIA 0.1 Specification](docs/openapia-0.1-specification.md)** - Complete formal specification documentation
+- **[Getting Started Guide](docs/getting-started.md)** - Step-by-step tutorial for new users
+- **[Hierarchical Composition Guide](docs/hierarchical-composition.md)** - Advanced inheritance and composition patterns
+
 ## Tools and Libraries
 
 ### Validators
