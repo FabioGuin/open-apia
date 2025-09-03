@@ -221,7 +221,122 @@
                 "index_name": "company-knowledge",
                 "embedding_model": "text-embedding-ada-002"
             }
-        }
+        },
+        "mcp_servers": [
+            {
+                "id": "filesystem-server",
+                "name": "Filesystem MCP Server",
+                "description": "Provides access to local filesystem operations",
+                "version": "1.0.0",
+                "transport": {
+                    "type": "stdio",
+                    "command": "npx",
+                    "args": [
+                        "@modelcontextprotocol/server-filesystem",
+                        "/path/to/allowed/directory"
+                    ],
+                    "headers": {}
+                },
+                "capabilities": {
+                    "tools": [
+                        "read_file",
+                        "write_file",
+                        "list_directory",
+                        "search_files"
+                    ],
+                    "resources": [
+                        "file://*"
+                    ],
+                    "prompts": []
+                },
+                "authentication": {
+                    "type": "none"
+                },
+                "security": {
+                    "allowed_operations": [
+                        "read",
+                        "list"
+                    ],
+                    "rate_limits": {
+                        "requests_per_minute": 60,
+                        "requests_per_hour": 1000
+                    },
+                    "timeout": 30
+                },
+                "health_check": {
+                    "enabled": true,
+                    "interval": 60,
+                    "timeout": 5,
+                    "retry_count": 3
+                },
+                "metadata": {
+                    "tags": [
+                        "filesystem",
+                        "local"
+                    ],
+                    "category": "data-access",
+                    "maintainer": "MCP Community",
+                    "documentation_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
+                }
+            },
+            {
+                "id": "database-server",
+                "name": "Database MCP Server",
+                "description": "Provides access to database operations",
+                "version": "1.0.0",
+                "transport": {
+                    "type": "websocket",
+                    "url": "ws://localhost:8080/mcp",
+                    "headers": {
+                        "Authorization": "Bearer ${DB_TOKEN}"
+                    }
+                },
+                "capabilities": {
+                    "tools": [
+                        "query_database",
+                        "execute_sql",
+                        "get_schema"
+                    ],
+                    "resources": [
+                        "db://tables/*",
+                        "db://schemas/*"
+                    ],
+                    "prompts": [
+                        "sql_generation"
+                    ]
+                },
+                "authentication": {
+                    "type": "api_key",
+                    "api_key": "${DB_API_KEY}"
+                },
+                "security": {
+                    "allowed_operations": [
+                        "read",
+                        "query"
+                    ],
+                    "rate_limits": {
+                        "requests_per_minute": 30,
+                        "requests_per_hour": 500
+                    },
+                    "timeout": 60
+                },
+                "health_check": {
+                    "enabled": true,
+                    "interval": 120,
+                    "timeout": 10,
+                    "retry_count": 2
+                },
+                "metadata": {
+                    "tags": [
+                        "database",
+                        "sql"
+                    ],
+                    "category": "data-access",
+                    "maintainer": "Internal Team",
+                    "documentation_url": "https://internal-docs.example.com/mcp-database"
+                }
+            }
+        ]
     },
     "evaluation": {
         "metrics": [
@@ -293,6 +408,7 @@
         "audio_processing": false,
         "real_time_processing": true,
         "multi_agent_support": false,
+        "mcp_support": true,
         "advanced": {
             "computer_vision": {
                 "enabled": false,
@@ -311,6 +427,24 @@
                 "agents": [],
                 "orchestration": {},
                 "communication": {}
+            },
+            "mcp": {
+                "enabled": true,
+                "default_timeout": 30,
+                "retry_policy": {
+                    "max_retries": 3,
+                    "backoff_strategy": "exponential",
+                    "initial_delay": 1000
+                },
+                "connection_pool": {
+                    "max_connections": 10,
+                    "idle_timeout": 300
+                },
+                "monitoring": {
+                    "enabled": true,
+                    "metrics_collection": true,
+                    "health_check_interval": 60
+                }
             }
         }
     },

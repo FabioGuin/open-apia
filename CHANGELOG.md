@@ -8,13 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Initial project structure
-- Core specification (OpenAPIA 0.1.0)
-- Basic documentation and governance
-- Multi-agent support placeholder for v0.2.0
+- **Model Context Protocol (MCP) Support**: Full integration of MCP servers for external data and tool access
+  - New `context.mcp_servers` section for configuring MCP server connections
+  - Support for stdio, SSE, and WebSocket transport protocols
+  - Authentication configuration (none, api_key, oauth, custom)
+  - Security settings including rate limiting and operation restrictions
+  - Health check configuration for MCP server monitoring
+  - New task actions: `mcp_tool` and `mcp_resource` for MCP integration
+  - MCP-specific task step fields: `mcp_server`, `mcp_tool`, `mcp_resource`, `mcp_parameters`
+  - Advanced MCP configuration in `extensions.advanced.mcp`
+  - Comprehensive MCP validation in all validators
+  - Example MCP integration specification (`spec/examples/mcp-integration.yaml`)
+  - Updated documentation with complete MCP reference
 
 ### Changed
-- Nothing yet
+- Extended task step actions to include MCP operations
+- Enhanced context section with MCP server configuration
+- Updated validators to support MCP validation and cross-references
 
 ### Deprecated
 - Nothing yet
@@ -26,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Nothing yet
 
 ### Security
-- Nothing yet
+- Added MCP-specific security configurations including rate limiting and operation restrictions
 
 ## [0.1.0] - 2025-09-03
 

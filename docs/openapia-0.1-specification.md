@@ -649,7 +649,7 @@ This field allows AI systems to inherit configurations from parent specification
 
 **Type:** `string`  
 **Required:** Yes  
-**Enum:** `["analyze", "generate", "validate", "search", "escalate"]`  
+**Enum:** `["analyze", "generate", "validate", "search", "escalate", "classify", "mcp_tool", "mcp_resource"]`  
 **Description:** The action to perform in this step.
 
 ##### tasks[].steps[].model
@@ -669,6 +669,30 @@ This field allows AI systems to inherit configurations from parent specification
 **Type:** `string`  
 **Required:** No  
 **Description:** Data source for this step.
+
+##### tasks[].steps[].mcp_server
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Reference to an MCP server ID to use in this step.
+
+##### tasks[].steps[].mcp_tool
+
+**Type:** `string`  
+**Required:** No  
+**Description:** MCP tool name to execute (if action is mcp_tool).
+
+##### tasks[].steps[].mcp_resource
+
+**Type:** `string`  
+**Required:** No  
+**Description:** MCP resource name to access (if action is mcp_resource).
+
+##### tasks[].steps[].mcp_parameters
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Parameters to pass to the MCP tool or resource.
 
 ##### tasks[].steps[].constraints
 
@@ -859,6 +883,224 @@ This field allows AI systems to inherit configurations from parent specification
 **Type:** `string`  
 **Required:** No  
 **Description:** Embedding model used for knowledge base.
+
+#### context.mcp_servers
+
+**Type:** `array[object]`  
+**Required:** No  
+**Description:** Model Context Protocol (MCP) servers for external data and tool access.
+
+##### context.mcp_servers[].id
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** Unique identifier for the MCP server.
+
+##### context.mcp_servers[].name
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** Human-readable name of the MCP server.
+
+##### context.mcp_servers[].description
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** Detailed description of the MCP server's purpose and capabilities.
+
+##### context.mcp_servers[].version
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** Version of the MCP server.
+
+##### context.mcp_servers[].transport
+
+**Type:** `object`  
+**Required:** Yes  
+**Description:** Transport configuration for connecting to the MCP server.
+
+###### context.mcp_servers[].transport.type
+
+**Type:** `string`  
+**Required:** Yes  
+**Enum:** `["stdio", "sse", "websocket"]`  
+**Description:** Transport protocol type for the MCP server connection.
+
+###### context.mcp_servers[].transport.command
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Command to start the MCP server (for stdio transport).
+
+###### context.mcp_servers[].transport.args
+
+**Type:** `array[string]`  
+**Required:** No  
+**Description:** Command line arguments for starting the MCP server.
+
+###### context.mcp_servers[].transport.url
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Server URL for SSE or WebSocket transport.
+
+###### context.mcp_servers[].transport.headers
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Custom headers for the connection.
+
+##### context.mcp_servers[].capabilities
+
+**Type:** `object`  
+**Required:** Yes  
+**Description:** Capabilities provided by the MCP server.
+
+###### context.mcp_servers[].capabilities.tools
+
+**Type:** `array[string]`  
+**Required:** No  
+**Description:** List of available tools provided by the server.
+
+###### context.mcp_servers[].capabilities.resources
+
+**Type:** `array[string]`  
+**Required:** No  
+**Description:** List of available resources provided by the server.
+
+###### context.mcp_servers[].capabilities.prompts
+
+**Type:** `array[string]`  
+**Required:** No  
+**Description:** List of available prompts provided by the server.
+
+##### context.mcp_servers[].authentication
+
+**Type:** `object`  
+**Required:** Yes  
+**Description:** Authentication configuration for the MCP server.
+
+###### context.mcp_servers[].authentication.type
+
+**Type:** `string`  
+**Required:** Yes  
+**Enum:** `["none", "api_key", "oauth", "custom"]`  
+**Description:** Authentication type for the MCP server.
+
+###### context.mcp_servers[].authentication.api_key
+
+**Type:** `string`  
+**Required:** No  
+**Description:** API key for authentication (if applicable).
+
+###### context.mcp_servers[].authentication.token
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Access token for authentication (if applicable).
+
+###### context.mcp_servers[].authentication.custom_auth
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Custom authentication configuration.
+
+##### context.mcp_servers[].security
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Security configuration for the MCP server.
+
+###### context.mcp_servers[].security.allowed_operations
+
+**Type:** `array[string]`  
+**Required:** No  
+**Description:** List of allowed operations for the server.
+
+###### context.mcp_servers[].security.rate_limits
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Rate limiting configuration.
+
+####### context.mcp_servers[].security.rate_limits.requests_per_minute
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Maximum requests per minute.
+
+####### context.mcp_servers[].security.rate_limits.requests_per_hour
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Maximum requests per hour.
+
+###### context.mcp_servers[].security.timeout
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Request timeout in seconds.
+
+##### context.mcp_servers[].health_check
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Health check configuration for the MCP server.
+
+###### context.mcp_servers[].health_check.enabled
+
+**Type:** `boolean`  
+**Required:** No  
+**Description:** Whether health checks are enabled.
+
+###### context.mcp_servers[].health_check.interval
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Health check interval in seconds.
+
+###### context.mcp_servers[].health_check.timeout
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Health check timeout in seconds.
+
+###### context.mcp_servers[].health_check.retry_count
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Number of retry attempts for failed health checks.
+
+##### context.mcp_servers[].metadata
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Additional metadata for the MCP server.
+
+###### context.mcp_servers[].metadata.tags
+
+**Type:** `array[string]`  
+**Required:** No  
+**Description:** Tags for categorizing the server.
+
+###### context.mcp_servers[].metadata.category
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Category of the MCP server.
+
+###### context.mcp_servers[].metadata.maintainer
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Maintainer of the MCP server.
+
+###### context.mcp_servers[].metadata.documentation_url
+
+**Type:** `string`  
+**Required:** No  
+**Description:** URL to the server's documentation.
 
 ## Evaluation
 
@@ -1064,6 +1306,12 @@ This field allows AI systems to inherit configurations from parent specification
 **Required:** No  
 **Description:** Whether the system supports multi-agent architectures (planned for v0.2.0).
 
+#### extensions.mcp_support
+
+**Type:** `boolean`  
+**Required:** No  
+**Description:** Whether the system supports Model Context Protocol (MCP) servers.
+
 #### extensions.advanced
 
 **Type:** `object`  
@@ -1153,6 +1401,91 @@ This field allows AI systems to inherit configurations from parent specification
 **Type:** `object`  
 **Required:** No  
 **Description:** Inter-agent communication configuration.
+
+##### extensions.advanced.mcp
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Model Context Protocol configuration.
+
+###### extensions.advanced.mcp.enabled
+
+**Type:** `boolean`  
+**Required:** No  
+**Description:** Whether MCP support is enabled.
+
+###### extensions.advanced.mcp.default_timeout
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Default timeout for MCP operations in seconds.
+
+###### extensions.advanced.mcp.retry_policy
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Retry configuration for failed MCP operations.
+
+####### extensions.advanced.mcp.retry_policy.max_retries
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Maximum number of retry attempts.
+
+####### extensions.advanced.mcp.retry_policy.backoff_strategy
+
+**Type:** `string`  
+**Required:** No  
+**Enum:** `["linear", "exponential"]`  
+**Description:** Backoff strategy for retries.
+
+####### extensions.advanced.mcp.retry_policy.initial_delay
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Initial delay in milliseconds before first retry.
+
+###### extensions.advanced.mcp.connection_pool
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Connection pool configuration for MCP servers.
+
+####### extensions.advanced.mcp.connection_pool.max_connections
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Maximum number of concurrent connections.
+
+####### extensions.advanced.mcp.connection_pool.idle_timeout
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Idle timeout in seconds before closing connections.
+
+###### extensions.advanced.mcp.monitoring
+
+**Type:** `object`  
+**Required:** No  
+**Description:** MCP monitoring configuration.
+
+####### extensions.advanced.mcp.monitoring.enabled
+
+**Type:** `boolean`  
+**Required:** No  
+**Description:** Whether MCP monitoring is enabled.
+
+####### extensions.advanced.mcp.monitoring.metrics_collection
+
+**Type:** `boolean`  
+**Required:** No  
+**Description:** Whether to collect MCP performance metrics.
+
+####### extensions.advanced.mcp.monitoring.health_check_interval
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Health check interval in seconds.
 
 ## Validation
 

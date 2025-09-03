@@ -60,8 +60,8 @@ async function handleValidate(options) {
     const validator = new OpenAPIAValidator();
 
     const isValid = hierarchical ?
-        validator.validateWithInheritance(filePath) :
-        validator.validateFile(filePath);
+        await validator.validateWithInheritance(filePath) :
+        await validator.validateFile(filePath);
 
     if (isValid) {
         console.log('✅ Validation successful!');

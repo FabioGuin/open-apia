@@ -420,6 +420,54 @@ class OpenAPIAValidator {
                 }
                 taskIds.add(task.id);
             }
+
+            // Validate task steps if present
+            if (task.steps && Array.isArray(task.steps)) {
+                this.validateTaskSteps(task.steps, index);
+            }
+        });
+    }
+
+    /**
+     * Validate task steps
+     */
+    validateTaskSteps(steps, taskIndex) {
+        steps.forEach((step, stepIndex) => {
+            if (typeof step !== 'object') {
+                this.errors.push(`Task ${taskIndex} step ${stepIndex} must be an object`);
+                return;
+            }
+
+            // Validate required fields
+            const requiredFields = ['name', 'action'];
+            requiredFields.forEach(field => {
+                if (!(field in step)) {
+                    this.errors.push(`Task ${taskIndex} step ${stepIndex} missing required field: ${field}`);
+                }
+            });
+
+            // Validate action type
+            if (step.action) {
+                const validActions = ['analyze', 'generate', 'validate', 'search', 'escalate', 'classify', 'mcp_tool', 'mcp_resource'];
+                if (!validActions.includes(step.action)) {
+                    this.warnings.push(`Task ${taskIndex} step ${stepIndex} unknown action: ${step.action}`);
+                }
+            }
+
+            // Validate MCP-specific fields
+            if (step.action && ['mcp_tool', 'mcp_resource'].includes(step.action)) {
+                if (!step.mcp_server) {
+                    this.errors.push(`Task ${taskIndex} step ${stepIndex} MCP action missing mcp_server field`);
+                }
+
+                if (step.action === 'mcp_tool' && !step.mcp_tool) {
+                    this.errors.push(`Task ${taskIndex} step ${stepIndex} mcp_tool action missing mcp_tool field`);
+                }
+
+                if (step.action === 'mcp_resource' && !step.mcp_resource) {
+                    this.errors.push(`Task ${taskIndex} step ${stepIndex} mcp_resource action missing mcp_resource field`);
+                }
+            }
         });
     }
 
@@ -434,6 +482,105 @@ class OpenAPIAValidator {
 
         if (!context.memory) {
             this.warnings.push('context.memory is recommended');
+        }
+
+        // Validate MCP servers if present
+        if (context.mcp_servers) {
+            this.validateMcpServers(context.mcp_servers);
+        }
+    }
+
+    /**
+     * Validate MCP servers section
+     */
+    validateMcpServers(mcpServers) {
+        if (!Array.isArray(mcpServers)) {
+            this.errors.push('mcp_servers must be an array');
+            return;
+        }
+
+        const serverIds = new Set();
+        mcpServers.forEach((server, index) => {
+            if (typeof server !== 'object') {
+                this.errors.push(`MCP server ${index} must be an object`);
+                return;
+            }
+
+            // Validate required fields
+            const requiredFields = ['id', 'name', 'description', 'version', 'transport', 'capabilities', 'authentication'];
+            requiredFields.forEach(field => {
+                if (!(field in server)) {
+                    this.errors.push(`MCP server ${index} missing required field: ${field}`);
+                }
+            });
+
+            // Check for duplicate IDs
+            if (server.id) {
+                if (serverIds.has(server.id)) {
+                    this.errors.push(`Duplicate MCP server ID: ${server.id}`);
+                }
+                serverIds.add(server.id);
+            }
+
+            // Validate transport configuration
+            if (server.transport && typeof server.transport === 'object') {
+                this.validateMcpTransport(server.transport, index);
+            }
+
+            // Validate authentication configuration
+            if (server.authentication && typeof server.authentication === 'object') {
+                this.validateMcpAuthentication(server.authentication, index);
+            }
+        });
+    }
+
+    /**
+     * Validate MCP transport configuration
+     */
+    validateMcpTransport(transport, serverIndex) {
+        if (!transport.type) {
+            this.errors.push(`MCP server ${serverIndex} transport missing required field: type`);
+            return;
+        }
+
+        const validTypes = ['stdio', 'sse', 'websocket'];
+        if (!validTypes.includes(transport.type)) {
+            this.errors.push(`MCP server ${serverIndex} invalid transport type: ${transport.type}`);
+        }
+
+        // Validate transport-specific fields
+        if (transport.type === 'stdio') {
+            if (!transport.command) {
+                this.errors.push(`MCP server ${serverIndex} stdio transport missing command`);
+            }
+        } else if (['sse', 'websocket'].includes(transport.type)) {
+            if (!transport.url) {
+                this.errors.push(`MCP server ${serverIndex} ${transport.type} transport missing url`);
+            }
+        }
+    }
+
+    /**
+     * Validate MCP authentication configuration
+     */
+    validateMcpAuthentication(auth, serverIndex) {
+        if (!auth.type) {
+            this.errors.push(`MCP server ${serverIndex} authentication missing required field: type`);
+            return;
+        }
+
+        const validTypes = ['none', 'api_key', 'oauth', 'custom'];
+        if (!validTypes.includes(auth.type)) {
+            this.errors.push(`MCP server ${serverIndex} invalid authentication type: ${auth.type}`);
+        }
+
+        // Validate authentication-specific fields
+        if (auth.type === 'api_key' && !auth.api_key) {
+            this.warnings.push(`MCP server ${serverIndex} api_key authentication missing api_key field`);
+        }
+
+        if (auth.type === 'oauth' && !auth.token) {
+            this.warnings.push(`MCP server ${serverIndex} oauth authentication missing token field`);
         }
     }
 
@@ -479,6 +626,21 @@ class OpenAPIAValidator {
                     task.steps.forEach(step => {
                         if (step.prompt && !promptIds.has(step.prompt)) {
                             this.errors.push(`Task references unknown prompt: ${step.prompt}`);
+                        }
+                    });
+                }
+            });
+        }
+
+        // Validate that referenced MCP servers exist
+        if (spec.tasks && spec.context && spec.context.mcp_servers) {
+            const mcpServerIds = new Set(spec.context.mcp_servers.map(server => server.id).filter(Boolean));
+
+            spec.tasks.forEach(task => {
+                if (task.steps) {
+                    task.steps.forEach(step => {
+                        if (step.mcp_server && !mcpServerIds.has(step.mcp_server)) {
+                            this.errors.push(`Task references unknown MCP server: ${step.mcp_server}`);
                         }
                     });
                 }

@@ -128,10 +128,14 @@ tasks:              # Declarative workflows
     
     steps:          # Task execution steps
       - name: string  # Step name
-        action: string  # Action type: analyze, generate, validate, search, escalate
+        action: string  # Action type: analyze, generate, validate, search, escalate, classify, mcp_tool, mcp_resource
         model: string  # Referenced model ID
         prompt: string  # Referenced prompt ID
         source: string  # Data source
+        mcp_server: string  # Referenced MCP server ID
+        mcp_tool: string  # MCP tool name (if action is mcp_tool)
+        mcp_resource: string  # MCP resource name (if action is mcp_resource)
+        mcp_parameters: object  # Parameters for MCP tool/resource
         constraints: [string]  # Referenced constraint IDs
         conditions:    # Conditional execution
           - if: string  # Condition expression
@@ -169,6 +173,43 @@ context:            # State management and memory
       provider: string  # Provider
       index_name: string  # Index name
       embedding_model: string  # Embedding model
+  
+  mcp_servers:     # Model Context Protocol servers
+    - id: string   # Unique server identifier
+      name: string # Server name
+      description: string  # Server description
+      version: string  # MCP server version
+      transport:      # Transport configuration
+        type: string  # Transport type: stdio, sse, websocket
+        command: string  # Command to start server (for stdio)
+        args: [string]  # Command arguments
+        url: string  # Server URL (for sse/websocket)
+        headers: object  # Custom headers
+      capabilities:   # Server capabilities
+        tools: [string]  # Available tools
+        resources: [string]  # Available resources
+        prompts: [string]  # Available prompts
+      authentication: # Authentication configuration
+        type: string  # Auth type: none, api_key, oauth, custom
+        api_key: string  # API key (if applicable)
+        token: string  # Access token (if applicable)
+        custom_auth: object  # Custom auth configuration
+      security:      # Security configuration
+        allowed_operations: [string]  # Allowed operations
+        rate_limits: object  # Rate limiting
+          requests_per_minute: number
+          requests_per_hour: number
+        timeout: number  # Request timeout in seconds
+      health_check:  # Health check configuration
+        enabled: boolean
+        interval: number  # Check interval in seconds
+        timeout: number  # Health check timeout
+        retry_count: number  # Retry attempts
+      metadata:      # Additional metadata
+        tags: [string]  # Server tags
+        category: string  # Server category
+        maintainer: string  # Server maintainer
+        documentation_url: string  # Documentation URL
 
 # =============================================================================
 # EVALUATION
@@ -212,6 +253,7 @@ extensions:         # Optional extensions
   audio_processing: boolean  # Audio processing support
   real_time_processing: boolean  # Real-time processing support
   multi_agent_support: boolean  # Multi-agent system support (planned for v0.2.0)
+  mcp_support: boolean  # Model Context Protocol support
   
   advanced:         # Advanced configurations
     computer_vision:  # Computer vision configuration
@@ -228,6 +270,21 @@ extensions:         # Optional extensions
       agents: [object]  # Agent definitions
       orchestration: object  # Coordination strategy
       communication: object  # Inter-agent communication
+    
+    mcp:            # Model Context Protocol configuration
+      enabled: boolean
+      default_timeout: number  # Default timeout for MCP operations
+      retry_policy: object  # Retry configuration
+        max_retries: number
+        backoff_strategy: string  # linear, exponential
+        initial_delay: number
+      connection_pool: object  # Connection pool configuration
+        max_connections: number
+        idle_timeout: number
+      monitoring: object  # MCP monitoring configuration
+        enabled: boolean
+        metrics_collection: boolean
+        health_check_interval: number
 
 # =============================================================================
 # VALIDATION

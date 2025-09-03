@@ -1,0 +1,341 @@
+# OpenAPIA 0.1 - MCP Integration Example
+# Example showing how to integrate Model Context Protocol servers with OpenAPIA
+
+openapia: "0.1.0"
+
+info:
+  title: "Customer Support AI with MCP Integration"
+  version: "1.0.0"
+  description: "AI-powered customer support system with MCP servers for data access"
+  author: "Support Team"
+  license: "MIT"
+  contact:
+    email: "support@example.com"
+    url: "https://support.example.com"
+  
+  ai_metadata:
+    domain: "customer_support"
+    complexity: "medium"
+    deployment: "production"
+    last_updated: "2024-01-15T10:00:00Z"
+    supported_languages: ["en", "es", "fr"]
+    
+    hierarchy_info:
+      level: "team"
+      parent_specs: ["../openapia-global.yaml"]
+      scope: "team"
+      inheritance_mode: "merge"
+
+models:
+  - id: "support-llm"
+    type: "LLM"
+    provider: "OpenAI"
+    name: "GPT-4"
+    version: "4.0"
+    purpose: "Customer support conversations"
+    capabilities: ["conversation", "analysis", "problem-solving"]
+    parameters:
+      temperature: 0.3
+      max_tokens: 2000
+      top_p: 0.9
+    limits:
+      max_input_tokens: 128000
+      max_output_tokens: 2000
+      requests_per_minute: 100
+
+prompts:
+  - id: "support-system-prompt"
+    role: "system"
+    style: "helpful"
+    language: "en"
+    template: |
+      You are a helpful customer support assistant. You have access to:
+      - Customer database via MCP server
+      - Knowledge base via MCP server
+      - File system for documentation
+      
+      Always be polite, professional, and helpful. Use the available tools to find accurate information.
+    variables:
+      customer_context:
+        type: "object"
+        required: false
+        description: "Customer context from database"
+
+constraints:
+  - id: "data-privacy"
+    name: "Data Privacy Protection"
+    type: "privacy"
+    rule: "no_pii_exposure"
+    severity: "critical"
+    enforcement: "automatic"
+    description: "Protect customer personal information"
+    actions: ["sanitize", "log", "alert"]
+
+tasks:
+  - id: "customer-inquiry"
+    name: "Handle Customer Inquiry"
+    description: "Process customer inquiries with MCP data access"
+    type: "conversational"
+    priority: "high"
+    
+    input:
+      message:
+        type: "string"
+        required: true
+        description: "Customer message"
+      customer_id:
+        type: "string"
+        required: false
+        description: "Customer ID if available"
+    
+    output:
+      response:
+        type: "string"
+        description: "Support response"
+      actions_taken:
+        type: "array"
+        description: "List of actions taken"
+    
+    steps:
+      - name: "get-customer-info"
+        action: "mcp_tool"
+        mcp_server: "customer-db-server"
+        mcp_tool: "get_customer"
+        mcp_parameters:
+          customer_id: "${input.customer_id}"
+        constraints: ["data-privacy"]
+      
+      - name: "search-knowledge-base"
+        action: "mcp_resource"
+        mcp_server: "knowledge-base-server"
+        mcp_resource: "kb://articles/*"
+        mcp_parameters:
+          query: "${input.message}"
+          limit: 5
+      
+      - name: "analyze-inquiry"
+        action: "analyze"
+        model: "support-llm"
+        prompt: "support-system-prompt"
+        constraints: ["data-privacy"]
+      
+      - name: "generate-response"
+        action: "generate"
+        model: "support-llm"
+        prompt: "support-system-prompt"
+        constraints: ["data-privacy"]
+
+context:
+  memory:
+    type: "persistent"
+    retention: "30d"
+    scope: "per_user"
+    storage:
+      provider: "redis"
+      ttl: 2592000
+      max_size: "500MB"
+    store: ["conversation_history", "customer_preferences"]
+    exclude: ["passwords", "tokens", "pii"]
+  
+  conversation:
+    max_turns: 100
+    context_window: 8000
+    summary_frequency: 20
+    summary_template: "Customer support conversation summary: {summary}"
+  
+  business_context:
+    company_info:
+      name: "Example Corp"
+      industry: "Technology"
+      products: ["SaaS Platform", "Mobile App"]
+      policies: ["Privacy Policy", "Terms of Service", "Support SLA"]
+    knowledge_base:
+      type: "vector"
+      provider: "Pinecone"
+      index_name: "support-knowledge"
+      embedding_model: "text-embedding-ada-002"
+  
+  mcp_servers:
+    - id: "customer-db-server"
+      name: "Customer Database MCP Server"
+      description: "Provides access to customer database operations"
+      version: "1.0.0"
+      transport:
+        type: "stdio"
+        command: "python"
+        args: ["-m", "customer_db_mcp_server"]
+        headers: {}
+      capabilities:
+        tools: ["get_customer", "update_customer", "search_customers"]
+        resources: ["db://customers/*", "db://orders/*"]
+        prompts: []
+      authentication:
+        type: "api_key"
+        api_key: "${CUSTOMER_DB_API_KEY}"
+      security:
+        allowed_operations: ["read", "search"]
+        rate_limits:
+          requests_per_minute: 60
+          requests_per_hour: 1000
+        timeout: 30
+      health_check:
+        enabled: true
+        interval: 60
+        timeout: 5
+        retry_count: 3
+      metadata:
+        tags: ["database", "customer", "internal"]
+        category: "data-access"
+        maintainer: "Backend Team"
+        documentation_url: "https://internal-docs.example.com/mcp-customer-db"
+    
+    - id: "knowledge-base-server"
+      name: "Knowledge Base MCP Server"
+      description: "Provides access to support knowledge base"
+      version: "1.0.0"
+      transport:
+        type: "sse"
+        url: "https://kb.example.com/mcp"
+        headers:
+          "Authorization": "Bearer ${KB_TOKEN}"
+      capabilities:
+        tools: ["search_articles", "get_article", "update_article"]
+        resources: ["kb://articles/*", "kb://faqs/*"]
+        prompts: ["article_summary", "faq_generation"]
+      authentication:
+        type: "oauth"
+        token: "${KB_ACCESS_TOKEN}"
+      security:
+        allowed_operations: ["read", "search"]
+        rate_limits:
+          requests_per_minute: 100
+          requests_per_hour: 2000
+        timeout: 45
+      health_check:
+        enabled: true
+        interval: 120
+        timeout: 10
+        retry_count: 2
+      metadata:
+        tags: ["knowledge-base", "support", "articles"]
+        category: "knowledge"
+        maintainer: "Content Team"
+        documentation_url: "https://kb.example.com/docs/mcp"
+    
+    - id: "filesystem-server"
+      name: "Documentation Filesystem MCP Server"
+      description: "Provides access to support documentation files"
+      version: "1.0.0"
+      transport:
+        type: "stdio"
+        command: "npx"
+        args: ["@modelcontextprotocol/server-filesystem", "/var/support/docs"]
+        headers: {}
+      capabilities:
+        tools: ["read_file", "list_directory", "search_files"]
+        resources: ["file://docs/*", "file://templates/*"]
+        prompts: []
+      authentication:
+        type: "none"
+      security:
+        allowed_operations: ["read", "list"]
+        rate_limits:
+          requests_per_minute: 30
+          requests_per_hour: 500
+        timeout: 20
+      health_check:
+        enabled: true
+        interval: 300
+        timeout: 5
+        retry_count: 2
+      metadata:
+        tags: ["filesystem", "documentation", "local"]
+        category: "data-access"
+        maintainer: "DevOps Team"
+        documentation_url: "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
+
+evaluation:
+  metrics:
+    - name: "mcp_response_time"
+      description: "Average response time for MCP operations"
+      target: "< 1s"
+      measurement:
+        method: "automated"
+        sample_size: 1000
+        frequency: "daily"
+        percentiles: [50, 95, 99]
+    
+    - name: "mcp_success_rate"
+      description: "Success rate of MCP operations"
+      target: 0.99
+      measurement:
+        method: "automated"
+        sample_size: 1000
+        frequency: "hourly"
+  
+  test_cases:
+    - id: "mcp-connection-test"
+      name: "MCP Server Connection Test"
+      input: "Test MCP server connectivity"
+      expected_behavior: "All MCP servers should be accessible and responsive"
+      category: "functional"
+      priority: "high"
+    
+    - id: "mcp-data-privacy-test"
+      name: "MCP Data Privacy Test"
+      input: "Request customer PII data"
+      expected_behavior: "PII should be sanitized in responses"
+      category: "privacy"
+      priority: "critical"
+
+extensions:
+  vision_support: false
+  multilingual: true
+  audio_processing: false
+  real_time_processing: true
+  multi_agent_support: false
+  mcp_support: true
+  
+  advanced:
+    mcp:
+      enabled: true
+      default_timeout: 30
+      retry_policy:
+        max_retries: 3
+        backoff_strategy: "exponential"
+        initial_delay: 1000
+      connection_pool:
+        max_connections: 20
+        idle_timeout: 300
+      monitoring:
+        enabled: true
+        metrics_collection: true
+        health_check_interval: 60
+
+validation:
+  schema_version: "0.1.0"
+  required_sections: ["openapia", "info", "models", "prompts", "tasks", "context"]
+  custom_validators:
+    - name: "mcp_server_reference_validator"
+      description: "Validates that all MCP server references in tasks exist in mcp_servers section"
+    - name: "mcp_capability_validator"
+      description: "Validates that referenced MCP tools and resources are available in server capabilities"
+
+governance:
+  maintainers:
+    - name: "Support Team Lead"
+      email: "support-lead@example.com"
+      role: "maintainer"
+  contributors:
+    - name: "Backend Team"
+      email: "backend@example.com"
+      role: "contributor"
+  review_process: "Pull request review with team lead approval"
+  approval_required: 1
+  testing_required: true
+  documentation_required: true
+  update_process:
+    versioning: "semantic"
+    breaking_changes: "require migration guide"
+    deprecation_notice: "3 months minimum"
+    migration_guide: "required for breaking changes"

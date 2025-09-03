@@ -369,6 +369,55 @@ class OpenAPIAValidator
                 }
                 $taskIds[] = $task['id'];
             }
+            
+            // Validate task steps if present
+            if (isset($task['steps']) && is_array($task['steps'])) {
+                $this->validateTaskSteps($task['steps'], $index);
+            }
+        }
+    }
+    
+    /**
+     * Validate task steps
+     */
+    private function validateTaskSteps(array $steps, int $taskIndex): void
+    {
+        foreach ($steps as $stepIndex => $step) {
+            if (!is_array($step)) {
+                $this->errors[] = "Task {$taskIndex} step {$stepIndex} must be an array";
+                continue;
+            }
+            
+            // Validate required fields
+            $requiredFields = ['name', 'action'];
+            foreach ($requiredFields as $field) {
+                if (!array_key_exists($field, $step)) {
+                    $this->errors[] = "Task {$taskIndex} step {$stepIndex} missing required field: {$field}";
+                }
+            }
+            
+            // Validate action type
+            if (isset($step['action'])) {
+                $validActions = ['analyze', 'generate', 'validate', 'search', 'escalate', 'classify', 'mcp_tool', 'mcp_resource'];
+                if (!in_array($step['action'], $validActions)) {
+                    $this->warnings[] = "Task {$taskIndex} step {$stepIndex} unknown action: {$step['action']}";
+                }
+            }
+            
+            // Validate MCP-specific fields
+            if (isset($step['action']) && in_array($step['action'], ['mcp_tool', 'mcp_resource'])) {
+                if (!array_key_exists('mcp_server', $step)) {
+                    $this->errors[] = "Task {$taskIndex} step {$stepIndex} MCP action missing mcp_server field";
+                }
+                
+                if ($step['action'] === 'mcp_tool' && !array_key_exists('mcp_tool', $step)) {
+                    $this->errors[] = "Task {$taskIndex} step {$stepIndex} mcp_tool action missing mcp_tool field";
+                }
+                
+                if ($step['action'] === 'mcp_resource' && !array_key_exists('mcp_resource', $step)) {
+                    $this->errors[] = "Task {$taskIndex} step {$stepIndex} mcp_resource action missing mcp_resource field";
+                }
+            }
         }
     }
     
@@ -384,6 +433,108 @@ class OpenAPIAValidator
         
         if (!array_key_exists('memory', $context)) {
             $this->warnings[] = "context.memory is recommended";
+        }
+        
+        // Validate MCP servers if present
+        if (array_key_exists('mcp_servers', $context)) {
+            $this->validateMcpServers($context['mcp_servers']);
+        }
+    }
+    
+    /**
+     * Validate MCP servers section
+     */
+    private function validateMcpServers(array $mcpServers): void
+    {
+        if (!is_array($mcpServers)) {
+            $this->errors[] = "mcp_servers must be an array";
+            return;
+        }
+        
+        $serverIds = [];
+        foreach ($mcpServers as $index => $server) {
+            if (!is_array($server)) {
+                $this->errors[] = "MCP server {$index} must be an array";
+                continue;
+            }
+            
+            // Validate required fields
+            $requiredFields = ['id', 'name', 'description', 'version', 'transport', 'capabilities', 'authentication'];
+            foreach ($requiredFields as $field) {
+                if (!array_key_exists($field, $server)) {
+                    $this->errors[] = "MCP server {$index} missing required field: {$field}";
+                }
+            }
+            
+            // Check for duplicate IDs
+            if (isset($server['id'])) {
+                if (in_array($server['id'], $serverIds)) {
+                    $this->errors[] = "Duplicate MCP server ID: {$server['id']}";
+                }
+                $serverIds[] = $server['id'];
+            }
+            
+            // Validate transport configuration
+            if (isset($server['transport']) && is_array($server['transport'])) {
+                $this->validateMcpTransport($server['transport'], $index);
+            }
+            
+            // Validate authentication configuration
+            if (isset($server['authentication']) && is_array($server['authentication'])) {
+                $this->validateMcpAuthentication($server['authentication'], $index);
+            }
+        }
+    }
+    
+    /**
+     * Validate MCP transport configuration
+     */
+    private function validateMcpTransport(array $transport, int $serverIndex): void
+    {
+        if (!array_key_exists('type', $transport)) {
+            $this->errors[] = "MCP server {$serverIndex} transport missing required field: type";
+            return;
+        }
+        
+        $validTypes = ['stdio', 'sse', 'websocket'];
+        if (!in_array($transport['type'], $validTypes)) {
+            $this->errors[] = "MCP server {$serverIndex} invalid transport type: {$transport['type']}";
+        }
+        
+        // Validate transport-specific fields
+        if ($transport['type'] === 'stdio') {
+            if (!array_key_exists('command', $transport)) {
+                $this->errors[] = "MCP server {$serverIndex} stdio transport missing command";
+            }
+        } elseif (in_array($transport['type'], ['sse', 'websocket'])) {
+            if (!array_key_exists('url', $transport)) {
+                $this->errors[] = "MCP server {$serverIndex} {$transport['type']} transport missing url";
+            }
+        }
+    }
+    
+    /**
+     * Validate MCP authentication configuration
+     */
+    private function validateMcpAuthentication(array $auth, int $serverIndex): void
+    {
+        if (!array_key_exists('type', $auth)) {
+            $this->errors[] = "MCP server {$serverIndex} authentication missing required field: type";
+            return;
+        }
+        
+        $validTypes = ['none', 'api_key', 'oauth', 'custom'];
+        if (!in_array($auth['type'], $validTypes)) {
+            $this->errors[] = "MCP server {$serverIndex} invalid authentication type: {$auth['type']}";
+        }
+        
+        // Validate authentication-specific fields
+        if ($auth['type'] === 'api_key' && !array_key_exists('api_key', $auth)) {
+            $this->warnings[] = "MCP server {$serverIndex} api_key authentication missing api_key field";
+        }
+        
+        if ($auth['type'] === 'oauth' && !array_key_exists('token', $auth)) {
+            $this->warnings[] = "MCP server {$serverIndex} oauth authentication missing token field";
         }
     }
     
@@ -441,6 +592,26 @@ class OpenAPIAValidator
                     foreach ($task['steps'] as $step) {
                         if (isset($step['prompt']) && !in_array($step['prompt'], $promptIds)) {
                             $this->errors[] = "Task references unknown prompt: {$step['prompt']}";
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Validate that referenced MCP servers exist
+        if (isset($spec['tasks']) && isset($spec['context']['mcp_servers'])) {
+            $mcpServerIds = [];
+            foreach ($spec['context']['mcp_servers'] as $server) {
+                if (isset($server['id'])) {
+                    $mcpServerIds[] = $server['id'];
+                }
+            }
+            
+            foreach ($spec['tasks'] as $task) {
+                if (isset($task['steps'])) {
+                    foreach ($task['steps'] as $step) {
+                        if (isset($step['mcp_server']) && !in_array($step['mcp_server'], $mcpServerIds)) {
+                            $this->errors[] = "Task references unknown MCP server: {$step['mcp_server']}";
                         }
                     }
                 }

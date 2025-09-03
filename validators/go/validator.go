@@ -396,6 +396,76 @@ func (v *OpenAPIAValidator) validateTasks(tasks interface{}) {
 				taskIds[idStr] = true
 			}
 		}
+
+		// Validate task steps if present
+		if steps, exists := taskMap["steps"]; exists {
+			v.validateTaskSteps(steps, i)
+		}
+	}
+}
+
+// validateTaskSteps validates task steps
+func (v *OpenAPIAValidator) validateTaskSteps(steps interface{}, taskIndex int) {
+	stepsSlice, ok := steps.([]interface{})
+	if !ok {
+		v.Errors = append(v.Errors, fmt.Sprintf("Task %d steps must be an array", taskIndex))
+		return
+	}
+
+	for stepIndex, step := range stepsSlice {
+		stepMap, ok := step.(map[string]interface{})
+		if !ok {
+			v.Errors = append(v.Errors, fmt.Sprintf("Task %d step %d must be an object", taskIndex, stepIndex))
+			continue
+		}
+
+		// Validate required fields
+		requiredFields := []string{"name", "action"}
+		for _, field := range requiredFields {
+			if _, exists := stepMap[field]; !exists {
+				v.Errors = append(v.Errors, fmt.Sprintf("Task %d step %d missing required field: %s", taskIndex, stepIndex, field))
+			}
+		}
+
+		// Validate action type
+		if action, exists := stepMap["action"]; exists {
+			if actionStr, ok := action.(string); ok {
+				validActions := []string{"analyze", "generate", "validate", "search", "escalate", "classify", "mcp_tool", "mcp_resource"}
+				isValid := false
+				for _, validAction := range validActions {
+					if actionStr == validAction {
+						isValid = true
+						break
+					}
+				}
+				if !isValid {
+					v.Warnings = append(v.Warnings, fmt.Sprintf("Task %d step %d unknown action: %s", taskIndex, stepIndex, actionStr))
+				}
+			}
+		}
+
+		// Validate MCP-specific fields
+		if action, exists := stepMap["action"]; exists {
+			if actionStr, ok := action.(string); ok {
+				if actionStr == "mcp_tool" || actionStr == "mcp_resource" {
+					if _, exists := stepMap["mcp_server"]; !exists {
+						v.Errors = append(v.Errors, fmt.Sprintf("Task %d step %d MCP action missing mcp_server field", taskIndex, stepIndex))
+					}
+
+					if actionStr == "mcp_tool" {
+						if _, exists := stepMap["mcp_tool"]; !exists {
+							v.Errors = append(v.Errors, fmt.Sprintf("Task %d step %d mcp_tool action missing mcp_tool field", taskIndex, stepIndex))
+						}
+					}
+
+					if actionStr == "mcp_resource" {
+						if _, exists := stepMap["mcp_resource"]; !exists {
+							v.Errors = append(v.Errors, fmt.Sprintf("Task %d step %d mcp_resource action missing mcp_resource field", taskIndex, stepIndex))
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -409,6 +479,134 @@ func (v *OpenAPIAValidator) validateContext(context interface{}) {
 
 	if _, exists := contextMap["memory"]; !exists {
 		v.Warnings = append(v.Warnings, "context.memory is recommended")
+	}
+
+	// Validate MCP servers if present
+	if mcpServers, exists := contextMap["mcp_servers"]; exists {
+		v.validateMcpServers(mcpServers)
+	}
+}
+
+// validateMcpServers validates MCP servers section
+func (v *OpenAPIAValidator) validateMcpServers(mcpServers interface{}) {
+	mcpServersSlice, ok := mcpServers.([]interface{})
+	if !ok {
+		v.Errors = append(v.Errors, "mcp_servers must be an array")
+		return
+	}
+
+	serverIds := make(map[string]bool)
+	for index, server := range mcpServersSlice {
+		serverMap, ok := server.(map[string]interface{})
+		if !ok {
+			v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d must be an object", index))
+			continue
+		}
+
+		// Validate required fields
+		requiredFields := []string{"id", "name", "description", "version", "transport", "capabilities", "authentication"}
+		for _, field := range requiredFields {
+			if _, exists := serverMap[field]; !exists {
+				v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d missing required field: %s", index, field))
+			}
+		}
+
+		// Check for duplicate IDs
+		if id, exists := serverMap["id"]; exists {
+			if idStr, ok := id.(string); ok {
+				if serverIds[idStr] {
+					v.Errors = append(v.Errors, fmt.Sprintf("Duplicate MCP server ID: %s", idStr))
+				}
+				serverIds[idStr] = true
+			}
+		}
+
+		// Validate transport configuration
+		if transport, exists := serverMap["transport"]; exists {
+			v.validateMcpTransport(transport, index)
+		}
+
+		// Validate authentication configuration
+		if auth, exists := serverMap["authentication"]; exists {
+			v.validateMcpAuthentication(auth, index)
+		}
+	}
+}
+
+// validateMcpTransport validates MCP transport configuration
+func (v *OpenAPIAValidator) validateMcpTransport(transport interface{}, serverIndex int) {
+	transportMap, ok := transport.(map[string]interface{})
+	if !ok {
+		v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d transport must be an object", serverIndex))
+		return
+	}
+
+	if transportType, exists := transportMap["type"]; exists {
+		if typeStr, ok := transportType.(string); ok {
+			validTypes := []string{"stdio", "sse", "websocket"}
+			isValid := false
+			for _, validType := range validTypes {
+				if typeStr == validType {
+					isValid = true
+					break
+				}
+			}
+			if !isValid {
+				v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d invalid transport type: %s", serverIndex, typeStr))
+			}
+
+			// Validate transport-specific fields
+			if typeStr == "stdio" {
+				if _, exists := transportMap["command"]; !exists {
+					v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d stdio transport missing command", serverIndex))
+				}
+			} else if typeStr == "sse" || typeStr == "websocket" {
+				if _, exists := transportMap["url"]; !exists {
+					v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d %s transport missing url", serverIndex, typeStr))
+				}
+			}
+		}
+	} else {
+		v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d transport missing required field: type", serverIndex))
+	}
+}
+
+// validateMcpAuthentication validates MCP authentication configuration
+func (v *OpenAPIAValidator) validateMcpAuthentication(auth interface{}, serverIndex int) {
+	authMap, ok := auth.(map[string]interface{})
+	if !ok {
+		v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d authentication must be an object", serverIndex))
+		return
+	}
+
+	if authType, exists := authMap["type"]; exists {
+		if typeStr, ok := authType.(string); ok {
+			validTypes := []string{"none", "api_key", "oauth", "custom"}
+			isValid := false
+			for _, validType := range validTypes {
+				if typeStr == validType {
+					isValid = true
+					break
+				}
+			}
+			if !isValid {
+				v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d invalid authentication type: %s", serverIndex, typeStr))
+			}
+
+			// Validate authentication-specific fields
+			if typeStr == "api_key" {
+				if _, exists := authMap["api_key"]; !exists {
+					v.Warnings = append(v.Warnings, fmt.Sprintf("MCP server %d api_key authentication missing api_key field", serverIndex))
+				}
+			}
+			if typeStr == "oauth" {
+				if _, exists := authMap["token"]; !exists {
+					v.Warnings = append(v.Warnings, fmt.Sprintf("MCP server %d oauth authentication missing token field", serverIndex))
+				}
+			}
+		}
+	} else {
+		v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d authentication missing required field: type", serverIndex))
 	}
 }
 
@@ -494,6 +692,50 @@ func (v *OpenAPIAValidator) crossValidate(spec map[string]interface{}) {
 											if promptStr, ok := prompt.(string); ok {
 												if !promptIds[promptStr] {
 													v.Errors = append(v.Errors, fmt.Sprintf("Task references unknown prompt: %s", promptStr))
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Validate that referenced MCP servers exist
+	if tasks, tasksExists := spec["tasks"]; tasksExists {
+		if context, contextExists := spec["context"]; contextExists {
+			if contextMap, ok := context.(map[string]interface{}); ok {
+				if mcpServers, mcpServersExists := contextMap["mcp_servers"]; mcpServersExists {
+					mcpServerIds := make(map[string]bool)
+					if mcpServersSlice, ok := mcpServers.([]interface{}); ok {
+						for _, server := range mcpServersSlice {
+							if serverMap, ok := server.(map[string]interface{}); ok {
+								if id, exists := serverMap["id"]; exists {
+									if idStr, ok := id.(string); ok {
+										mcpServerIds[idStr] = true
+									}
+								}
+							}
+						}
+					}
+
+					if tasksSlice, ok := tasks.([]interface{}); ok {
+						for _, task := range tasksSlice {
+							if taskMap, ok := task.(map[string]interface{}); ok {
+								if steps, exists := taskMap["steps"]; exists {
+									if stepsSlice, ok := steps.([]interface{}); ok {
+										for _, step := range stepsSlice {
+											if stepMap, ok := step.(map[string]interface{}); ok {
+												if mcpServer, exists := stepMap["mcp_server"]; exists {
+													if mcpServerStr, ok := mcpServer.(string); ok {
+														if !mcpServerIds[mcpServerStr] {
+															v.Errors = append(v.Errors, fmt.Sprintf("Task references unknown MCP server: %s", mcpServerStr))
+														}
+													}
 												}
 											}
 										}

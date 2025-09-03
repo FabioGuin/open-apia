@@ -248,6 +248,40 @@ class OpenAPIAValidator:
                 if task['id'] in task_ids:
                     self.errors.append(f"Duplicate task ID: {task['id']}")
                 task_ids.add(task['id'])
+            
+            # Validate task steps if present
+            if 'steps' in task and isinstance(task['steps'], list):
+                self._validate_task_steps(task['steps'], i)
+    
+    def _validate_task_steps(self, steps: List[Dict[str, Any]], task_index: int) -> None:
+        """Validate task steps."""
+        for step_index, step in enumerate(steps):
+            if not isinstance(step, dict):
+                self.errors.append(f"Task {task_index} step {step_index} must be a dictionary")
+                continue
+            
+            # Validate required fields
+            required_fields = ['name', 'action']
+            for field in required_fields:
+                if field not in step:
+                    self.errors.append(f"Task {task_index} step {step_index} missing required field: {field}")
+            
+            # Validate action type
+            if 'action' in step:
+                valid_actions = ['analyze', 'generate', 'validate', 'search', 'escalate', 'classify', 'mcp_tool', 'mcp_resource']
+                if step['action'] not in valid_actions:
+                    self.warnings.append(f"Task {task_index} step {step_index} unknown action: {step['action']}")
+            
+            # Validate MCP-specific fields
+            if 'action' in step and step['action'] in ['mcp_tool', 'mcp_resource']:
+                if 'mcp_server' not in step:
+                    self.errors.append(f"Task {task_index} step {step_index} MCP action missing mcp_server field")
+                
+                if step['action'] == 'mcp_tool' and 'mcp_tool' not in step:
+                    self.errors.append(f"Task {task_index} step {step_index} mcp_tool action missing mcp_tool field")
+                
+                if step['action'] == 'mcp_resource' and 'mcp_resource' not in step:
+                    self.errors.append(f"Task {task_index} step {step_index} mcp_resource action missing mcp_resource field")
     
     def _validate_context(self, context: Dict[str, Any]) -> None:
         """Validate the context section."""
@@ -257,6 +291,77 @@ class OpenAPIAValidator:
         
         if 'memory' not in context:
             self.warnings.append("context.memory is recommended")
+        
+        # Validate MCP servers if present
+        if 'mcp_servers' in context:
+            self._validate_mcp_servers(context['mcp_servers'])
+    
+    def _validate_mcp_servers(self, mcp_servers: List[Dict[str, Any]]) -> None:
+        """Validate MCP servers section."""
+        if not isinstance(mcp_servers, list):
+            self.errors.append("mcp_servers must be a list")
+            return
+        
+        server_ids = set()
+        for index, server in enumerate(mcp_servers):
+            if not isinstance(server, dict):
+                self.errors.append(f"MCP server {index} must be a dictionary")
+                continue
+            
+            # Validate required fields
+            required_fields = ['id', 'name', 'description', 'version', 'transport', 'capabilities', 'authentication']
+            for field in required_fields:
+                if field not in server:
+                    self.errors.append(f"MCP server {index} missing required field: {field}")
+            
+            # Check for duplicate IDs
+            if 'id' in server:
+                if server['id'] in server_ids:
+                    self.errors.append(f"Duplicate MCP server ID: {server['id']}")
+                server_ids.add(server['id'])
+            
+            # Validate transport configuration
+            if 'transport' in server and isinstance(server['transport'], dict):
+                self._validate_mcp_transport(server['transport'], index)
+            
+            # Validate authentication configuration
+            if 'authentication' in server and isinstance(server['authentication'], dict):
+                self._validate_mcp_authentication(server['authentication'], index)
+    
+    def _validate_mcp_transport(self, transport: Dict[str, Any], server_index: int) -> None:
+        """Validate MCP transport configuration."""
+        if 'type' not in transport:
+            self.errors.append(f"MCP server {server_index} transport missing required field: type")
+            return
+        
+        valid_types = ['stdio', 'sse', 'websocket']
+        if transport['type'] not in valid_types:
+            self.errors.append(f"MCP server {server_index} invalid transport type: {transport['type']}")
+        
+        # Validate transport-specific fields
+        if transport['type'] == 'stdio':
+            if 'command' not in transport:
+                self.errors.append(f"MCP server {server_index} stdio transport missing command")
+        elif transport['type'] in ['sse', 'websocket']:
+            if 'url' not in transport:
+                self.errors.append(f"MCP server {server_index} {transport['type']} transport missing url")
+    
+    def _validate_mcp_authentication(self, auth: Dict[str, Any], server_index: int) -> None:
+        """Validate MCP authentication configuration."""
+        if 'type' not in auth:
+            self.errors.append(f"MCP server {server_index} authentication missing required field: type")
+            return
+        
+        valid_types = ['none', 'api_key', 'oauth', 'custom']
+        if auth['type'] not in valid_types:
+            self.errors.append(f"MCP server {server_index} invalid authentication type: {auth['type']}")
+        
+        # Validate authentication-specific fields
+        if auth['type'] == 'api_key' and 'api_key' not in auth:
+            self.warnings.append(f"MCP server {server_index} api_key authentication missing api_key field")
+        
+        if auth['type'] == 'oauth' and 'token' not in auth:
+            self.warnings.append(f"MCP server {server_index} oauth authentication missing token field")
     
     def _validate_evaluation(self, evaluation: Dict[str, Any]) -> None:
         """Validate the evaluation section."""
@@ -288,6 +393,16 @@ class OpenAPIAValidator:
                     for step in task['steps']:
                         if 'prompt' in step and step['prompt'] not in prompt_ids:
                             self.errors.append(f"Task references unknown prompt: {step['prompt']}")
+        
+        # Validate that referenced MCP servers exist
+        if 'tasks' in spec and 'context' in spec and 'mcp_servers' in spec['context']:
+            mcp_server_ids = {server.get('id') for server in spec['context']['mcp_servers'] if 'id' in server}
+            
+            for task in spec['tasks']:
+                if 'steps' in task:
+                    for step in task['steps']:
+                        if 'mcp_server' in step and step['mcp_server'] not in mcp_server_ids:
+                            self.errors.append(f"Task references unknown MCP server: {step['mcp_server']}")
     
     def get_errors(self) -> List[str]:
         """Get list of validation errors."""

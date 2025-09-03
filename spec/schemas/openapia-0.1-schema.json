@@ -567,7 +567,10 @@
                                         "generate",
                                         "validate",
                                         "search",
-                                        "escalate"
+                                        "escalate",
+                                        "classify",
+                                        "mcp_tool",
+                                        "mcp_resource"
                                     ],
                                     "description": "Action type"
                                 },
@@ -582,6 +585,22 @@
                                 "source": {
                                     "type": "string",
                                     "description": "Data source"
+                                },
+                                "mcp_server": {
+                                    "type": "string",
+                                    "description": "Referenced MCP server ID"
+                                },
+                                "mcp_tool": {
+                                    "type": "string",
+                                    "description": "MCP tool name (if action is mcp_tool)"
+                                },
+                                "mcp_resource": {
+                                    "type": "string",
+                                    "description": "MCP resource name (if action is mcp_resource)"
+                                },
+                                "mcp_parameters": {
+                                    "type": "object",
+                                    "description": "Parameters for MCP tool/resource"
                                 },
                                 "constraints": {
                                     "type": "array",
@@ -726,6 +745,202 @@
                                 },
                                 "embedding_model": {
                                     "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "mcp_servers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "name",
+                            "description",
+                            "version",
+                            "transport",
+                            "capabilities",
+                            "authentication"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Unique server identifier"
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": "Server name"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Server description"
+                            },
+                            "version": {
+                                "type": "string",
+                                "description": "MCP server version"
+                            },
+                            "transport": {
+                                "type": "object",
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "stdio",
+                                            "sse",
+                                            "websocket"
+                                        ],
+                                        "description": "Transport protocol type"
+                                    },
+                                    "command": {
+                                        "type": "string",
+                                        "description": "Command to start server (for stdio)"
+                                    },
+                                    "args": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Command arguments"
+                                    },
+                                    "url": {
+                                        "type": "string",
+                                        "description": "Server URL (for sse/websocket)"
+                                    },
+                                    "headers": {
+                                        "type": "object",
+                                        "description": "Custom headers"
+                                    }
+                                }
+                            },
+                            "capabilities": {
+                                "type": "object",
+                                "properties": {
+                                    "tools": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Available tools"
+                                    },
+                                    "resources": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Available resources"
+                                    },
+                                    "prompts": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Available prompts"
+                                    }
+                                }
+                            },
+                            "authentication": {
+                                "type": "object",
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "none",
+                                            "api_key",
+                                            "oauth",
+                                            "custom"
+                                        ],
+                                        "description": "Authentication type"
+                                    },
+                                    "api_key": {
+                                        "type": "string",
+                                        "description": "API key (if applicable)"
+                                    },
+                                    "token": {
+                                        "type": "string",
+                                        "description": "Access token (if applicable)"
+                                    },
+                                    "custom_auth": {
+                                        "type": "object",
+                                        "description": "Custom authentication configuration"
+                                    }
+                                }
+                            },
+                            "security": {
+                                "type": "object",
+                                "properties": {
+                                    "allowed_operations": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Allowed operations"
+                                    },
+                                    "rate_limits": {
+                                        "type": "object",
+                                        "properties": {
+                                            "requests_per_minute": {
+                                                "type": "number"
+                                            },
+                                            "requests_per_hour": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    },
+                                    "timeout": {
+                                        "type": "number",
+                                        "description": "Request timeout in seconds"
+                                    }
+                                }
+                            },
+                            "health_check": {
+                                "type": "object",
+                                "properties": {
+                                    "enabled": {
+                                        "type": "boolean"
+                                    },
+                                    "interval": {
+                                        "type": "number",
+                                        "description": "Check interval in seconds"
+                                    },
+                                    "timeout": {
+                                        "type": "number",
+                                        "description": "Health check timeout"
+                                    },
+                                    "retry_count": {
+                                        "type": "number",
+                                        "description": "Retry attempts"
+                                    }
+                                }
+                            },
+                            "metadata": {
+                                "type": "object",
+                                "properties": {
+                                    "tags": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Server tags"
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "description": "Server category"
+                                    },
+                                    "maintainer": {
+                                        "type": "string",
+                                        "description": "Server maintainer"
+                                    },
+                                    "documentation_url": {
+                                        "type": "string",
+                                        "description": "Documentation URL"
+                                    }
                                 }
                             }
                         }
@@ -898,6 +1113,10 @@
                     "type": "boolean",
                     "description": "Multi-agent system support (planned for v0.2.0)"
                 },
+                "mcp_support": {
+                    "type": "boolean",
+                    "description": "Model Context Protocol support"
+                },
                 "advanced": {
                     "type": "object",
                     "properties": {
@@ -964,6 +1183,62 @@
                                 "communication": {
                                     "type": "object",
                                     "description": "Inter-agent communication"
+                                }
+                            }
+                        },
+                        "mcp": {
+                            "type": "object",
+                            "description": "Model Context Protocol configuration",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "default_timeout": {
+                                    "type": "number",
+                                    "description": "Default timeout for MCP operations"
+                                },
+                                "retry_policy": {
+                                    "type": "object",
+                                    "properties": {
+                                        "max_retries": {
+                                            "type": "number"
+                                        },
+                                        "backoff_strategy": {
+                                            "type": "string",
+                                            "enum": [
+                                                "linear",
+                                                "exponential"
+                                            ]
+                                        },
+                                        "initial_delay": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "connection_pool": {
+                                    "type": "object",
+                                    "properties": {
+                                        "max_connections": {
+                                            "type": "number"
+                                        },
+                                        "idle_timeout": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "monitoring": {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "metrics_collection": {
+                                            "type": "boolean"
+                                        },
+                                        "health_check_interval": {
+                                            "type": "number"
+                                        }
+                                    }
                                 }
                             }
                         }
