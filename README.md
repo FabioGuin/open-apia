@@ -380,7 +380,30 @@ See [GOVERNANCE.md](GOVERNANCE.md) for details.
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
+## Whitepapers
 
+Comprehensive whitepapers providing detailed analysis and insights into OpenAPIA:
+
+- **[OpenAPIA Whitepaper (English)](OpenAPIA_Whitepaper_EN.md)** - Complete technical and business analysis of OpenAPIA's capabilities, architecture, and potential
+- **[OpenAPIA Whitepaper (Italiano)](OpenAPIA_Whitepaper_IT.md)** - Analisi completa tecnica e business delle capacità, architettura e potenziale di OpenAPIA
+
+### Whitepaper Contents
+
+Both whitepapers cover:
+- **Executive Summary** - Overview of OpenAPIA's value proposition
+- **AI Standardization Challenge** - Current industry challenges and needs
+- **Core Architecture** - Detailed technical specifications and features
+- **Advanced Capabilities** - Multi-agent systems, automation integration, MCP support
+- **Generative Development Potential** - Code generation, documentation, and tooling opportunities
+- **Implementation Guide** - Getting started and adoption strategies
+- **Governance & Community** - Project governance and contribution guidelines
+- **Future Roadmap** - Long-term vision and development plans
+
+Perfect for:
+- **Technical Leaders** - Understanding OpenAPIA's technical capabilities
+- **Business Stakeholders** - Evaluating OpenAPIA's business value
+- **Developers** - Learning implementation approaches and best practices
+- **Decision Makers** - Making informed adoption decisions
 
 ## Community
 
