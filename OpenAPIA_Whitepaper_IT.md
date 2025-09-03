@@ -1,4 +1,4 @@
-# OpenAPIA: Architettura Artificiale Intelligente Aperta
+# OpenAPIA: Open Artificial Intelligence Architecture
 ## Uno Standard Completo per la Documentazione e Validazione dei Sistemi AI
 
 **Versione 1.0**  
