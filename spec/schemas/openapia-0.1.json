@@ -1,0 +1,1035 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://openapia.org/schemas/0.1.0/schema.json",
+    "title": "OpenAPIA Specification Schema",
+    "description": "JSON Schema for OpenAPIA 0.1.0 specifications",
+    "type": "object",
+    "required": [
+        "openapia",
+        "info",
+        "models",
+        "prompts",
+        "constraints",
+        "tasks",
+        "context",
+        "evaluation"
+    ],
+    "properties": {
+        "openapia": {
+            "type": "string",
+            "pattern": "^0\\.1\\.\\d+$",
+            "description": "OpenAPIA specification version"
+        },
+        "info": {
+            "type": "object",
+            "required": [
+                "title",
+                "version",
+                "description",
+                "author",
+                "license"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "AI system name"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "System version"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "System description"
+                },
+                "author": {
+                    "type": "string",
+                    "description": "Author or team name"
+                },
+                "license": {
+                    "type": "string",
+                    "description": "License identifier"
+                },
+                "contact": {
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "format": "email"
+                        },
+                        "url": {
+                            "type": "string",
+                            "format": "uri"
+                        }
+                    }
+                },
+                "ai_metadata": {
+                    "type": "object",
+                    "properties": {
+                        "domain": {
+                            "type": "string",
+                            "description": "Application domain"
+                        },
+                        "complexity": {
+                            "type": "string",
+                            "enum": [
+                                "low",
+                                "medium",
+                                "high"
+                            ],
+                            "description": "System complexity level"
+                        },
+                        "deployment": {
+                            "type": "string",
+                            "enum": [
+                                "development",
+                                "staging",
+                                "production"
+                            ],
+                            "description": "Deployment environment"
+                        },
+                        "last_updated": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Last update timestamp"
+                        },
+                        "supported_languages": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "description": "Supported languages"
+                        }
+                    }
+                }
+            }
+        },
+        "models": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "type",
+                    "provider",
+                    "name",
+                    "purpose"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique model identifier"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "LLM",
+                            "Vision",
+                            "Audio",
+                            "Multimodal",
+                            "Classification",
+                            "Embedding"
+                        ],
+                        "description": "Model type"
+                    },
+                    "provider": {
+                        "type": "string",
+                        "description": "Model provider"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Model name"
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Model version"
+                    },
+                    "purpose": {
+                        "type": "string",
+                        "description": "Model purpose"
+                    },
+                    "capabilities": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Model capabilities"
+                    },
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "temperature": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 2
+                            },
+                            "max_tokens": {
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "top_p": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 1
+                            },
+                            "frequency_penalty": {
+                                "type": "number",
+                                "minimum": -2,
+                                "maximum": 2
+                            },
+                            "presence_penalty": {
+                                "type": "number",
+                                "minimum": -2,
+                                "maximum": 2
+                            }
+                        }
+                    },
+                    "limits": {
+                        "type": "object",
+                        "properties": {
+                            "max_input_tokens": {
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "max_output_tokens": {
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "requests_per_minute": {
+                                "type": "integer",
+                                "minimum": 1
+                            }
+                        }
+                    },
+                    "cost": {
+                        "type": "object",
+                        "properties": {
+                            "input_per_1k_tokens": {
+                                "type": "number",
+                                "minimum": 0
+                            },
+                            "output_per_1k_tokens": {
+                                "type": "number",
+                                "minimum": 0
+                            },
+                            "currency": {
+                                "type": "string",
+                                "pattern": "^[A-Z]{3}$"
+                            }
+                        }
+                    },
+                    "performance": {
+                        "type": "object",
+                        "properties": {
+                            "accuracy": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 1
+                            },
+                            "latency": {
+                                "type": "string"
+                            },
+                            "throughput": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "prompts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "role",
+                    "template"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique prompt identifier"
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                        ],
+                        "description": "Prompt role"
+                    },
+                    "style": {
+                        "type": "string",
+                        "description": "Prompt style"
+                    },
+                    "language": {
+                        "type": "string",
+                        "description": "Prompt language"
+                    },
+                    "template": {
+                        "type": "string",
+                        "description": "Prompt template with variables"
+                    },
+                    "variables": {
+                        "type": "object",
+                        "patternProperties": {
+                            "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+                                "type": "object",
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "string",
+                                            "number",
+                                            "boolean",
+                                            "array",
+                                            "object"
+                                        ]
+                                    },
+                                    "required": {
+                                        "type": "boolean"
+                                    },
+                                    "default": {},
+                                    "enum": {
+                                        "type": "array"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "config": {
+                        "type": "object",
+                        "properties": {
+                            "temperature": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 2
+                            },
+                            "max_tokens": {
+                                "type": "integer",
+                                "minimum": 1
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "constraints": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "rule",
+                    "severity"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique constraint identifier"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Constraint name"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "content_safety",
+                            "privacy",
+                            "performance",
+                            "budget",
+                            "fairness"
+                        ],
+                        "description": "Constraint type"
+                    },
+                    "rule": {
+                        "type": "string",
+                        "description": "Constraint rule expression"
+                    },
+                    "severity": {
+                        "type": "string",
+                        "enum": [
+                            "low",
+                            "medium",
+                            "high",
+                            "critical"
+                        ],
+                        "description": "Severity level"
+                    },
+                    "enforcement": {
+                        "type": "string",
+                        "enum": [
+                            "automatic",
+                            "monitoring",
+                            "manual"
+                        ],
+                        "description": "Enforcement method"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Constraint description"
+                    },
+                    "actions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Actions to take when constraint is violated"
+                    }
+                }
+            }
+        },
+        "tasks": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "description"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique task identifier"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Task name"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Task description"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "conversational",
+                            "analysis",
+                            "generation",
+                            "classification"
+                        ],
+                        "description": "Task type"
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": [
+                            "low",
+                            "medium",
+                            "high",
+                            "critical"
+                        ],
+                        "description": "Task priority"
+                    },
+                    "input": {
+                        "type": "object",
+                        "patternProperties": {
+                            "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+                                "type": "object",
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "string",
+                                            "number",
+                                            "boolean",
+                                            "array",
+                                            "object"
+                                        ]
+                                    },
+                                    "required": {
+                                        "type": "boolean"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "output": {
+                        "type": "object",
+                        "patternProperties": {
+                            "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+                                "type": "object",
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "string",
+                                            "number",
+                                            "boolean",
+                                            "array",
+                                            "object"
+                                        ]
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "minimum": {
+                                        "type": "number"
+                                    },
+                                    "maximum": {
+                                        "type": "number"
+                                    },
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "steps": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "name",
+                                "action"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Step name"
+                                },
+                                "action": {
+                                    "type": "string",
+                                    "enum": [
+                                        "analyze",
+                                        "generate",
+                                        "validate",
+                                        "search",
+                                        "escalate"
+                                    ],
+                                    "description": "Action type"
+                                },
+                                "model": {
+                                    "type": "string",
+                                    "description": "Referenced model ID"
+                                },
+                                "prompt": {
+                                    "type": "string",
+                                    "description": "Referenced prompt ID"
+                                },
+                                "source": {
+                                    "type": "string",
+                                    "description": "Data source"
+                                },
+                                "constraints": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "description": "Referenced constraint IDs"
+                                },
+                                "conditions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "if",
+                                            "then"
+                                        ],
+                                        "properties": {
+                                            "if": {
+                                                "type": "string",
+                                                "description": "Condition expression"
+                                            },
+                                            "then": {
+                                                "type": "string",
+                                                "description": "Next step or action"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "context": {
+            "type": "object",
+            "properties": {
+                "memory": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "session",
+                                "persistent",
+                                "temporary"
+                            ]
+                        },
+                        "retention": {
+                            "type": "string"
+                        },
+                        "scope": {
+                            "type": "string",
+                            "enum": [
+                                "per_user",
+                                "global",
+                                "per_session"
+                            ]
+                        },
+                        "storage": {
+                            "type": "object",
+                            "properties": {
+                                "provider": {
+                                    "type": "string"
+                                },
+                                "ttl": {
+                                    "type": "integer"
+                                },
+                                "max_size": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "store": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "exclude": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "conversation": {
+                    "type": "object",
+                    "properties": {
+                        "max_turns": {
+                            "type": "integer"
+                        },
+                        "context_window": {
+                            "type": "integer"
+                        },
+                        "summary_frequency": {
+                            "type": "integer"
+                        },
+                        "summary_template": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "business_context": {
+                    "type": "object",
+                    "properties": {
+                        "company_info": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "industry": {
+                                    "type": "string"
+                                },
+                                "products": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "policies": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "knowledge_base": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                },
+                                "provider": {
+                                    "type": "string"
+                                },
+                                "index_name": {
+                                    "type": "string"
+                                },
+                                "embedding_model": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "evaluation": {
+            "type": "object",
+            "properties": {
+                "metrics": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "description",
+                            "target"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Metric name"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Metric description"
+                            },
+                            "target": {},
+                            "measurement": {
+                                "type": "object",
+                                "required": [
+                                    "method"
+                                ],
+                                "properties": {
+                                    "method": {
+                                        "type": "string"
+                                    },
+                                    "sample_size": {
+                                        "type": "integer"
+                                    },
+                                    "frequency": {
+                                        "type": "string"
+                                    },
+                                    "criteria": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "percentiles": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "scale": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "test_cases": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "name",
+                            "input",
+                            "expected_behavior",
+                            "category",
+                            "priority"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Test case ID"
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": "Test case name"
+                            },
+                            "input": {
+                                "type": "string",
+                                "description": "Test input"
+                            },
+                            "expected_behavior": {
+                                "type": "string",
+                                "description": "Expected behavior"
+                            },
+                            "category": {
+                                "type": "string",
+                                "enum": [
+                                    "functional",
+                                    "safety",
+                                    "privacy",
+                                    "performance"
+                                ],
+                                "description": "Test category"
+                            },
+                            "priority": {
+                                "type": "string",
+                                "enum": [
+                                    "low",
+                                    "medium",
+                                    "high",
+                                    "critical"
+                                ],
+                                "description": "Test priority"
+                            }
+                        }
+                    }
+                },
+                "performance_tests": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "description"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Test name"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Test description"
+                            },
+                            "concurrent_users": {
+                                "type": "integer"
+                            },
+                            "duration": {
+                                "type": "string"
+                            },
+                            "target_response_time": {
+                                "type": "string"
+                            },
+                            "target_throughput": {
+                                "type": "string"
+                            },
+                            "target_availability": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "extensions": {
+            "type": "object",
+            "properties": {
+                "vision_support": {
+                    "type": "boolean"
+                },
+                "multilingual": {
+                    "type": "boolean"
+                },
+                "audio_processing": {
+                    "type": "boolean"
+                },
+                "real_time_processing": {
+                    "type": "boolean"
+                },
+                "multi_agent_support": {
+                    "type": "boolean",
+                    "description": "Multi-agent system support (planned for v0.2.0)"
+                },
+                "advanced": {
+                    "type": "object",
+                    "properties": {
+                        "computer_vision": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "models": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        },
+                        "audio_processing": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "models": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        },
+                        "multimodal": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "models": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        },
+                        "multi_agent": {
+                            "type": "object",
+                            "description": "Multi-agent system configuration (planned for v0.2.0)",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "agents": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    },
+                                    "description": "Agent definitions"
+                                },
+                                "orchestration": {
+                                    "type": "object",
+                                    "description": "Coordination strategy"
+                                },
+                                "communication": {
+                                    "type": "object",
+                                    "description": "Inter-agent communication"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "validation": {
+            "type": "object",
+            "properties": {
+                "schema_version": {
+                    "type": "string"
+                },
+                "required_sections": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "custom_validators": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "description"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "governance": {
+            "type": "object",
+            "properties": {
+                "maintainers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "email",
+                            "role"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string",
+                                "format": "email"
+                            },
+                            "role": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "contributors": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "email",
+                            "role"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string",
+                                "format": "email"
+                            },
+                            "role": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "review_process": {
+                    "type": "string"
+                },
+                "approval_required": {
+                    "type": "integer"
+                },
+                "testing_required": {
+                    "type": "boolean"
+                },
+                "documentation_required": {
+                    "type": "boolean"
+                },
+                "update_process": {
+                    "type": "object",
+                    "properties": {
+                        "versioning": {
+                            "type": "string"
+                        },
+                        "breaking_changes": {
+                            "type": "string"
+                        },
+                        "deprecation_notice": {
+                            "type": "string"
+                        },
+                        "migration_guide": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "additionalProperties": false
+}

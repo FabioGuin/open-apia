@@ -1,0 +1,512 @@
+# OpenAPIA 0.1 - Content Moderator AI Example
+# AI-powered content filtering and moderation system
+
+openapia: "0.1.0"
+
+info:
+  title: "Content Moderator AI"
+  version: "1.0.0"
+  description: "AI-powered content filtering system for social media and user-generated content"
+  author: "AI Safety Team"
+  license: "MIT"
+  contact:
+    email: "safety-team@company.com"
+    url: "https://company.com/ai-safety"
+  
+  ai_metadata:
+    domain: "content-moderation"
+    complexity: "high"
+    deployment: "production"
+    last_updated: "2024-01-15T10:30:00Z"
+    supported_languages: ["en", "es", "fr", "de", "it"]
+
+models:
+  - id: "text_classifier"
+    type: "Classification"
+    provider: "huggingface"
+    name: "unitary/toxic-bert"
+    version: "latest"
+    purpose: "toxicity_detection"
+    capabilities:
+      - "toxicity_classification"
+      - "hate_speech_detection"
+      - "harassment_detection"
+    parameters:
+      max_sequence_length: 512
+      batch_size: 32
+    performance:
+      accuracy: 0.92
+      f1_score: 0.89
+  
+  - id: "image_classifier"
+    type: "Vision"
+    provider: "custom"
+    name: "nsfw-detector"
+    version: "1.0"
+    purpose: "inappropriate_content_detection"
+    capabilities:
+      - "nsfw_detection"
+      - "violence_detection"
+      - "gore_detection"
+    parameters:
+      confidence_threshold: 0.8
+      batch_size: 16
+    performance:
+      accuracy: 0.95
+      precision: 0.93
+      recall: 0.91
+  
+  - id: "explanation_generator"
+    type: "LLM"
+    provider: "openai"
+    name: "gpt-4"
+    version: "2024-11-06"
+    purpose: "explanation_generation"
+    capabilities:
+      - "text_generation"
+      - "explanation"
+      - "reasoning"
+    parameters:
+      temperature: 0.3
+      max_tokens: 200
+      top_p: 0.9
+    limits:
+      max_input_tokens: 4000
+      max_output_tokens: 200
+      requests_per_minute: 60
+    cost:
+      input_per_1k_tokens: 0.03
+      output_per_1k_tokens: 0.06
+      currency: "USD"
+
+prompts:
+  - id: "moderation_prompt"
+    role: "system"
+    style: "formal"
+    language: "en"
+    template: |
+      You are a content moderation AI assistant. Your task is to analyze content and provide moderation decisions.
+      
+      CONTENT TO ANALYZE:
+      {{content}}
+      
+      ANALYSIS RESULTS:
+      - Toxicity Score: {{toxicity_score}}
+      - Category: {{category}}
+      - Confidence: {{confidence}}
+      
+      INSTRUCTIONS:
+      1. Review the content and analysis results
+      2. Make a moderation decision: APPROVE, FLAG, or REJECT
+      3. Provide a clear explanation for your decision
+      4. If flagging, specify the reason and suggested action
+      
+      DECISION CRITERIA:
+      - APPROVE: Content is safe and appropriate
+      - FLAG: Content may violate guidelines, needs human review
+      - REJECT: Content clearly violates guidelines
+      
+      Provide your decision and explanation in JSON format.
+    
+    variables:
+      content:
+        type: "string"
+        required: true
+        description: "Content to be moderated"
+      toxicity_score:
+        type: "number"
+        required: true
+        minimum: 0
+        maximum: 1
+        description: "Toxicity score from classifier"
+      category:
+        type: "string"
+        required: true
+        enum: ["safe", "toxic", "hate_speech", "harassment", "spam", "inappropriate"]
+        description: "Content category"
+      confidence:
+        type: "number"
+        required: true
+        minimum: 0
+        maximum: 1
+        description: "Confidence level of analysis"
+    
+    config:
+      temperature: 0.3
+      max_tokens: 200
+  
+  - id: "appeal_prompt"
+    role: "system"
+    style: "formal"
+    language: "en"
+    template: |
+      A user has appealed a content moderation decision. Review the case and provide a response.
+      
+      ORIGINAL CONTENT:
+      {{original_content}}
+      
+      MODERATION DECISION:
+      {{moderation_decision}}
+      
+      USER APPEAL:
+      {{user_appeal}}
+      
+      ADDITIONAL CONTEXT:
+      {{additional_context}}
+      
+      INSTRUCTIONS:
+      1. Review the original decision and user appeal
+      2. Consider any additional context provided
+      3. Make a final decision: UPHOLD, OVERTURN, or ESCALATE
+      4. Provide a clear explanation for your decision
+      
+      Respond in a professional and empathetic tone.
+    
+    variables:
+      original_content:
+        type: "string"
+        required: true
+      moderation_decision:
+        type: "string"
+        required: true
+      user_appeal:
+        type: "string"
+        required: true
+      additional_context:
+        type: "string"
+        required: false
+
+constraints:
+  - id: "bias_prevention"
+    name: "Bias Prevention"
+    type: "fairness"
+    rule: "decision NOT influenced by protected_characteristics"
+    severity: "critical"
+    enforcement: "automatic"
+    description: "Ensure moderation decisions are not biased against protected characteristics"
+    actions:
+      - "log_decision"
+      - "audit_bias"
+      - "escalate_if_bias_detected"
+  
+  - id: "consistency"
+    name: "Decision Consistency"
+    type: "quality"
+    rule: "similar_content gets similar_decisions"
+    severity: "high"
+    enforcement: "monitoring"
+    description: "Maintain consistency in moderation decisions"
+    actions:
+      - "compare_with_similar_cases"
+      - "flag_inconsistencies"
+      - "review_decision_patterns"
+  
+  - id: "response_time"
+    name: "Moderation Response Time"
+    type: "performance"
+    rule: "moderation_time < 5s"
+    severity: "medium"
+    enforcement: "monitoring"
+    description: "Ensure fast moderation decisions"
+    actions:
+      - "log_performance"
+      - "alert_if_slow"
+  
+  - id: "false_positive_limit"
+    name: "False Positive Limit"
+    type: "quality"
+    rule: "false_positive_rate < 0.05"
+    severity: "high"
+    enforcement: "monitoring"
+    description: "Keep false positive rate below 5%"
+    actions:
+      - "track_false_positives"
+      - "adjust_thresholds"
+      - "retrain_models"
+
+tasks:
+  - id: "moderate_content"
+    name: "Content Moderation"
+    description: "Analyze and moderate user-generated content"
+    type: "classification"
+    priority: "high"
+    
+    input:
+      content:
+        type: "string"
+        required: true
+        description: "Content to be moderated"
+      content_type:
+        type: "string"
+        required: true
+        enum: ["text", "image", "video"]
+        description: "Type of content"
+      user_context:
+        type: "object"
+        required: false
+        description: "Additional user context"
+    
+    output:
+      decision:
+        type: "string"
+        enum: ["APPROVE", "FLAG", "REJECT"]
+        description: "Moderation decision"
+      confidence:
+        type: "number"
+        minimum: 0
+        maximum: 1
+        description: "Confidence in decision"
+      explanation:
+        type: "string"
+        description: "Explanation for decision"
+      categories:
+        type: "array"
+        items:
+          type: "string"
+        description: "Content categories identified"
+    
+    steps:
+      - name: "analyze_content"
+        action: "analyze"
+        model: "text_classifier"
+        conditions:
+          - if: "content_type == 'text'"
+            then: "analyze_text"
+          - if: "content_type == 'image'"
+            then: "analyze_image"
+      
+      - name: "analyze_text"
+        action: "classify"
+        model: "text_classifier"
+      
+      - name: "analyze_image"
+        action: "classify"
+        model: "image_classifier"
+      
+      - name: "generate_decision"
+        action: "generate"
+        model: "explanation_generator"
+        prompt: "moderation_prompt"
+        constraints:
+          - "bias_prevention"
+          - "consistency"
+      
+      - name: "validate_decision"
+        action: "validate"
+        constraints:
+          - "bias_prevention"
+          - "consistency"
+          - "response_time"
+          - "false_positive_limit"
+  
+  - id: "handle_appeal"
+    name: "Appeal Handling"
+    description: "Handle user appeals for moderation decisions"
+    type: "conversational"
+    priority: "medium"
+    
+    input:
+      original_content:
+        type: "string"
+        required: true
+      moderation_decision:
+        type: "string"
+        required: true
+      user_appeal:
+        type: "string"
+        required: true
+      additional_context:
+        type: "object"
+        required: false
+    
+    output:
+      final_decision:
+        type: "string"
+        enum: ["UPHOLD", "OVERTURN", "ESCALATE"]
+        description: "Final decision on appeal"
+      explanation:
+        type: "string"
+        description: "Explanation for final decision"
+      recommended_action:
+        type: "string"
+        description: "Recommended follow-up action"
+    
+    steps:
+      - name: "review_appeal"
+        action: "analyze"
+        model: "explanation_generator"
+        prompt: "appeal_prompt"
+      
+      - name: "make_final_decision"
+        action: "generate"
+        model: "explanation_generator"
+        prompt: "appeal_prompt"
+
+context:
+  memory:
+    type: "persistent"
+    retention: "90d"
+    scope: "per_user"
+    storage:
+      provider: "postgresql"
+      ttl: 7776000  # 90 days
+      max_size: "100MB"
+    
+    store:
+      - "moderation_history"
+      - "user_behavior_patterns"
+      - "appeal_outcomes"
+      - "decision_patterns"
+    
+    exclude:
+      - "personal_identifiable_information"
+      - "sensitive_content"
+  
+  conversation:
+    max_turns: 10
+    context_window: 5
+    summary_frequency: 3
+    
+    summary_template: |
+      MODERATION SESSION SUMMARY:
+      - User: {{user_id}}
+      - Content Type: {{content_type}}
+      - Decisions Made: {{decision_count}}
+      - Appeals: {{appeal_count}}
+      - Average Confidence: {{avg_confidence}}
+  
+  business_context:
+    company_info:
+      name: "SocialMedia Platform"
+      industry: "social-media"
+      products: ["content-platform", "moderation-tools"]
+      policies:
+        - "community_guidelines"
+        - "content_policy"
+        - "appeal_process"
+    
+    knowledge_base:
+      type: "vector_database"
+      provider: "pinecone"
+      index_name: "moderation_kb"
+      embedding_model: "text-embedding-ada-002"
+
+evaluation:
+  metrics:
+    - name: "accuracy"
+      description: "Overall moderation accuracy"
+      target: 0.95
+      measurement:
+        method: "human_evaluation"
+        sample_size: 1000
+        frequency: "weekly"
+        criteria:
+          - "correct_classification"
+          - "appropriate_decision"
+          - "consistent_application"
+    
+    - name: "false_positive_rate"
+      description: "Rate of incorrectly flagged content"
+      target: 0.05
+      measurement:
+        method: "appeal_analysis"
+        sample_size: 500
+        frequency: "daily"
+    
+    - name: "false_negative_rate"
+      description: "Rate of missed violations"
+      target: 0.02
+      measurement:
+        method: "audit_review"
+        sample_size: 200
+        frequency: "daily"
+    
+    - name: "response_time"
+      description: "Average moderation response time"
+      target: "3s"
+      measurement:
+        method: "system_metrics"
+        frequency: "real_time"
+        percentiles: [50, 95, 99]
+    
+    - name: "bias_score"
+      description: "Bias detection score"
+      target: 0.0
+      measurement:
+        method: "bias_audit"
+        sample_size: 1000
+        frequency: "weekly"
+  
+  test_cases:
+    - id: "tc1"
+      name: "Toxic Content Detection"
+      input: "This is hateful and offensive content"
+      expected_behavior: "Flag or reject with appropriate explanation"
+      category: "safety"
+      priority: "critical"
+    
+    - id: "tc2"
+      name: "Safe Content Approval"
+      input: "Hello, how are you today?"
+      expected_behavior: "Approve without issues"
+      category: "functional"
+      priority: "high"
+    
+    - id: "tc3"
+      name: "Edge Case Content"
+      input: "This is borderline content that might be problematic"
+      expected_behavior: "Flag for human review"
+      category: "functional"
+      priority: "medium"
+    
+    - id: "tc4"
+      name: "Bias Test - Protected Characteristics"
+      input: "Content mentioning protected characteristics"
+      expected_behavior: "Decision based on content, not characteristics"
+      category: "fairness"
+      priority: "critical"
+    
+    - id: "tc5"
+      name: "Appeal Process"
+      input: "User appealing moderation decision"
+      expected_behavior: "Fair review and appropriate response"
+      category: "functional"
+      priority: "high"
+
+extensions:
+  vision_support: true
+  multilingual: true
+  audio_processing: false
+  real_time_processing: true
+  multi_agent_support: false
+
+validation:
+  schema_version: "0.1.0"
+  required_sections: ["openapia", "info", "models", "prompts", "constraints", "tasks", "context", "evaluation"]
+  
+  custom_validators:
+    - name: "bias_detection"
+      description: "Verify bias prevention measures"
+    - name: "consistency_check"
+      description: "Verify decision consistency"
+    - name: "performance_validation"
+      description: "Verify performance requirements"
+
+governance:
+  maintainers:
+    - name: "AI Safety Team"
+      email: "safety-team@company.com"
+      role: "lead"
+  
+  contributors:
+    - name: "Content Moderation Team"
+      email: "moderation@company.com"
+      role: "contributor"
+    - name: "Legal Team"
+      email: "legal@company.com"
+      role: "reviewer"
+  
+  review_process: "pull_request"
+  approval_required: 2
+  testing_required: true
+  documentation_required: true

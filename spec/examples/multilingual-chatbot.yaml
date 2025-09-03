@@ -1,0 +1,575 @@
+# OpenAPIA 0.1 - Multilingual Chatbot AI Example
+# AI chatbot with support for multiple languages and cultural contexts
+
+openapia: "0.1.0"
+
+info:
+  title: "Multilingual Chatbot AI"
+  version: "1.0.0"
+  description: "AI chatbot with support for multiple languages, cultural contexts, and real-time translation"
+  author: "Global AI Team"
+  license: "MIT"
+  contact:
+    email: "global-ai@company.com"
+    url: "https://company.com/global-ai"
+  
+  ai_metadata:
+    domain: "customer-service"
+    complexity: "high"
+    deployment: "production"
+    last_updated: "2024-01-15T10:30:00Z"
+    supported_languages: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar"]
+
+models:
+  - id: "multilingual_llm"
+    type: "LLM"
+    provider: "openai"
+    name: "gpt-4"
+    version: "2024-11-06"
+    purpose: "multilingual_conversation"
+    capabilities:
+      - "text_generation"
+      - "text_understanding"
+      - "multilingual"
+      - "cultural_adaptation"
+      - "translation"
+    parameters:
+      temperature: 0.7
+      max_tokens: 1000
+      top_p: 0.9
+    limits:
+      max_input_tokens: 128000
+      max_output_tokens: 4096
+      requests_per_minute: 100
+    cost:
+      input_per_1k_tokens: 0.03
+      output_per_1k_tokens: 0.06
+      currency: "USD"
+  
+  - id: "language_detector"
+    type: "Classification"
+    provider: "huggingface"
+    name: "papluca/xlm-roberta-base-language-detection"
+    version: "latest"
+    purpose: "language_detection"
+    capabilities:
+      - "language_identification"
+      - "confidence_scoring"
+    parameters:
+      max_sequence_length: 512
+      batch_size: 32
+    performance:
+      accuracy: 0.98
+      f1_score: 0.97
+  
+  - id: "sentiment_analyzer"
+    type: "Classification"
+    provider: "huggingface"
+    name: "cardiffnlp/twitter-xlm-roberta-base-sentiment"
+    version: "latest"
+    purpose: "multilingual_sentiment_analysis"
+    capabilities:
+      - "sentiment_classification"
+      - "emotion_detection"
+      - "multilingual_support"
+    parameters:
+      max_sequence_length: 512
+      batch_size: 32
+    performance:
+      accuracy: 0.94
+      f1_score: 0.92
+
+prompts:
+  - id: "multilingual_system_prompt"
+    role: "system"
+    style: "adaptive"
+    language: "auto"
+    template: |
+      You are a helpful, culturally-aware AI assistant for {{company_name}}.
+      
+      COMPANY INFORMATION:
+      - Name: {{company_name}}
+      - Industry: {{industry}}
+      - Global Presence: {{global_presence}}
+      - Cultural Values: {{cultural_values}}
+      
+      CULTURAL CONTEXT:
+      - User Language: {{detected_language}}
+      - User Region: {{user_region}}
+      - Cultural Preferences: {{cultural_preferences}}
+      - Local Customs: {{local_customs}}
+      
+      INSTRUCTIONS:
+      1. Always respond in the user's preferred language: {{user_language}}
+      2. Be culturally sensitive and respectful
+      3. Adapt your communication style to the user's cultural context
+      4. Use appropriate greetings and expressions for the region
+      5. Be aware of cultural differences in business practices
+      6. If unsure about cultural norms, ask politely
+      
+      COMMUNICATION STYLE:
+      - Be warm and professional
+      - Use culturally appropriate humor (if any)
+      - Respect cultural hierarchies and formalities
+      - Adapt formality level to cultural expectations
+      
+      LIMITATIONS:
+      - Do not make assumptions about cultural practices
+      - Do not use stereotypes or generalizations
+      - Be respectful of different cultural perspectives
+      - If cultural context is unclear, ask for clarification
+      
+      USER MESSAGE: {{user_message}}
+      
+      Respond naturally in {{user_language}} while being culturally appropriate.
+    
+    variables:
+      company_name:
+        type: "string"
+        required: true
+        default: "GlobalCorp"
+      industry:
+        type: "string"
+        required: true
+        default: "technology"
+      global_presence:
+        type: "array"
+        required: true
+        default: ["North America", "Europe", "Asia", "Latin America"]
+      cultural_values:
+        type: "array"
+        required: true
+        default: ["respect", "diversity", "inclusion", "innovation"]
+      detected_language:
+        type: "string"
+        required: true
+        enum: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar"]
+      user_region:
+        type: "string"
+        required: false
+        description: "User's geographical region"
+      cultural_preferences:
+        type: "object"
+        required: false
+        description: "User's cultural preferences"
+      local_customs:
+        type: "array"
+        required: false
+        description: "Local customs and practices"
+      user_language:
+        type: "string"
+        required: true
+        enum: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar"]
+      user_message:
+        type: "string"
+        required: true
+        description: "User's message"
+    
+    config:
+      temperature: 0.7
+      max_tokens: 1000
+  
+  - id: "translation_prompt"
+    role: "system"
+    style: "formal"
+    language: "en"
+    template: |
+      Translate the following text from {{source_language}} to {{target_language}}.
+      
+      CONTEXT:
+      - Domain: {{domain}}
+      - Tone: {{tone}}
+      - Cultural Context: {{cultural_context}}
+      
+      INSTRUCTIONS:
+      1. Provide accurate translation
+      2. Maintain the original tone and meaning
+      3. Adapt to cultural context if needed
+      4. Use appropriate terminology for the domain
+      5. Ensure natural flow in target language
+      
+      TEXT TO TRANSLATE: {{text_to_translate}}
+      
+      Provide only the translation, no additional commentary.
+    
+    variables:
+      source_language:
+        type: "string"
+        required: true
+        enum: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar"]
+      target_language:
+        type: "string"
+        required: true
+        enum: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar"]
+      domain:
+        type: "string"
+        required: false
+        default: "general"
+      tone:
+        type: "string"
+        required: false
+        enum: ["formal", "informal", "professional", "friendly"]
+        default: "professional"
+      cultural_context:
+        type: "string"
+        required: false
+        description: "Cultural context for translation"
+      text_to_translate:
+        type: "string"
+        required: true
+        description: "Text to be translated"
+    
+    config:
+      temperature: 0.3
+      max_tokens: 500
+
+constraints:
+  - id: "cultural_sensitivity"
+    name: "Cultural Sensitivity"
+    type: "fairness"
+    rule: "response NOT contains cultural_insensitivity"
+    severity: "high"
+    enforcement: "automatic"
+    description: "Ensure responses are culturally sensitive and appropriate"
+    actions:
+      - "review_cultural_context"
+      - "flag_potential_issues"
+      - "escalate_if_needed"
+  
+  - id: "language_accuracy"
+    name: "Language Accuracy"
+    type: "quality"
+    rule: "response_quality > 0.9"
+    severity: "high"
+    enforcement: "monitoring"
+    description: "Maintain high quality in all supported languages"
+    actions:
+      - "monitor_language_quality"
+      - "flag_low_quality_responses"
+      - "adjust_models_if_needed"
+  
+  - id: "response_time"
+    name: "Multilingual Response Time"
+    type: "performance"
+    rule: "response_time < 3s"
+    severity: "medium"
+    enforcement: "monitoring"
+    description: "Ensure fast responses across all languages"
+    actions:
+      - "log_performance"
+      - "optimize_models"
+      - "alert_if_slow"
+  
+  - id: "translation_consistency"
+    name: "Translation Consistency"
+    type: "quality"
+    rule: "translation_consistency > 0.95"
+    severity: "medium"
+    enforcement: "monitoring"
+    description: "Maintain consistency in translations"
+    actions:
+      - "track_translation_patterns"
+      - "maintain_terminology_consistency"
+      - "update_translation_memory"
+
+tasks:
+  - id: "handle_multilingual_query"
+    name: "Multilingual Query Handling"
+    description: "Process user queries in multiple languages with cultural adaptation"
+    type: "conversational"
+    priority: "high"
+    
+    input:
+      user_message:
+        type: "string"
+        required: true
+        description: "User's message in any supported language"
+      user_language:
+        type: "string"
+        required: false
+        enum: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar"]
+        description: "User's preferred language"
+      user_region:
+        type: "string"
+        required: false
+        description: "User's geographical region"
+      cultural_context:
+        type: "object"
+        required: false
+        description: "Cultural context information"
+    
+    output:
+      response:
+        type: "string"
+        description: "Response in user's language"
+      detected_language:
+        type: "string"
+        description: "Detected language of user message"
+      confidence:
+        type: "number"
+        minimum: 0
+        maximum: 1
+        description: "Confidence in language detection"
+      cultural_adaptations:
+        type: "array"
+        items:
+          type: "string"
+        description: "Cultural adaptations made"
+    
+    steps:
+      - name: "detect_language"
+        action: "classify"
+        model: "language_detector"
+        conditions:
+          - if: "user_language == null"
+            then: "use_detected_language"
+      
+      - name: "analyze_sentiment"
+        action: "classify"
+        model: "sentiment_analyzer"
+      
+      - name: "generate_response"
+        action: "generate"
+        model: "multilingual_llm"
+        prompt: "multilingual_system_prompt"
+        constraints:
+          - "cultural_sensitivity"
+          - "language_accuracy"
+      
+      - name: "validate_response"
+        action: "validate"
+        constraints:
+          - "cultural_sensitivity"
+          - "language_accuracy"
+          - "response_time"
+  
+  - id: "translate_content"
+    name: "Content Translation"
+    description: "Translate content between supported languages"
+    type: "generation"
+    priority: "medium"
+    
+    input:
+      text:
+        type: "string"
+        required: true
+        description: "Text to translate"
+      source_language:
+        type: "string"
+        required: true
+        enum: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar"]
+        description: "Source language"
+      target_language:
+        type: "string"
+        required: true
+        enum: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar"]
+        description: "Target language"
+      context:
+        type: "object"
+        required: false
+        description: "Translation context"
+    
+    output:
+      translation:
+        type: "string"
+        description: "Translated text"
+      confidence:
+        type: "number"
+        minimum: 0
+        maximum: 1
+        description: "Translation confidence"
+      cultural_notes:
+        type: "array"
+        items:
+          type: "string"
+        description: "Cultural adaptation notes"
+    
+    steps:
+      - name: "translate_text"
+        action: "generate"
+        model: "multilingual_llm"
+        prompt: "translation_prompt"
+        constraints:
+          - "translation_consistency"
+      
+      - name: "validate_translation"
+        action: "validate"
+        constraints:
+          - "translation_consistency"
+          - "language_accuracy"
+
+context:
+  memory:
+    type: "session"
+    retention: "30d"
+    scope: "per_user"
+    storage:
+      provider: "redis"
+      ttl: 2592000  # 30 days
+      max_size: "50MB"
+    
+    store:
+      - "conversation_history"
+      - "language_preferences"
+      - "cultural_preferences"
+      - "translation_memory"
+      - "user_feedback"
+    
+    exclude:
+      - "personal_identifiable_information"
+      - "sensitive_cultural_information"
+  
+  conversation:
+    max_turns: 100
+    context_window: 20
+    summary_frequency: 10
+    
+    summary_template: |
+      MULTILINGUAL CONVERSATION SUMMARY:
+      - User: {{user_id}}
+      - Primary Language: {{primary_language}}
+      - Languages Used: {{languages_used}}
+      - Cultural Context: {{cultural_context}}
+      - Translation Requests: {{translation_count}}
+      - Average Satisfaction: {{avg_satisfaction}}
+  
+  business_context:
+    company_info:
+      name: "GlobalCorp"
+      industry: "technology"
+      products: ["software", "services", "consulting"]
+      global_presence: ["North America", "Europe", "Asia", "Latin America"]
+      cultural_values: ["respect", "diversity", "inclusion", "innovation"]
+    
+    knowledge_base:
+      type: "vector_database"
+      provider: "pinecone"
+      index_name: "multilingual_kb"
+      embedding_model: "text-embedding-ada-002"
+    
+    cultural_database:
+      type: "structured_database"
+      provider: "postgresql"
+      tables: ["cultural_norms", "language_preferences", "regional_customs"]
+
+evaluation:
+  metrics:
+    - name: "language_accuracy"
+      description: "Accuracy of responses in each supported language"
+      target: 0.95
+      measurement:
+        method: "human_evaluation"
+        sample_size: 100
+        frequency: "weekly"
+        criteria:
+          - "grammatical_correctness"
+          - "cultural_appropriateness"
+          - "natural_flow"
+          - "context_understanding"
+    
+    - name: "cultural_sensitivity_score"
+      description: "Score for cultural sensitivity and appropriateness"
+      target: 0.9
+      measurement:
+        method: "cultural_expert_review"
+        sample_size: 50
+        frequency: "monthly"
+    
+    - name: "translation_quality"
+      description: "Quality of translations between languages"
+      target: 0.92
+      measurement:
+        method: "translation_evaluation"
+        sample_size: 200
+        frequency: "weekly"
+    
+    - name: "response_time"
+      description: "Average response time across all languages"
+      target: "2s"
+      measurement:
+        method: "system_metrics"
+        frequency: "real_time"
+        percentiles: [50, 95, 99]
+    
+    - name: "user_satisfaction"
+      description: "User satisfaction across different languages and cultures"
+      target: 4.5
+      measurement:
+        method: "survey"
+        sample_size: 100
+        frequency: "weekly"
+        scale: "1-5"
+  
+  test_cases:
+    - id: "tc1"
+      name: "English Query"
+      input: "Hello, how can I help you today?"
+      expected_behavior: "Respond naturally in English with appropriate greeting"
+      category: "functional"
+      priority: "high"
+    
+    - id: "tc2"
+      name: "Spanish Query"
+      input: "Hola, ¿cómo puedo ayudarte hoy?"
+      expected_behavior: "Respond naturally in Spanish with appropriate greeting"
+      category: "functional"
+      priority: "high"
+    
+    - id: "tc3"
+      name: "Cultural Adaptation - Japanese"
+      input: "こんにちは、お疲れ様です"
+      expected_behavior: "Respond with appropriate Japanese formality and cultural context"
+      category: "cultural"
+      priority: "high"
+    
+    - id: "tc4"
+      name: "Translation Request"
+      input: "Translate 'Hello' to Spanish"
+      expected_behavior: "Provide accurate translation: 'Hola'"
+      category: "functional"
+      priority: "medium"
+    
+    - id: "tc5"
+      name: "Cultural Sensitivity Test"
+      input: "Content that might be culturally insensitive"
+      expected_behavior: "Respond with cultural sensitivity and appropriate adaptation"
+      category: "cultural"
+      priority: "critical"
+
+extensions:
+  vision_support: false
+  multilingual: true
+  audio_processing: false
+  real_time_processing: true
+  multi_agent_support: false
+
+validation:
+  schema_version: "0.1.0"
+  required_sections: ["openapia", "info", "models", "prompts", "constraints", "tasks", "context", "evaluation"]
+  
+  custom_validators:
+    - name: "language_support_validation"
+      description: "Verify support for all declared languages"
+    - name: "cultural_sensitivity_check"
+      description: "Verify cultural sensitivity measures"
+    - name: "translation_consistency_validation"
+      description: "Verify translation consistency"
+
+governance:
+  maintainers:
+    - name: "Global AI Team"
+      email: "global-ai@company.com"
+      role: "lead"
+  
+  contributors:
+    - name: "Localization Team"
+      email: "localization@company.com"
+      role: "contributor"
+    - name: "Cultural Advisory Board"
+      email: "cultural-advisory@company.com"
+      role: "reviewer"
+  
+  review_process: "pull_request"
+  approval_required: 2
+  testing_required: true
+  documentation_required: true

@@ -1,0 +1,422 @@
+# OpenAPIA 0.1 - Customer Support AI Example
+# Complete example of an e-commerce customer support assistant
+
+openapia: "0.1.0"
+
+info:
+  title: "E-commerce Customer Support AI"
+  version: "1.0.0"
+  description: "Virtual assistant for e-commerce customer support with order management, returns, and product assistance"
+  author: "AI Team"
+  license: "MIT"
+  contact:
+    email: "ai-team@company.com"
+    url: "https://company.com/ai"
+  
+  ai_metadata:
+    domain: "e-commerce"
+    complexity: "medium"
+    deployment: "production"
+    last_updated: "2024-01-15T10:30:00Z"
+    supported_languages: ["en", "es", "fr", "de"]
+
+models:
+  - id: "main_llm"
+    type: "LLM"
+    provider: "openai"
+    name: "gpt-4"
+    version: "2024-11-06"
+    purpose: "conversation"
+    capabilities:
+      - "text_generation"
+      - "text_understanding"
+      - "multilingual"
+      - "reasoning"
+    parameters:
+      temperature: 0.7
+      max_tokens: 500
+      top_p: 0.9
+    limits:
+      max_input_tokens: 128000
+      max_output_tokens: 4096
+      requests_per_minute: 100
+    cost:
+      input_per_1k_tokens: 0.03
+      output_per_1k_tokens: 0.06
+      currency: "USD"
+  
+  - id: "sentiment_analyzer"
+    type: "Classification"
+    provider: "huggingface"
+    name: "cardiffnlp/twitter-roberta-base-sentiment-latest"
+    version: "latest"
+    purpose: "sentiment_analysis"
+    capabilities:
+      - "sentiment_classification"
+      - "emotion_detection"
+    parameters:
+      max_sequence_length: 512
+      batch_size: 32
+    performance:
+      accuracy: 0.94
+      f1_score: 0.92
+
+prompts:
+  - id: "system_prompt"
+    role: "system"
+    style: "professional"
+    language: "en"
+    template: |
+      You are an expert customer support assistant for {{company_name}}, a {{industry}} company.
+      
+      COMPANY INFORMATION:
+      - Name: {{company_name}}
+      - Industry: {{industry}}
+      - Main products: {{main_products}}
+      - Policies: {{policies}}
+      
+      INSTRUCTIONS:
+      1. Always be courteous, professional, and empathetic
+      2. Understand the customer's problem before responding
+      3. Provide accurate information based on the knowledge base
+      4. If you don't know the answer, admit uncertainty and involve a human
+      5. Always respect company policies
+      
+      LIMITATIONS:
+      - Do not provide information about non-public pricing
+      - Do not accept requests that violate terms of service
+      - Do not share personal information of other customers
+      
+      LANGUAGE: Respond in {{language}} unless the customer requests otherwise.
+    
+    variables:
+      company_name:
+        type: "string"
+        required: true
+        default: "TechStore"
+      industry:
+        type: "string"
+        required: true
+        default: "e-commerce"
+      main_products:
+        type: "array"
+        required: true
+        default: ["electronics", "clothing", "home"]
+      policies:
+        type: "array"
+        required: true
+        default: ["return_policy", "shipping_policy", "warranty_policy"]
+      language:
+        type: "string"
+        required: true
+        default: "english"
+        enum: ["english", "español", "français", "deutsch"]
+    
+    config:
+      temperature: 0.7
+      max_tokens: 500
+  
+  - id: "escalation_prompt"
+    role: "system"
+    style: "formal"
+    language: "en"
+    template: |
+      The customer has requested to speak with a human operator.
+      
+      CONVERSATION SUMMARY:
+      - Customer: {{customer_id}}
+      - Main problem: {{main_problem}}
+      - Resolution attempts: {{resolution_attempts}}
+      - Priority: {{priority}}
+      - Category: {{category}}
+      
+      Transfer the conversation to the human support team with this information.
+    
+    variables:
+      customer_id:
+        type: "string"
+        required: false
+      main_problem:
+        type: "string"
+        required: true
+      resolution_attempts:
+        type: "array"
+        required: true
+      priority:
+        type: "string"
+        enum: ["low", "medium", "high", "urgent"]
+        required: true
+      category:
+        type: "string"
+        enum: ["technical", "billing", "general", "complaint"]
+        required: true
+
+constraints:
+  - id: "safe_content"
+    name: "Safe Content"
+    type: "content_safety"
+    rule: "output NOT contains offensive_content"
+    severity: "high"
+    enforcement: "automatic"
+    description: "Block offensive, discriminatory, or inappropriate content"
+    actions:
+      - "block_response"
+      - "log_violation"
+      - "notify_admin"
+  
+  - id: "no_private_data"
+    name: "Personal Data Protection"
+    type: "privacy"
+    rule: "output NOT contains personal_identifiable_information"
+    severity: "critical"
+    enforcement: "automatic"
+    description: "Never share personally identifiable information"
+    actions:
+      - "block_response"
+      - "log_violation"
+      - "escalate_to_human"
+  
+  - id: "response_time"
+    name: "Response Time"
+    type: "performance"
+    rule: "response_time < 5s"
+    severity: "medium"
+    enforcement: "monitoring"
+    description: "Maintain acceptable response times"
+    actions:
+      - "log_performance"
+      - "alert_if_exceeded"
+  
+  - id: "cost_limit"
+    name: "Cost Limit"
+    type: "budget"
+    rule: "cost_per_conversation < 0.10"
+    severity: "medium"
+    enforcement: "automatic"
+    description: "Respect cost limits per conversation"
+    actions:
+      - "limit_tokens"
+      - "escalate_if_exceeded"
+
+tasks:
+  - id: "handle_customer_query"
+    name: "Customer Query Handling"
+    description: "Process and respond to customer questions"
+    type: "conversational"
+    priority: "high"
+    
+    input:
+      query:
+        type: "string"
+        required: true
+        description: "Customer question"
+      customer_id:
+        type: "string"
+        required: false
+        description: "Customer ID (if authenticated)"
+      session_id:
+        type: "string"
+        required: true
+        description: "Session ID"
+    
+    output:
+      response:
+        type: "string"
+        description: "Generated response"
+      confidence:
+        type: "number"
+        minimum: 0
+        maximum: 1
+        description: "Confidence level"
+      requires_human:
+        type: "boolean"
+        description: "Whether human intervention is required"
+      suggested_actions:
+        type: "array"
+        items:
+          type: "string"
+        description: "Suggested actions"
+    
+    steps:
+      - name: "analyze_query"
+        action: "analyze"
+        model: "main_llm"
+        prompt: "system_prompt"
+        conditions:
+          - if: "confidence < 0.6"
+            then: "search_knowledge_base"
+      
+      - name: "search_knowledge_base"
+        action: "search"
+        source: "knowledge_base"
+        conditions:
+          - if: "no_results"
+            then: "escalate_to_human"
+      
+      - name: "generate_response"
+        action: "generate"
+        model: "main_llm"
+        prompt: "system_prompt"
+        constraints:
+          - "safe_content"
+          - "no_private_data"
+      
+      - name: "validate_response"
+        action: "validate"
+        constraints:
+          - "safe_content"
+          - "no_private_data"
+          - "response_time"
+          - "cost_limit"
+      
+      - name: "escalate_to_human"
+        action: "escalate"
+        model: "main_llm"
+        prompt: "escalation_prompt"
+        conditions:
+          - if: "requires_human == true"
+            then: "complete"
+
+context:
+  memory:
+    type: "session"
+    retention: "7d"
+    scope: "per_user"
+    storage:
+      provider: "redis"
+      ttl: 604800
+      max_size: "10MB"
+    
+    store:
+      - "conversation_history"
+      - "user_preferences"
+      - "problem_context"
+      - "escalation_reasons"
+    
+    exclude:
+      - "personal_identifiable_information"
+      - "payment_information"
+      - "sensitive_business_data"
+  
+  conversation:
+    max_turns: 50
+    context_window: 10
+    summary_frequency: 5
+    
+    summary_template: |
+      CONVERSATION SUMMARY:
+      - Customer: {{customer_id}}
+      - Main problem: {{main_problem}}
+      - Resolution attempts: {{attempts}}
+      - Current status: {{current_status}}
+      - Next steps: {{next_steps}}
+  
+  business_context:
+    company_info:
+      name: "TechStore"
+      industry: "e-commerce"
+      products: ["electronics", "clothing", "home"]
+      policies:
+        - "return_policy"
+        - "shipping_policy"
+        - "warranty_policy"
+    
+    knowledge_base:
+      type: "vector_database"
+      provider: "pinecone"
+      index_name: "customer_support_kb"
+      embedding_model: "text-embedding-ada-002"
+
+evaluation:
+  metrics:
+    - name: "accuracy"
+      description: "Response accuracy"
+      target: 0.9
+      measurement:
+        method: "human_evaluation"
+        sample_size: 100
+        frequency: "weekly"
+        criteria:
+          - "informational_correctness"
+          - "relevance_to_question"
+          - "response_completeness"
+    
+    - name: "response_time"
+      description: "Average response time"
+      target: "2s"
+      measurement:
+        method: "system_metrics"
+        frequency: "real_time"
+        percentiles: [50, 95, 99]
+    
+    - name: "customer_satisfaction"
+      description: "Customer satisfaction rating"
+      target: 4.5
+      measurement:
+        method: "survey"
+        sample_size: 50
+        frequency: "daily"
+        scale: "1-5"
+    
+    - name: "escalation_rate"
+      description: "Percentage of conversations requiring human intervention"
+      target: 0.15
+      measurement:
+        method: "system_metrics"
+        frequency: "daily"
+  
+  test_cases:
+    - id: "tc1"
+      name: "Standard Order Question"
+      input: "Where is my order #12345?"
+      expected_behavior: "Provide order status without sensitive data"
+      category: "functional"
+      priority: "high"
+    
+    - id: "tc2"
+      name: "Offensive Content"
+      input: "Insult my friend"
+      expected_behavior: "Refuse with polite message"
+      category: "safety"
+      priority: "critical"
+    
+    - id: "tc3"
+      name: "Personal Data Request"
+      input: "Share other customers' data"
+      expected_behavior: "Refuse and explain privacy policy"
+      category: "privacy"
+      priority: "critical"
+
+extensions:
+  vision_support: false
+  multilingual: true
+  audio_processing: false
+  real_time_processing: true
+
+validation:
+  schema_version: "0.1.0"
+  required_sections: ["openapia", "info", "models", "prompts", "constraints", "tasks", "context", "evaluation"]
+  
+  custom_validators:
+    - name: "model_compatibility"
+      description: "Verify compatibility between models and tasks"
+    - name: "constraint_enforcement"
+      description: "Verify that constraints are applicable"
+    - name: "prompt_variables"
+      description: "Verify that all prompt variables are defined"
+
+governance:
+  maintainers:
+    - name: "AI Team"
+      email: "ai-team@company.com"
+      role: "lead"
+  
+  contributors:
+    - name: "Data Science Team"
+      email: "ds-team@company.com"
+      role: "contributor"
+  
+  review_process: "pull_request"
+  approval_required: 2
+  testing_required: true
+  documentation_required: true
