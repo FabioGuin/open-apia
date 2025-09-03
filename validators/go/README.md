@@ -6,9 +6,10 @@ A high-performance Go validator for OpenAPIA specifications.
 
 - **High Performance**: Fast validation with minimal memory usage
 - **Full Validation**: Validates all OpenAPIA specification sections
+- **Hierarchical Composition**: Support for inheritance and composition of specifications
 - **Cross-Validation**: Checks references between models, prompts, and tasks
 - **Multiple Formats**: Supports YAML and JSON specifications
-- **CLI Interface**: Command-line tool for validation
+- **CLI Interface**: Command-line tool for validation with hierarchical support
 - **Comprehensive Testing**: Full test suite with Go testing
 - **Static Binary**: Single executable with no dependencies
 
@@ -33,17 +34,17 @@ go install github.com/FabioGuin/OpenAPIA/validators/go@latest
 ### CLI Usage
 
 ```bash
-# Validate a YAML file
-go run . -f spec.yaml
+# Basic validation
+go run cli.go validate spec.yaml
 
-# Validate a JSON file
-go run . -f spec.json
+# Hierarchical validation
+go run cli.go validate spec.yaml --hierarchical
 
-# Output results as JSON
-go run . -f spec.yaml -j
+# Show hierarchy tree
+go run cli.go tree spec.yaml
 
-# Quiet mode (only errors)
-go run . -f spec.yaml -q
+# Merge specifications
+go run cli.go merge output.yaml spec1.yaml spec2.yaml
 ```
 
 ### Programmatic Usage

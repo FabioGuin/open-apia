@@ -16,6 +16,10 @@ type OpenAPIAValidator struct {
 	Errors      []string
 	Warnings    []string
 	SchemaVersion string
+	
+	// Hierarchical composition properties
+	inheritedSpecs map[string]map[string]interface{}
+	mergeCache     map[string]map[string]interface{}
 }
 
 // ValidationResult represents the result of validation
@@ -31,6 +35,8 @@ func NewOpenAPIAValidator() *OpenAPIAValidator {
 		Errors:        make([]string, 0),
 		Warnings:      make([]string, 0),
 		SchemaVersion: "0.1.0",
+		inheritedSpecs: make(map[string]map[string]interface{}),
+		mergeCache:     make(map[string]map[string]interface{}),
 	}
 }
 
@@ -542,4 +548,299 @@ func (v *OpenAPIAValidator) GetResults() ValidationResult {
 		Errors:   v.Errors,
 		Warnings: v.Warnings,
 	}
+}
+
+// ============================================================================
+// HIERARCHICAL COMPOSITION METHODS
+// ============================================================================
+
+// ValidateWithInheritance validates specification with inheritance support
+func (v *OpenAPIAValidator) ValidateWithInheritance(filePath string) (bool, error) {
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return false, fmt.Errorf("file not found: %s", filePath)
+	}
+
+	var spec map[string]interface{}
+	ext := strings.ToLower(filepath.Ext(filePath))
+
+	switch ext {
+	case ".yaml", ".yml":
+		err = yaml.Unmarshal(content, &spec)
+		if err != nil {
+			return false, fmt.Errorf("invalid YAML: %v", err)
+		}
+	case ".json":
+		err = json.Unmarshal(content, &spec)
+		if err != nil {
+			return false, fmt.Errorf("invalid JSON: %v", err)
+		}
+	default:
+		return false, fmt.Errorf("unsupported file format: %s", ext)
+	}
+
+	// Load and merge inherited specifications
+	mergedSpec := v.mergeInheritedSpecifications(spec, filePath)
+
+	// Validate merged specification
+	isValid := v.ValidateSpec(mergedSpec)
+	return isValid, nil
+}
+
+// loadSpec loads specification from file (for hierarchical use)
+func (v *OpenAPIAValidator) loadSpec(filePath string) (map[string]interface{}, error) {
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("file not found: %s", filePath)
+	}
+
+	var spec map[string]interface{}
+	ext := strings.ToLower(filepath.Ext(filePath))
+
+	switch ext {
+	case ".yaml", ".yml":
+		err = yaml.Unmarshal(content, &spec)
+		if err != nil {
+			return nil, fmt.Errorf("invalid YAML: %v", err)
+		}
+	case ".json":
+		err = json.Unmarshal(content, &spec)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON: %v", err)
+		}
+	default:
+		return nil, fmt.Errorf("unsupported file format: %s", ext)
+	}
+
+	return spec, nil
+}
+
+// resolveInheritancePath resolves inheritance path to absolute path
+func (v *OpenAPIAValidator) resolveInheritancePath(inheritPath, currentSpecPath string) string {
+	currentDir := filepath.Dir(currentSpecPath)
+	return filepath.Join(currentDir, inheritPath)
+}
+
+// loadInheritedSpecs loads all inherited specifications
+func (v *OpenAPIAValidator) loadInheritedSpecs(spec map[string]interface{}, specPath string) {
+	inherits, exists := spec["inherits"]
+	if !exists {
+		return
+	}
+
+	inheritsSlice, ok := inherits.([]interface{})
+	if !ok {
+		return
+	}
+
+	for _, inheritPath := range inheritsSlice {
+		inheritPathStr, ok := inheritPath.(string)
+		if !ok {
+			continue
+		}
+
+		resolvedPath := v.resolveInheritancePath(inheritPathStr, specPath)
+
+		if _, exists := v.inheritedSpecs[resolvedPath]; exists {
+			continue // Already loaded
+		}
+
+		inheritedSpec, err := v.loadSpec(resolvedPath)
+		if err != nil {
+			v.Errors = append(v.Errors, fmt.Sprintf("Inherited specification not found: %s", inheritPathStr))
+			continue
+		}
+
+		v.inheritedSpecs[resolvedPath] = inheritedSpec
+
+		// Recursively load inherited specs
+		v.loadInheritedSpecs(inheritedSpec, resolvedPath)
+	}
+}
+
+// deepMerge performs deep merge of two maps
+func (v *OpenAPIAValidator) deepMerge(base, override map[string]interface{}) map[string]interface{} {
+	result := make(map[string]interface{})
+
+	// Copy base values
+	for key, value := range base {
+		result[key] = value
+	}
+
+	// Override with override values
+	for key, value := range override {
+		if baseValue, exists := result[key]; exists {
+			if baseMap, baseIsMap := baseValue.(map[string]interface{}); baseIsMap {
+				if overrideMap, overrideIsMap := value.(map[string]interface{}); overrideIsMap {
+					result[key] = v.deepMerge(baseMap, overrideMap)
+					continue
+				}
+			}
+		}
+		result[key] = value
+	}
+
+	return result
+}
+
+// mergeInheritedSpecifications merges specifications based on inheritance
+func (v *OpenAPIAValidator) mergeInheritedSpecifications(spec map[string]interface{}, specPath string) map[string]interface{} {
+	if cached, exists := v.mergeCache[specPath]; exists {
+		return cached
+	}
+
+	// Load inherited specifications
+	v.loadInheritedSpecs(spec, specPath)
+
+	// Start with base specification
+	merged := make(map[string]interface{})
+	for key, value := range spec {
+		merged[key] = value
+	}
+
+	// Apply inheritance in reverse order (so later specs override earlier ones)
+	if inherits, exists := spec["inherits"]; exists {
+		if inheritsSlice, ok := inherits.([]interface{}); ok {
+			// Reverse the slice
+			for i := len(inheritsSlice) - 1; i >= 0; i-- {
+				inheritPath := inheritsSlice[i].(string)
+				resolvedPath := v.resolveInheritancePath(inheritPath, specPath)
+				if inheritedSpec, exists := v.inheritedSpecs[resolvedPath]; exists {
+					// Recursively merge inherited spec
+					inheritedMerged := v.mergeInheritedSpecifications(inheritedSpec, resolvedPath)
+					merged = v.deepMerge(inheritedMerged, merged)
+				}
+			}
+		}
+	}
+
+	// Cache the result
+	v.mergeCache[specPath] = merged
+	return merged
+}
+
+// getHierarchyInfo extracts hierarchy information from specification
+func (v *OpenAPIAValidator) getHierarchyInfo(spec map[string]interface{}) map[string]interface{} {
+	info, exists := spec["info"]
+	if !exists {
+		return make(map[string]interface{})
+	}
+
+	infoMap, ok := info.(map[string]interface{})
+	if !ok {
+		return make(map[string]interface{})
+	}
+
+	aiMetadata, exists := infoMap["ai_metadata"]
+	if !exists {
+		return make(map[string]interface{})
+	}
+
+	aiMetadataMap, ok := aiMetadata.(map[string]interface{})
+	if !ok {
+		return make(map[string]interface{})
+	}
+
+	hierarchyInfo, exists := aiMetadataMap["hierarchy_info"]
+	if !exists {
+		return make(map[string]interface{})
+	}
+
+	hierarchyInfoMap, ok := hierarchyInfo.(map[string]interface{})
+	if !ok {
+		return make(map[string]interface{})
+	}
+
+	return hierarchyInfoMap
+}
+
+// PrintHierarchyTree prints hierarchy tree for a specification
+func (v *OpenAPIAValidator) PrintHierarchyTree(specPath string, level int) {
+	indent := strings.Repeat("  ", level)
+
+	spec, err := v.loadSpec(specPath)
+	if err != nil {
+		fmt.Printf("%s❌ Error loading %s: %v\n", indent, specPath, err)
+		return
+	}
+
+	title := "Unknown"
+	if info, exists := spec["info"]; exists {
+		if infoMap, ok := info.(map[string]interface{}); ok {
+			if titleValue, exists := infoMap["title"]; exists {
+				if titleStr, ok := titleValue.(string); ok {
+					title = titleStr
+				}
+			}
+		}
+	}
+
+	hierarchyInfo := v.getHierarchyInfo(spec)
+	levelName := "unknown"
+	scope := "unknown"
+
+	if levelValue, exists := hierarchyInfo["level"]; exists {
+		if levelStr, ok := levelValue.(string); ok {
+			levelName = levelStr
+		}
+	}
+
+	if scopeValue, exists := hierarchyInfo["scope"]; exists {
+		if scopeStr, ok := scopeValue.(string); ok {
+			scope = scopeStr
+		}
+	}
+
+	fmt.Printf("%s📄 %s (%s/%s)\n", indent, title, levelName, scope)
+	fmt.Printf("%s   Path: %s\n", indent, specPath)
+
+	if inherits, exists := spec["inherits"]; exists {
+		if inheritsSlice, ok := inherits.([]interface{}); ok {
+			for _, inheritPath := range inheritsSlice {
+				if inheritPathStr, ok := inheritPath.(string); ok {
+					resolvedPath := v.resolveInheritancePath(inheritPathStr, specPath)
+					v.PrintHierarchyTree(resolvedPath, level+1)
+				}
+			}
+		}
+	}
+}
+
+// MergeSpecifications merges multiple specifications
+func (v *OpenAPIAValidator) MergeSpecifications(specs []map[string]interface{}, outputPath, format string) error {
+	if len(specs) == 0 {
+		return fmt.Errorf("no specifications to merge")
+	}
+
+	// Start with first specification
+	merged := make(map[string]interface{})
+	for key, value := range specs[0] {
+		merged[key] = value
+	}
+
+	// Merge with remaining specifications
+	for i := 1; i < len(specs); i++ {
+		merged = v.deepMerge(merged, specs[i])
+	}
+
+	// Save merged specification
+	var content []byte
+	var err error
+
+	if format == "yaml" {
+		content, err = yaml.Marshal(merged)
+	} else {
+		content, err = json.MarshalIndent(merged, "", "  ")
+	}
+
+	if err != nil {
+		return fmt.Errorf("error marshaling merged specification: %v", err)
+	}
+
+	err = ioutil.WriteFile(outputPath, content, 0644)
+	if err != nil {
+		return fmt.Errorf("error writing output file: %v", err)
+	}
+
+	return nil
 }

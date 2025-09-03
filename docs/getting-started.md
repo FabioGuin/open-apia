@@ -6,6 +6,17 @@ This guide will help you get started with OpenAPIA, the open standard for descri
 
 OpenAPIA is an open, vendor-agnostic standard for describing, documenting, and validating artificial intelligence systems. It provides a machine-readable format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
 
+### Key Features
+
+- **AI-Native Design**: Models, prompts, and constraints as first-class entities
+- **Vendor Agnostic**: Works with any AI provider (OpenAI, Anthropic, Google, etc.)
+- **Multi-Modal Support**: LLM, Vision, Audio, and Multimodal AI systems
+- **Built-in Ethics**: Mandatory fields for safety, bias prevention, and explainability
+- **Comprehensive Evaluation**: Metrics for accuracy, performance, and safety
+- **Extensible**: Support for custom use cases and domain-specific requirements
+- **Hierarchical Composition**: Inherit and compose specifications across organizational levels
+- **Multi-Environment Support**: Different configurations for dev, staging, and production
+
 ## Quick Start
 
 ### 1. Clone the Repository
@@ -66,11 +77,17 @@ evaluation:
 ### 3. Validate Your Specification
 
 ```bash
-# Using Python validator
+# Simple validation
 python validators/python/openapia_validator.py my-ai-system.yaml
 
+# Hierarchical validation (with inheritance)
+python validators/python/openapia_validator.py validate my-ai-system.yaml --hierarchical
+
 # Using JavaScript validator
-node validators/javascript/cli.js -f my-ai-system.yaml
+node validators/javascript/cli.js validate my-ai-system.yaml
+
+# Validate entire hierarchy
+python validators/python/openapia_validator.py validate . --recursive
 ```
 
 ## Core Concepts
@@ -189,13 +206,13 @@ Each validator includes a command-line interface:
 python validators/python/openapia_validator.py spec.yaml
 
 # PHP
-php validators/php/cli.php -f spec.yaml
+php validators/php/cli.php validate spec.yaml
 
 # JavaScript
-node validators/javascript/cli.js -f spec.yaml
+node validators/javascript/cli.js validate spec.yaml
 
 # Go
-go run validators/go/. -f spec.yaml
+go run validators/go/cli.go validate spec.yaml
 ```
 
 ## Best Practices
@@ -283,12 +300,58 @@ prompts:
 - **Issues**: Search [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
 - **Discussions**: Use [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
 
+## Hierarchical Composition
+
+For complex organizational structures, OpenAPIA supports hierarchical composition:
+
+### Quick Hierarchical Example
+
+```yaml
+# Global specification
+openapia: "0.1.0"
+info:
+  title: "Global AI Standards"
+  ai_metadata:
+    hierarchy_info:
+      level: "global"
+      scope: "organization"
+
+# Feature specification inheriting from global
+openapia: "0.1.0"
+inherits:
+  - "../openapia-global.yaml"
+info:
+  title: "Feature-Specific AI"
+  ai_metadata:
+    hierarchy_info:
+      level: "feature"
+      scope: "project"
+```
+
+### Hierarchical Commands
+
+```bash
+# Show hierarchy tree
+python validators/python/openapia_validator.py tree openapia.yaml
+
+# Merge specifications
+python validators/python/openapia_validator.py merge output.yaml spec1.yaml spec2.yaml
+
+# Using other validators
+node validators/javascript/cli.js tree openapia.yaml
+php validators/php/cli.php tree openapia.yaml
+go run validators/go/cli.go tree openapia.yaml
+```
+
+For detailed information, see the [Hierarchical Composition Guide](hierarchical-composition.md).
+
 ## Next Steps
 
 1. **Explore Examples**: Look at the example specifications
 2. **Build Your System**: Create your own OpenAPIA specification
-3. **Validate**: Use the validators to check your work
-4. **Contribute**: Help improve OpenAPIA by contributing
+3. **Try Hierarchical**: Experiment with inheritance and composition
+4. **Validate**: Use the validators to check your work
+5. **Contribute**: Help improve OpenAPIA by contributing
 
 ## Resources
 

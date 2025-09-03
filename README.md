@@ -15,6 +15,8 @@ OpenAPIA is an open, vendor-agnostic standard for describing, documenting, and v
 - **Built-in Ethics**: Mandatory fields for safety, bias prevention, and explainability
 - **Comprehensive Evaluation**: Metrics for accuracy, performance, and safety
 - **Extensible**: Support for custom use cases and domain-specific requirements
+- **Hierarchical Composition**: Inherit and compose specifications across organizational levels
+- **Multi-Environment Support**: Different configurations for dev, staging, and production
 
 ## Quick Start
 
@@ -27,6 +29,7 @@ cd OpenAPIA
 
 ### 2. Create Your First OpenAPIA Specification
 
+#### Simple Specification
 ```yaml
 openapia: "0.1.0"
 info:
@@ -60,14 +63,56 @@ tasks:
         prompt: "system_prompt"
 ```
 
+#### Hierarchical Specification
+```yaml
+openapia: "0.1.0"
+
+# Inherit from parent specifications
+inherits:
+  - "../openapia-global.yaml"
+  - "../../openapia-team.yaml"
+
+info:
+  title: "Feature-Specific AI Assistant"
+  version: "1.0.0"
+  description: "AI assistant for specific feature"
+  ai_metadata:
+    hierarchy_info:
+      level: "feature"
+      scope: "project"
+      inheritance_mode: "merge"
+
+# Additional models and constraints specific to this feature
+models:
+  - id: "feature_specific_model"
+    type: "Classification"
+    provider: "huggingface"
+    name: "sentiment-analyzer"
+
+constraints:
+  - id: "feature_performance"
+    type: "performance"
+    rule: "response_time < 2s"
+    severity: "high"
+```
+
 ### 3. Validate Your Specification
 
 ```bash
-# Using Python validator
-python validators/python/openapia_validator.py spec/my-ai-system.yaml
+# Simple validation
+python validators/python/openapia_validator.py validate spec/my-ai-system.yaml
+
+# Hierarchical validation (with inheritance)
+python validators/python/openapia_validator.py validate spec/my-ai-system.yaml --hierarchical
 
 # Using JavaScript validator
-node validators/javascript/cli.js -f spec/my-ai-system.yaml
+node validators/javascript/cli.js validate spec/my-ai-system.yaml
+
+# Using PHP validator
+php validators/php/cli.php validate spec/my-ai-system.yaml
+
+# Using Go validator
+go run validators/go/cli.go validate spec/my-ai-system.yaml
 ```
 
 ## Examples
@@ -77,6 +122,39 @@ Check out our [examples directory](spec/examples/) for complete implementations:
 - [Customer Support AI](spec/examples/customer-support.yaml) - E-commerce assistant
 - [Content Moderator](spec/examples/content-moderator.yaml) - AI-powered content filtering
 - [Multilingual Chatbot](spec/examples/multilingual-chatbot.yaml) - Multi-language support
+
+## Hierarchical Composition
+
+OpenAPIA supports hierarchical composition for complex organizational structures:
+
+- **[Hierarchical Composition Guide](docs/hierarchical-composition.md)** - Complete guide to inheritance and composition
+- **Enterprise Use Cases** - Global, regional, and department-level specifications
+- **Team Development** - Sprint and feature-level configurations
+- **Environment Management** - Dev, staging, and production configurations
+
+### Quick Hierarchical Example
+
+```yaml
+# Global specification
+openapia: "0.1.0"
+info:
+  title: "Global AI Standards"
+  ai_metadata:
+    hierarchy_info:
+      level: "global"
+      scope: "organization"
+
+# Feature specification inheriting from global
+openapia: "0.1.0"
+inherits:
+  - "../openapia-global.yaml"
+info:
+  title: "Feature-Specific AI"
+  ai_metadata:
+    hierarchy_info:
+      level: "feature"
+      scope: "project"
+```
 
 ## Specification
 

@@ -8,6 +8,12 @@
 openapia: "0.1.0"  # OpenAPIA specification version
 
 # =============================================================================
+# HIERARCHICAL COMPOSITION
+# =============================================================================
+inherits: [string]  # List of OpenAPIA specifications to inherit from
+# Example: ["../openapia-global.yaml", "../../openapia-team.yaml"]
+
+# =============================================================================
 # AI SYSTEM METADATA
 # =============================================================================
 info:               # AI system metadata
@@ -26,6 +32,12 @@ info:               # AI system metadata
     deployment: string  # Deployment environment: development, staging, production
     last_updated: string  # ISO 8601 timestamp
     supported_languages: [string]  # Supported languages
+    
+    hierarchy_info: # Hierarchical composition metadata
+      level: string  # Hierarchy level: global, regional, department, team, sprint, feature, environment
+      parent_specs: [string]  # Parent specifications in hierarchy
+      scope: string  # Scope: organization, department, team, project, feature, environment
+      inheritance_mode: string  # Inheritance mode: merge, override, extend
 
 # =============================================================================
 # AI MODELS

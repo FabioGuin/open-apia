@@ -5,9 +5,10 @@ A comprehensive JavaScript/Node.js validator for OpenAPIA specifications.
 ## Features
 
 - **Full Validation**: Validates all OpenAPIA specification sections
+- **Hierarchical Composition**: Support for inheritance and composition of specifications
 - **Cross-Validation**: Checks references between models, prompts, and tasks
 - **Multiple Formats**: Supports YAML and JSON specifications
-- **CLI Interface**: Command-line tool for validation
+- **CLI Interface**: Command-line tool for validation with hierarchical support
 - **Browser Support**: Works in both Node.js and browser environments
 - **TypeScript Support**: Full TypeScript definitions included
 - **Comprehensive Testing**: Full test suite with Jest
@@ -39,17 +40,17 @@ yarn add openapia-validator-js
 ### CLI Usage
 
 ```bash
-# Validate a YAML file
-node cli.js -f spec.yaml
+# Basic validation
+node cli.js validate spec.yaml
 
-# Validate a JSON file
-node cli.js --file spec.json
+# Hierarchical validation
+node cli.js validate spec.yaml --hierarchical
 
-# Output results as JSON
-node cli.js -f spec.yaml --json
+# Show hierarchy tree
+node cli.js tree spec.yaml
 
-# Quiet mode (only errors)
-node cli.js -f spec.yaml --quiet
+# Merge specifications
+node cli.js merge output.yaml spec1.yaml spec2.yaml
 ```
 
 ### Programmatic Usage

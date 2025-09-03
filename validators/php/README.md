@@ -5,9 +5,10 @@ A comprehensive PHP validator for OpenAPIA specifications.
 ## Features
 
 - **Full Validation**: Validates all OpenAPIA specification sections
+- **Hierarchical Composition**: Support for inheritance and composition of specifications
 - **Cross-Validation**: Checks references between models, prompts, and tasks
 - **Multiple Formats**: Supports YAML and JSON specifications
-- **CLI Interface**: Command-line tool for validation
+- **CLI Interface**: Command-line tool for validation with hierarchical support
 - **Comprehensive Testing**: Full test suite with PHPUnit
 - **PSR-4 Autoloading**: Modern PHP standards compliance
 
@@ -32,17 +33,17 @@ composer require openapia/validator-php
 ### CLI Usage
 
 ```bash
-# Validate a YAML file
-php cli.php -f spec.yaml
+# Basic validation
+php cli.php validate spec.yaml
 
-# Validate a JSON file
-php cli.php --file spec.json
+# Hierarchical validation
+php cli.php validate spec.yaml --hierarchical
 
-# Output results as JSON
-php cli.php -f spec.yaml --json
+# Show hierarchy tree
+php cli.php tree spec.yaml
 
-# Quiet mode (only errors)
-php cli.php -f spec.yaml --quiet
+# Merge specifications
+php cli.php merge output.yaml spec1.yaml spec2.yaml
 ```
 
 ### Programmatic Usage
@@ -55,31 +56,25 @@ use OpenAPIA\OpenAPIAValidator;
 // Create validator instance
 $validator = new OpenAPIAValidator();
 
-// Validate a file
+// Basic validation
 $isValid = $validator->validateFile('spec.yaml');
 
-// Validate an array
-$spec = [
-    'openapia' => '0.1.0',
-    'info' => [
-        'title' => 'My AI System',
-        'version' => '1.0.0',
-        'description' => 'A test AI system'
-    ],
-    // ... rest of specification
-];
+// Hierarchical validation with inheritance
+$isValid = $validator->validateWithInheritance('spec.yaml');
 
-$isValid = $validator->validateSpec($spec);
+// Show hierarchy tree
+$validator->printHierarchyTree('spec.yaml');
+
+// Merge specifications
+$specs = [
+    $validator->loadSpec('global.yaml'),
+    $validator->loadSpec('team.yaml')
+];
+$validator->mergeSpecifications($specs, 'merged.yaml', 'yaml');
 
 // Get results
 $errors = $validator->getErrors();
 $warnings = $validator->getWarnings();
-
-// Print results
-$validator->printResults();
-
-// Get results as array
-$results = $validator->getResults();
 ```
 
 ## Validation Rules

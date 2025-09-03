@@ -21,6 +21,10 @@ class OpenAPIAValidator
     private array $warnings = [];
     private string $schemaVersion = '0.1.0';
     
+    // Hierarchical composition properties
+    private array $inheritedSpecs = [];
+    private array $mergeCache = [];
+    
     /**
      * Validate an OpenAPIA specification file
      */
@@ -496,5 +500,241 @@ class OpenAPIAValidator
             'errors' => $this->errors,
             'warnings' => $this->warnings
         ];
+    }
+    
+    // ============================================================================
+    // HIERARCHICAL COMPOSITION METHODS
+    // ============================================================================
+    
+    /**
+     * Validate specification with inheritance support
+     */
+    public function validateWithInheritance(string $filePath): bool
+    {
+        try {
+            if (!file_exists($filePath)) {
+                $this->errors[] = "File not found: {$filePath}";
+                return false;
+            }
+            
+            $content = file_get_contents($filePath);
+            if ($content === false) {
+                $this->errors[] = "Cannot read file: {$filePath}";
+                return false;
+            }
+            
+            $spec = $this->parseFile($filePath, $content);
+            if ($spec === null) {
+                return false;
+            }
+            
+            // Load and merge inherited specifications
+            $mergedSpec = $this->mergeInheritedSpecifications($spec, $filePath);
+            
+            // Validate merged specification
+            return $this->validateSpec($mergedSpec);
+            
+        } catch (\Exception $e) {
+            $this->errors[] = "Unexpected error during hierarchical validation: " . $e->getMessage();
+            return false;
+        }
+    }
+    
+    /**
+     * Load specification from file (for hierarchical use)
+     */
+    public function loadSpec(string $filePath): ?array
+    {
+        try {
+            if (!file_exists($filePath)) {
+                return null;
+            }
+            
+            $content = file_get_contents($filePath);
+            if ($content === false) {
+                return null;
+            }
+            
+            return $this->parseFile($filePath, $content);
+            
+        } catch (\Exception $e) {
+            $this->errors[] = "Error loading specification {$filePath}: " . $e->getMessage();
+            return null;
+        }
+    }
+    
+    /**
+     * Resolve inheritance path to absolute path
+     */
+    private function resolveInheritancePath(string $inheritPath, string $currentSpecPath): string
+    {
+        $currentDir = dirname($currentSpecPath);
+        return realpath($currentDir . DIRECTORY_SEPARATOR . $inheritPath) ?: 
+               $currentDir . DIRECTORY_SEPARATOR . $inheritPath;
+    }
+    
+    /**
+     * Load all inherited specifications
+     */
+    private function loadInheritedSpecs(array $spec, string $specPath): void
+    {
+        if (!isset($spec['inherits']) || !is_array($spec['inherits'])) {
+            return;
+        }
+        
+        foreach ($spec['inherits'] as $inheritPath) {
+            $resolvedPath = $this->resolveInheritancePath($inheritPath, $specPath);
+            
+            if (isset($this->inheritedSpecs[$resolvedPath])) {
+                continue; // Already loaded
+            }
+            
+            $inheritedSpec = $this->loadSpec($resolvedPath);
+            if ($inheritedSpec !== null) {
+                $this->inheritedSpecs[$resolvedPath] = $inheritedSpec;
+                
+                // Recursively load inherited specs
+                $this->loadInheritedSpecs($inheritedSpec, $resolvedPath);
+            } else {
+                $this->errors[] = "Inherited specification not found: {$inheritPath}";
+            }
+        }
+    }
+    
+    /**
+     * Deep merge two arrays
+     */
+    private function deepMerge(array $base, array $override): array
+    {
+        $result = $base;
+        
+        foreach ($override as $key => $value) {
+            if (isset($result[$key]) && is_array($result[$key]) && is_array($value)) {
+                $result[$key] = $this->deepMerge($result[$key], $value);
+            } else {
+                $result[$key] = $value;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Merge specifications based on inheritance
+     */
+    private function mergeInheritedSpecifications(array $spec, string $specPath): array
+    {
+        if (isset($this->mergeCache[$specPath])) {
+            return $this->mergeCache[$specPath];
+        }
+        
+        // Load inherited specifications
+        $this->loadInheritedSpecs($spec, $specPath);
+        
+        // Start with base specification
+        $merged = $spec;
+        
+        // Apply inheritance in reverse order (so later specs override earlier ones)
+        if (isset($spec['inherits']) && is_array($spec['inherits'])) {
+            foreach (array_reverse($spec['inherits']) as $inheritPath) {
+                $resolvedPath = $this->resolveInheritancePath($inheritPath, $specPath);
+                if (isset($this->inheritedSpecs[$resolvedPath])) {
+                    $inheritedSpec = $this->inheritedSpecs[$resolvedPath];
+                    // Recursively merge inherited spec
+                    $inheritedMerged = $this->mergeInheritedSpecifications($inheritedSpec, $resolvedPath);
+                    $merged = $this->deepMerge($inheritedMerged, $merged);
+                }
+            }
+        }
+        
+        // Cache the result
+        $this->mergeCache[$specPath] = $merged;
+        return $merged;
+    }
+    
+    /**
+     * Get hierarchy information from specification
+     */
+    public function getHierarchyInfo(array $spec): array
+    {
+        $hierarchyInfo = [];
+        
+        if (isset($spec['info']['ai_metadata']['hierarchy_info'])) {
+            $hierarchyInfo = $spec['info']['ai_metadata']['hierarchy_info'];
+        }
+        
+        return $hierarchyInfo;
+    }
+    
+    /**
+     * Print hierarchy tree for a specification
+     */
+    public function printHierarchyTree(string $specPath, int $level = 0): void
+    {
+        $indent = str_repeat("  ", $level);
+        
+        try {
+            $spec = $this->loadSpec($specPath);
+            if ($spec === null) {
+                echo "{$indent}❌ Error loading {$specPath}\n";
+                return;
+            }
+            
+            $title = $spec['info']['title'] ?? 'Unknown';
+            $hierarchyInfo = $this->getHierarchyInfo($spec);
+            $levelName = $hierarchyInfo['level'] ?? 'unknown';
+            $scope = $hierarchyInfo['scope'] ?? 'unknown';
+            
+            echo "{$indent}📄 {$title} ({$levelName}/{$scope})\n";
+            echo "{$indent}   Path: {$specPath}\n";
+            
+            if (isset($spec['inherits']) && is_array($spec['inherits'])) {
+                foreach ($spec['inherits'] as $inheritPath) {
+                    $resolvedPath = $this->resolveInheritancePath($inheritPath, $specPath);
+                    $this->printHierarchyTree($resolvedPath, $level + 1);
+                }
+            }
+        } catch (\Exception $e) {
+            echo "{$indent}❌ Error loading {$specPath}: " . $e->getMessage() . "\n";
+        }
+    }
+    
+    /**
+     * Merge multiple specifications
+     */
+    public function mergeSpecifications(array $specs, string $outputPath, string $format = 'yaml'): bool
+    {
+        try {
+            if (empty($specs)) {
+                $this->errors[] = "No specifications to merge";
+                return false;
+            }
+            
+            // Start with first specification
+            $merged = $specs[0];
+            
+            // Merge with remaining specifications
+            for ($i = 1; $i < count($specs); $i++) {
+                $merged = $this->deepMerge($merged, $specs[$i]);
+            }
+            
+            // Save merged specification
+            if ($format === 'yaml') {
+                $content = Yaml::dump($merged, 10, 2);
+            } else {
+                $content = json_encode($merged, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            }
+            
+            if (file_put_contents($outputPath, $content) === false) {
+                $this->errors[] = "Cannot write to output file: {$outputPath}";
+                return false;
+            }
+            
+            return true;
+            
+        } catch (\Exception $e) {
+            $this->errors[] = "Error merging specifications: " . $e->getMessage();
+            return false;
+        }
     }
 }

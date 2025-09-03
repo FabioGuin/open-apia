@@ -20,6 +20,13 @@
             "pattern": "^0\\.1\\.\\d+$",
             "description": "OpenAPIA specification version"
         },
+        "inherits": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "List of OpenAPIA specifications to inherit from (hierarchical composition)"
+        },
         "info": {
             "type": "object",
             "required": [
@@ -99,6 +106,52 @@
                                 "type": "string"
                             },
                             "description": "Supported languages"
+                        },
+                        "hierarchy_info": {
+                            "type": "object",
+                            "properties": {
+                                "level": {
+                                    "type": "string",
+                                    "enum": [
+                                        "global",
+                                        "regional",
+                                        "department",
+                                        "team",
+                                        "sprint",
+                                        "feature",
+                                        "environment"
+                                    ],
+                                    "description": "Hierarchy level of this specification"
+                                },
+                                "parent_specs": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "description": "Parent specifications in hierarchy"
+                                },
+                                "scope": {
+                                    "type": "string",
+                                    "enum": [
+                                        "organization",
+                                        "department",
+                                        "team",
+                                        "project",
+                                        "feature",
+                                        "environment"
+                                    ],
+                                    "description": "Scope of this specification"
+                                },
+                                "inheritance_mode": {
+                                    "type": "string",
+                                    "enum": [
+                                        "merge",
+                                        "override",
+                                        "extend"
+                                    ],
+                                    "description": "How this spec inherits from parents"
+                                }
+                            }
                         }
                     }
                 }

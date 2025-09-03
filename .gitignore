@@ -214,16 +214,11 @@ public
 .out
 .storybook-out
 
-# Temporary folders
-tmp/
-temp/
-
 # Go
 # Binaries for programs and plugins
 *.exe
 *.exe~
 *.dll
-*.so
 *.dylib
 
 # Test binary, built with `go test -c`
@@ -238,12 +233,20 @@ temp/
 # Go workspace file
 go.work
 
-# IDE
+# IDE and Editor files
 .vscode/
 .idea/
+.cursor/
 *.swp
 *.swo
 *~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+.vim/
+.emacs.d/
 
 # OS
 .DS_Store
@@ -254,87 +257,169 @@ go.work
 ehthumbs.db
 Thumbs.db
 
-# Logs
-*.log
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage/
-
-# nyc test coverage
-.nyc_output
-
-# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
-
-# Bower dependency directory (https://bower.io/)
-bower_components
-
-# node-waf configuration
-.lock-wscript
-
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
-
-# Dependency directories
-node_modules/
-jspm_packages/
-
-# TypeScript v1 declaration files
-typings/
-
-# TypeScript cache
-*.tsbuildinfo
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variables file
-.env
-.env.test
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
-
-# Next.js build output
-.next
-
-# Nuxt.js build / generate output
-.nuxt
-dist
-
-# Gatsby files
-.cache/
-public
-
-# Storybook build outputs
-.out
-.storybook-out
-
 # Temporary folders
 tmp/
 temp/
+
+# Project-specific folders
+misc/
+
+# ============================================================================
+# DEPENDENCY AND SERVICE FILES
+# ============================================================================
+
+# Python dependencies
+validators/python/__pycache__/
+validators/python/*.pyc
+validators/python/*.pyo
+validators/python/*.pyd
+validators/python/.Python
+validators/python/build/
+validators/python/develop-eggs/
+validators/python/dist/
+validators/python/downloads/
+validators/python/eggs/
+validators/python/.eggs/
+validators/python/lib/
+validators/python/lib64/
+validators/python/parts/
+validators/python/sdist/
+validators/python/var/
+validators/python/wheels/
+validators/python/pip-wheel-metadata/
+validators/python/share/python-wheels/
+validators/python/*.egg-info/
+validators/python/.installed.cfg
+validators/python/*.egg
+validators/python/MANIFEST
+validators/python/.coverage
+validators/python/.coverage.*
+validators/python/.cache
+validators/python/coverage.xml
+validators/python/*.cover
+validators/python/.pytest_cache/
+validators/python/.mypy_cache/
+validators/python/.dmypy.json
+validators/python/dmypy.json
+
+# JavaScript dependencies
+validators/javascript/node_modules/
+validators/javascript/npm-debug.log*
+validators/javascript/yarn-debug.log*
+validators/javascript/yarn-error.log*
+validators/javascript/lerna-debug.log*
+validators/javascript/coverage/
+validators/javascript/*.lcov
+validators/javascript/.nyc_output
+validators/javascript/.grunt
+validators/javascript/.lock-wscript
+validators/javascript/build/Release
+validators/javascript/jspm_packages/
+validators/javascript/typings/
+validators/javascript/*.tsbuildinfo
+validators/javascript/.npm
+validators/javascript/.eslintcache
+validators/javascript/.rpt2_cache/
+validators/javascript/.rts2_cache_cjs/
+validators/javascript/.rts2_cache_es/
+validators/javascript/.rts2_cache_umd/
+validators/javascript/.node_repl_history
+validators/javascript/*.tgz
+validators/javascript/.yarn-integrity
+validators/javascript/.env
+validators/javascript/.env.test
+validators/javascript/.cache
+validators/javascript/.parcel-cache
+validators/javascript/.next
+validators/javascript/.nuxt
+validators/javascript/dist
+validators/javascript/.out
+validators/javascript/.storybook-out
+
+# PHP dependencies
+validators/php/vendor/
+validators/php/composer.lock
+validators/php/.phpunit.result.cache
+validators/php/phpunit.xml
+validators/php/phpcs.xml
+validators/php/phpstan.neon
+validators/php/coverage/
+validators/php/.phpunit.cache/
+validators/php/.php-cs-fixer.cache
+validators/php/.phpstan.cache
+
+# Go dependencies
+validators/go/vendor/
+validators/go/go.sum
+validators/go/*.exe
+validators/go/*.exe~
+validators/go/*.dll
+validators/go/*.dylib
+validators/go/*.test
+validators/go/*.out
+validators/go/go.work
+validators/go/.coverage
+validators/go/coverage.out
+validators/go/coverage.html
+
+# ============================================================================
+# BUILD AND COMPILATION OUTPUTS
+# ============================================================================
+
+# Compiled binaries
+*.exe
+*.exe~
+*.dll
+*.dylib
+*.so
+*.dylib
+*.a
+*.lib
+*.o
+*.obj
+
+# Build directories
+build/
+dist/
+out/
+target/
+bin/
+obj/
+
+# ============================================================================
+# LOGS AND TEMPORARY FILES
+# ============================================================================
+
+# Log files
+*.log
+*.log.*
+logs/
+log/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+.#*
+#*#
+
+# ============================================================================
+# PACKAGE MANAGER FILES
+# ============================================================================
+
+# Package lock files (keep composer.lock for PHP, but ignore others)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+Pipfile.lock
+poetry.lock
+
+# Package manager cache
+.npm/
+.yarn/
+.pnpm-store/
+pip-cache/

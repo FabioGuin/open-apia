@@ -18,6 +18,10 @@ class OpenAPIAValidator {
         this.warnings = [];
         this.schemaVersion = '0.1.0';
 
+        // Hierarchical composition properties
+        this.inheritedSpecs = new Map();
+        this.mergeCache = new Map();
+
         // Initialize JSON Schema validator
         this.ajv = new Ajv({ allErrors: true });
         addFormats(this.ajv);
@@ -530,6 +534,223 @@ class OpenAPIAValidator {
             errors: this.errors,
             warnings: this.warnings
         };
+    }
+
+    // ============================================================================
+    // HIERARCHICAL COMPOSITION METHODS
+    // ============================================================================
+
+    /**
+     * Validate specification with inheritance support
+     */
+    validateWithInheritance(filePath) {
+        try {
+            if (!fs.existsSync(filePath)) {
+                this.errors.push(`File not found: ${filePath}`);
+                return false;
+            }
+
+            const spec = this.loadSpec(filePath);
+            if (!spec) {
+                return false;
+            }
+
+            // Load and merge inherited specifications
+            const mergedSpec = this.mergeInheritedSpecifications(spec, filePath);
+
+            // Validate merged specification
+            return this.validateSpec(mergedSpec);
+
+        } catch (error) {
+            this.errors.push(`Unexpected error during hierarchical validation: ${error.message}`);
+            return false;
+        }
+    }
+
+    /**
+     * Load specification from file (for hierarchical use)
+     */
+    loadSpec(filePath) {
+        try {
+            if (!fs.existsSync(filePath)) {
+                this.errors.push(`File not found: ${filePath}`);
+                return null;
+            }
+
+            const content = fs.readFileSync(filePath, 'utf8');
+            const ext = path.extname(filePath).toLowerCase();
+
+            if (ext === '.yaml' || ext === '.yml') {
+                return yaml.load(content);
+            } else if (ext === '.json') {
+                return JSON.parse(content);
+            } else {
+                this.errors.push(`Unsupported file format: ${ext}`);
+                return null;
+            }
+
+        } catch (error) {
+            this.errors.push(`Error loading specification ${filePath}: ${error.message}`);
+            return null;
+        }
+    }
+
+    /**
+     * Resolve inheritance path to absolute path
+     */
+    resolveInheritancePath(inheritPath, currentSpecPath) {
+        const currentDir = path.dirname(currentSpecPath);
+        return path.resolve(currentDir, inheritPath);
+    }
+
+    /**
+     * Load all inherited specifications
+     */
+    loadInheritedSpecs(spec, specPath) {
+        if (!spec.inherits || !Array.isArray(spec.inherits)) {
+            return;
+        }
+
+        for (const inheritPath of spec.inherits) {
+            const resolvedPath = this.resolveInheritancePath(inheritPath, specPath);
+
+            if (this.inheritedSpecs.has(resolvedPath)) {
+                continue; // Already loaded
+            }
+
+            const inheritedSpec = this.loadSpec(resolvedPath);
+            if (inheritedSpec) {
+                this.inheritedSpecs.set(resolvedPath, inheritedSpec);
+
+                // Recursively load inherited specs
+                this.loadInheritedSpecs(inheritedSpec, resolvedPath);
+            } else {
+                this.errors.push(`Inherited specification not found: ${inheritPath}`);
+            }
+        }
+    }
+
+    /**
+     * Deep merge two objects
+     */
+    deepMerge(base, override) {
+        const result = { ...base };
+
+        for (const [key, value] of Object.entries(override)) {
+            if (result[key] && typeof result[key] === 'object' && typeof value === 'object' && !Array.isArray(value)) {
+                result[key] = this.deepMerge(result[key], value);
+            } else {
+                result[key] = value;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Merge specifications based on inheritance
+     */
+    mergeInheritedSpecifications(spec, specPath) {
+        if (this.mergeCache.has(specPath)) {
+            return this.mergeCache.get(specPath);
+        }
+
+        // Load inherited specifications
+        this.loadInheritedSpecs(spec, specPath);
+
+        // Start with base specification
+        let merged = { ...spec };
+
+        // Apply inheritance in reverse order (so later specs override earlier ones)
+        if (spec.inherits && Array.isArray(spec.inherits)) {
+            for (const inheritPath of spec.inherits.slice().reverse()) {
+                const resolvedPath = this.resolveInheritancePath(inheritPath, specPath);
+                if (this.inheritedSpecs.has(resolvedPath)) {
+                    const inheritedSpec = this.inheritedSpecs.get(resolvedPath);
+                    // Recursively merge inherited spec
+                    const inheritedMerged = this.mergeInheritedSpecifications(inheritedSpec, resolvedPath);
+                    merged = this.deepMerge(inheritedMerged, merged);
+                }
+            }
+        }
+
+        // Cache the result
+        this.mergeCache.set(specPath, merged);
+        return merged;
+    }
+
+    /**
+     * Get hierarchy information from specification
+     */
+    getHierarchyInfo(spec) {
+        return spec.info?.ai_metadata?.hierarchy_info || {};
+    }
+
+    /**
+     * Print hierarchy tree for a specification
+     */
+    printHierarchyTree(specPath, level = 0) {
+        const indent = '  '.repeat(level);
+
+        try {
+            const spec = this.loadSpec(specPath);
+            if (!spec) {
+                console.log(`${indent}❌ Error loading ${specPath}`);
+                return;
+            }
+
+            const title = spec.info?.title || 'Unknown';
+            const hierarchyInfo = this.getHierarchyInfo(spec);
+            const levelName = hierarchyInfo.level || 'unknown';
+            const scope = hierarchyInfo.scope || 'unknown';
+
+            console.log(`${indent}📄 ${title} (${levelName}/${scope})`);
+            console.log(`${indent}   Path: ${specPath}`);
+
+            if (spec.inherits && Array.isArray(spec.inherits)) {
+                for (const inheritPath of spec.inherits) {
+                    const resolvedPath = this.resolveInheritancePath(inheritPath, specPath);
+                    this.printHierarchyTree(resolvedPath, level + 1);
+                }
+            }
+        } catch (error) {
+            console.log(`${indent}❌ Error loading ${specPath}: ${error.message}`);
+        }
+    }
+
+    /**
+     * Merge multiple specifications
+     */
+    mergeSpecifications(specs, outputPath, format = 'yaml') {
+        try {
+            if (!specs || specs.length === 0) {
+                this.errors.push('No specifications to merge');
+                return false;
+            }
+
+            // Start with first specification
+            let merged = { ...specs[0] };
+
+            // Merge with remaining specifications
+            for (let i = 1; i < specs.length; i++) {
+                merged = this.deepMerge(merged, specs[i]);
+            }
+
+            // Save merged specification
+            let content;
+            if (format === 'yaml') {
+                content = yaml.dump(merged, { indent: 2 });
+            } else {
+                content = JSON.stringify(merged, null, 2);
+            }
+
+            fs.writeFileSync(outputPath, content, 'utf8');
+            return true;
+
+        } catch (error) {
+            this.errors.push(`Error merging specifications: ${error.message}`);
+            return false;
+        }
     }
 }
 

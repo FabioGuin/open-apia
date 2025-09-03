@@ -1,55 +1,89 @@
 package main
 
 import (
-	"encoding/json"
-	"flag"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
-	var (
-		filePath = flag.String("f", "", "OpenAPIA specification file to validate")
-		jsonOutput = flag.Bool("j", false, "Output results as JSON")
-		quiet = flag.Bool("q", false, "Only output errors (no warnings)")
-		help = flag.Bool("h", false, "Show help message")
-	)
-	flag.Parse()
+	args := os.Args[1:]
 
-	// Show help
-	if *help {
+	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" || args[0] == "help" {
 		showHelp()
 		os.Exit(0)
 	}
 
-	// Get file path
-	if *filePath == "" {
-		fmt.Fprintf(os.Stderr, "Error: No file specified\n")
-		fmt.Fprintf(os.Stderr, "Use -h for usage information\n")
+	command := args[0]
+	options := args[1:]
+
+	switch command {
+	case "validate":
+		handleValidate(options)
+	case "tree":
+		handleTree(options)
+	case "merge":
+		handleMerge(options)
+	default:
+		fmt.Printf("Unknown command: %s\n", command)
+		showHelp()
+		os.Exit(1)
+	}
+}
+
+func handleValidate(options []string) {
+	if len(options) == 0 {
+		fmt.Println("Error: No file specified")
+		fmt.Println("Usage: go run cli.go validate <file> [--hierarchical]")
 		os.Exit(1)
 	}
 
-	// Validate file
-	validator := NewOpenAPIAValidator()
-	isValid, err := validator.ValidateFile(*filePath)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Output results
-	if *jsonOutput {
-		// JSON output
-		results := validator.GetResults()
-		jsonData, err := json.MarshalIndent(results, "", "  ")
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error marshaling JSON: %v\n", err)
-			os.Exit(1)
+	filePath := options[0]
+	hierarchical := false
+	for _, opt := range options {
+		if opt == "--hierarchical" {
+			hierarchical = true
+			break
 		}
-		fmt.Println(string(jsonData))
-	} else if !*quiet {
-		// Human-readable output
-		validator.PrintResults()
+	}
+
+	fmt.Printf("Validating OpenAPIA specification")
+	if hierarchical {
+		fmt.Printf(" with inheritance")
+	}
+	fmt.Printf(": %s\n", filePath)
+	fmt.Println(strings.Repeat("-", 60))
+
+	validator := NewOpenAPIAValidator()
+	var isValid bool
+	var err error
+
+	if hierarchical {
+		isValid, err = validator.ValidateWithInheritance(filePath)
+	} else {
+		isValid, err = validator.ValidateFile(filePath)
+	}
+
+	if err != nil {
+		fmt.Printf("❌ Validation error: %v\n", err)
+		os.Exit(1)
+	}
+
+	if isValid {
+		fmt.Println("✅ Validation successful!")
+	} else {
+		fmt.Println("❌ Validation failed!")
+		fmt.Println("\nErrors:")
+		for _, error := range validator.Errors {
+			fmt.Printf("  • %s\n", error)
+		}
+	}
+
+	if len(validator.Warnings) > 0 {
+		fmt.Println("\nWarnings:")
+		for _, warning := range validator.Warnings {
+			fmt.Printf("  ⚠️  %s\n", warning)
+		}
 	}
 
 	os.Exit(func() int {
@@ -60,22 +94,97 @@ func main() {
 	}())
 }
 
+func handleTree(options []string) {
+	if len(options) == 0 {
+		fmt.Println("Error: No file specified")
+		fmt.Println("Usage: go run cli.go tree <file>")
+		os.Exit(1)
+	}
+
+	filePath := options[0]
+
+	fmt.Println("OpenAPIA Specification Hierarchy Tree")
+	fmt.Println(strings.Repeat("=", 50))
+
+	validator := NewOpenAPIAValidator()
+	validator.PrintHierarchyTree(filePath, 0)
+}
+
+func handleMerge(options []string) {
+	if len(options) < 2 {
+		fmt.Println("Error: Missing required arguments")
+		fmt.Println("Usage: go run cli.go merge <output> <file1> [file2] ...")
+		os.Exit(1)
+	}
+
+	outputPath := options[0]
+	inputFiles := options[1:]
+
+	fmt.Println("Merging OpenAPIA specifications...")
+	fmt.Printf("Output: %s\n", outputPath)
+	fmt.Printf("Input files: %s\n", strings.Join(inputFiles, ", "))
+	fmt.Println(strings.Repeat("-", 60))
+
+	validator := NewOpenAPIAValidator()
+	specs := make([]map[string]interface{}, 0, len(inputFiles))
+
+	for _, file := range inputFiles {
+		if _, err := os.Stat(file); os.IsNotExist(err) {
+			fmt.Printf("Error: File not found: %s\n", file)
+			os.Exit(1)
+		}
+
+		spec, err := validator.loadSpec(file)
+		if err != nil {
+			fmt.Printf("❌ Error loading %s: %v\n", file, err)
+			os.Exit(1)
+		}
+
+		specs = append(specs, spec)
+		fmt.Printf("✅ Loaded: %s\n", file)
+	}
+
+	format := "yaml"
+	if strings.HasSuffix(outputPath, ".json") {
+		format = "json"
+	}
+
+	err := validator.MergeSpecifications(specs, outputPath, format)
+	if err != nil {
+		fmt.Printf("\n❌ Merge failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("\n✅ Merge completed successfully!")
+	fmt.Printf("Merged specification saved to: %s\n", outputPath)
+}
+
 func showHelp() {
 	fmt.Println("OpenAPIA Validator CLI - Go Implementation")
 	fmt.Println("==========================================")
 	fmt.Println("")
-	fmt.Println("Usage: go run . [options] -f <file>")
+	
+	fmt.Println("USAGE:")
+	fmt.Println("  go run cli.go <command> [options]")
 	fmt.Println("")
-	fmt.Println("Options:")
-	fmt.Println("  -f <file>    OpenAPIA specification file to validate")
-	fmt.Println("  -j           Output results as JSON")
-	fmt.Println("  -q           Only output errors (no warnings)")
-	fmt.Println("  -h           Show this help message")
+	
+	fmt.Println("COMMANDS:")
+	fmt.Println("  validate <file> [--hierarchical]  Validate OpenAPIA specification")
+	fmt.Println("  tree <file>                       Show hierarchy tree for specification")
+	fmt.Println("  merge <output> <files...>         Merge multiple specifications")
 	fmt.Println("")
-	fmt.Println("Examples:")
-	fmt.Println("  go run . -f spec.yaml")
-	fmt.Println("  go run . -f spec.json -j")
-	fmt.Println("  go run . -f spec.yaml -q")
+	
+	fmt.Println("OPTIONS:")
+	fmt.Println("  --hierarchical                   Use hierarchical validation with inheritance")
+	fmt.Println("  -h, --help                       Show this help message")
 	fmt.Println("")
-	fmt.Println("Supported formats: YAML (.yaml, .yml), JSON (.json)")
+	
+	fmt.Println("EXAMPLES:")
+	fmt.Println("  go run cli.go validate spec.yaml")
+	fmt.Println("  go run cli.go validate spec.yaml --hierarchical")
+	fmt.Println("  go run cli.go tree spec.yaml")
+	fmt.Println("  go run cli.go merge output.yaml spec1.yaml spec2.yaml")
+	fmt.Println("")
+	
+	fmt.Println("For more information, visit: https://github.com/openapia/openapia")
 }

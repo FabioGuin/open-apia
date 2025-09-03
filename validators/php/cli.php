@@ -11,7 +11,7 @@
  * @license Apache-2.0
  */
 
-require_once __DIR__ . '/OpenAPIAValidator.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use OpenAPIA\OpenAPIAValidator;
 
@@ -20,37 +20,141 @@ use OpenAPIA\OpenAPIAValidator;
  */
 function main(): void
 {
-    $options = getopt('f:j:q:h', ['file:', 'json', 'quiet', 'help']);
+    global $argv;
+    $args = array_slice($argv ?? [], 1);
     
-    // Show help
-    if (isset($options['h']) || isset($options['help'])) {
+    if (empty($args) || in_array($args[0], ['-h', '--help', 'help'])) {
         showHelp();
         exit(0);
     }
     
-    // Get file path
-    $filePath = $options['f'] ?? $options['file'] ?? null;
+    $command = $args[0];
+    $options = array_slice($args, 1);
+    
+    switch ($command) {
+        case 'validate':
+            handleValidate($options);
+            break;
+        case 'tree':
+            handleTree($options);
+            break;
+        case 'merge':
+            handleMerge($options);
+            break;
+        default:
+            echo "Unknown command: {$command}\n";
+            showHelp();
+            exit(1);
+    }
+}
+
+function handleValidate(array $options): void
+{
+    $filePath = $options[0] ?? null;
+    $hierarchical = in_array('--hierarchical', $options);
+    
     if (!$filePath) {
         echo "Error: No file specified\n";
-        echo "Use --help for usage information\n";
+        echo "Usage: php cli.php validate <file> [--hierarchical]\n";
         exit(1);
     }
     
-    // Validate file
-    $validator = new OpenAPIAValidator();
-    $isValid = $validator->validateFile($filePath);
+    echo "Validating OpenAPIA specification" . ($hierarchical ? " with inheritance" : "") . ": {$filePath}\n";
+    echo str_repeat('-', 60) . "\n";
     
-    // Output results
-    if (isset($options['j']) || isset($options['json'])) {
-        // JSON output
-        $results = $validator->getResults();
-        echo json_encode($results, JSON_PRETTY_PRINT) . "\n";
-    } elseif (!isset($options['q']) && !isset($options['quiet'])) {
-        // Human-readable output
-        $validator->printResults();
+    $validator = new OpenAPIAValidator();
+    
+    if ($hierarchical) {
+        $isValid = $validator->validateWithInheritance($filePath);
+    } else {
+        $isValid = $validator->validateFile($filePath);
+    }
+    
+    if ($isValid) {
+        echo "✅ Validation successful!\n";
+    } else {
+        echo "❌ Validation failed!\n";
+        echo "\nErrors:\n";
+        foreach ($validator->getErrors() as $error) {
+            echo "  • {$error}\n";
+        }
+    }
+    
+    if (!empty($validator->getWarnings())) {
+        echo "\nWarnings:\n";
+        foreach ($validator->getWarnings() as $warning) {
+            echo "  ⚠️  {$warning}\n";
+        }
     }
     
     exit($isValid ? 0 : 1);
+}
+
+function handleTree(array $options): void
+{
+    $filePath = $options[0] ?? null;
+    
+    if (!$filePath) {
+        echo "Error: No file specified\n";
+        echo "Usage: php cli.php tree <file>\n";
+        exit(1);
+    }
+    
+    echo "OpenAPIA Specification Hierarchy Tree\n";
+    echo str_repeat('=', 50) . "\n";
+    
+    $validator = new OpenAPIAValidator();
+    $validator->printHierarchyTree($filePath);
+}
+
+function handleMerge(array $options): void
+{
+    if (count($options) < 2) {
+        echo "Error: Missing required arguments\n";
+        echo "Usage: php cli.php merge <output> <file1> [file2] ...\n";
+        exit(1);
+    }
+    
+    $outputPath = $options[0];
+    $inputFiles = array_slice($options, 1);
+    
+    echo "Merging OpenAPIA specifications...\n";
+    echo "Output: {$outputPath}\n";
+    echo "Input files: " . implode(', ', $inputFiles) . "\n";
+    echo str_repeat('-', 60) . "\n";
+    
+    $validator = new OpenAPIAValidator();
+    $specs = [];
+    
+    foreach ($inputFiles as $file) {
+        if (!file_exists($file)) {
+            echo "Error: File not found: {$file}\n";
+            exit(1);
+        }
+        
+        $spec = $validator->loadSpec($file);
+        if ($spec === null) {
+            echo "Error: Cannot load specification: {$file}\n";
+            exit(1);
+        }
+        
+        $specs[] = $spec;
+        echo "✅ Loaded: {$file}\n";
+    }
+    
+    $format = pathinfo($outputPath, PATHINFO_EXTENSION) === 'json' ? 'json' : 'yaml';
+    $success = $validator->mergeSpecifications($specs, $outputPath, $format);
+    
+    if ($success) {
+        echo "\n✅ Merge completed successfully!\n";
+        echo "Merged specification saved to: {$outputPath}\n";
+    } else {
+        echo "\n❌ Merge failed!\n";
+        foreach ($validator->getErrors() as $error) {
+            echo "  • {$error}\n";
+        }
+        exit(1);
+    }
 }
 
 /**
@@ -59,18 +163,27 @@ function main(): void
 function showHelp(): void
 {
     echo "OpenAPIA Validator CLI - PHP Implementation\n";
-    echo "==========================================\n\n";
-    echo "Usage: php cli.php [options] -f <file>\n\n";
-    echo "Options:\n";
-    echo "  -f, --file <file>    OpenAPIA specification file to validate\n";
-    echo "  -j, --json          Output results as JSON\n";
-    echo "  -q, --quiet         Only output errors (no warnings)\n";
-    echo "  -h, --help          Show this help message\n\n";
-    echo "Examples:\n";
-    echo "  php cli.php -f spec.yaml\n";
-    echo "  php cli.php --file spec.json --json\n";
-    echo "  php cli.php -f spec.yaml --quiet\n\n";
-    echo "Supported formats: YAML (.yaml, .yml), JSON (.json)\n";
+    echo "============================================\n\n";
+    
+    echo "USAGE:\n";
+    echo "  php cli.php <command> [options]\n\n";
+    
+    echo "COMMANDS:\n";
+    echo "  validate <file> [--hierarchical]  Validate OpenAPIA specification\n";
+    echo "  tree <file>                       Show hierarchy tree for specification\n";
+    echo "  merge <output> <files...>         Merge multiple specifications\n\n";
+    
+    echo "OPTIONS:\n";
+    echo "  --hierarchical                   Use hierarchical validation with inheritance\n";
+    echo "  -h, --help                       Show this help message\n\n";
+    
+    echo "EXAMPLES:\n";
+    echo "  php cli.php validate spec.yaml\n";
+    echo "  php cli.php validate spec.yaml --hierarchical\n";
+    echo "  php cli.php tree spec.yaml\n";
+    echo "  php cli.php merge output.yaml spec1.yaml spec2.yaml\n\n";
+    
+    echo "For more information, visit: https://github.com/openapia/openapia\n";
 }
 
 // Run CLI
