@@ -7,14 +7,6 @@ This directory contains the OpenAPIA specification in different formats and rela
 ```
 spec/
 ├── openapia-0.1.yaml              # Main specification (human-readable)
-├── examples/                       # Example specifications
-│   ├── openapia-0.1-example.json  # Complete example in JSON format
-│   ├── content-moderator.yaml     # Content moderation example
-│   ├── customer-support.yaml      # Customer support example
-│   ├── multilingual-chatbot.yaml  # Multilingual chatbot example
-│   ├── mcp-integration.yaml       # Model Context Protocol integration
-│   ├── ecommerce-automation.yaml  # E-commerce with n8n automation
-│   └── zapier-automation.yaml     # Customer support with Zapier
 └── schemas/                        # Validation schemas
     └── openapia-0.1-schema.json   # JSON Schema for validation
 ```
@@ -28,25 +20,19 @@ spec/
   - Reference for implementers
 
 ### 2. Example Specifications
-- **`examples/openapia-0.1-example.json`** - Complete working example in JSON format
+Examples are now located in the root `examples/` directory. See the [Examples README](../examples/README.md) for complete documentation.
+
+- **`../examples/openapia-0.1-example.json`** - Complete working example in JSON format
   - Machine-readable format for tools and SDKs
   - Contains realistic data for all sections
   - Demonstrates proper usage
 
-- **`examples/*.yaml`** - Domain-specific examples
+- **`../examples/*.yaml`** - Domain-specific examples
   - Real-world use cases
   - Different complexity levels
   - Reference implementations
 
-#### Core AI Examples
-- **`content-moderator.yaml`** - AI-powered content filtering system
-- **`customer-support.yaml`** - E-commerce customer support assistant
-- **`multilingual-chatbot.yaml`** - Multi-language chatbot implementation
 
-#### Integration Examples
-- **`mcp-integration.yaml`** - Model Context Protocol server integration
-- **`ecommerce-automation.yaml`** - Complete e-commerce system with n8n automation workflows
-- **`zapier-automation.yaml`** - Customer support with Zapier webhook automation
 
 ### 3. Validation Schemas
 - **`schemas/openapia-0.1-schema.json`** - JSON Schema for validation
@@ -58,14 +44,18 @@ spec/
 
 ### For Developers
 - Use `openapia-0.1.yaml` to understand the specification
-- Use `examples/openapia-0.1-example.json` as a template for your implementations
+- Start with `../examples/templates/basic-template.yaml` for new projects
+- Use `../examples/openapia-0.1-example.json` as a machine-readable reference
 - Use `schemas/openapia-0.1-schema.json` for programmatic validation
+- Explore `../examples/README.md` for detailed examples and learning paths
 
 ### For Tools and SDKs
-- Parse `examples/openapia-0.1-example.json` for structure understanding
+- Parse `../examples/openapia-0.1-example.json` for structure understanding
 - Use `schemas/openapia-0.1-schema.json` for validation
 - Reference `openapia-0.1.yaml` for documentation
+- Test against examples in `../examples/` directory
 
 ### For Validators
 - Use `schemas/openapia-0.1-schema.json` as the validation schema
-- Test against `examples/*.yaml` and `examples/*.json` files
+- Test against all `../examples/**/*.yaml` and `../examples/*.json` files
+- Validate hierarchical compositions using multi-agent examples

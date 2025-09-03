@@ -176,7 +176,7 @@ We use [Semantic Versioning](https://semver.org/):
 ### Resources
 
 - **Documentation**: Check the [docs](docs/) directory
-- **Examples**: See [spec/examples](spec/examples/)
+- **Examples**: See [examples](examples/)
 - **Issues**: Search existing issues for similar problems
 - **Discussions**: Use GitHub Discussions for questions
 

@@ -177,21 +177,27 @@ go run validators/go/cli.go validate spec/my-ai-system.yaml
 
 ## Examples
 
-Check out our [examples directory](spec/examples/) for complete implementations:
+Check out our [examples directory](examples/) for complete implementations organized by category and complexity:
 
-### Core AI Examples
-- [Customer Support AI](spec/examples/customer-support.yaml) - E-commerce assistant
-- [Content Moderator](spec/examples/content-moderator.yaml) - AI-powered content filtering
-- [Multilingual Chatbot](spec/examples/multilingual-chatbot.yaml) - Multi-language support
+### 🎯 Core AI Examples
+- [Customer Support AI](examples/core/customer-support.yaml) - E-commerce assistant with order management and multilingual support
+- [Content Moderator](examples/core/content-moderator.yaml) - AI-powered content filtering and safety enforcement
+- [Multilingual Chatbot](examples/core/multilingual-chatbot.yaml) - Multi-language conversation support
 
-### Multi-Agent System Examples
-- [Multi-Agent Customer Support](spec/examples/multi-agent-customer-support.yaml) - Complete multi-agent system using hierarchical composition
-- [Sentiment Analysis Agent](spec/examples/agents/sentiment-analyzer.yaml) - Specialized agent for sentiment analysis
+### 🤖 Multi-Agent System Examples
+- [Multi-Agent Customer Support](examples/multi-agent/multi-agent-customer-support.yaml) - Complete multi-agent system using hierarchical composition
+- [Sentiment Analysis Agent](examples/agents/sentiment-analyzer.yaml) - Specialized agent for sentiment analysis
 
-### Automation Integration Examples
-- [E-commerce with n8n](spec/examples/ecommerce-automation.yaml) - Complete order processing with automation workflows
-- [Customer Support with Zapier](spec/examples/zapier-automation.yaml) - Simple webhook-based automation integration
-- [MCP Integration](spec/examples/mcp-integration.yaml) - Model Context Protocol server integration
+### ⚙️ Automation Integration Examples
+- [E-commerce with n8n](examples/automation/ecommerce-automation.yaml) - Complete order processing with automation workflows
+- [Customer Support with Zapier](examples/automation/zapier-automation.yaml) - Simple webhook-based automation integration
+- [MCP Integration](examples/automation/mcp-integration.yaml) - Model Context Protocol server integration
+
+### 📋 Templates
+- [Basic Template](examples/templates/basic-template.yaml) - Minimal starting template for new specifications
+- [Complete JSON Example](examples/openapia-0.1-example.json) - Machine-readable reference for tools and SDKs
+
+See the [Examples README](examples/README.md) for detailed descriptions and learning paths.
 
 ## Hierarchical Composition
 
@@ -231,9 +237,9 @@ info:
 The OpenAPIA specification is available in multiple formats:
 
 - **YAML**: `spec/openapia-0.1.yaml` - Official specification (human-readable)
-- **JSON Example**: `spec/examples/openapia-0.1-example.json` - Complete working example for tools and SDKs
+- **JSON Example**: `examples/openapia-0.1-example.json` - Complete working example for tools and SDKs
 - **JSON Schema**: `spec/schemas/openapia-0.1-schema.json` - Validation schema
-- **Examples**: `spec/examples/*.yaml` - Real-world use case examples
+- **Examples**: `examples/*.yaml` - Real-world use case examples
 
 See `spec/README.md` for detailed file structure and usage guide.
 
@@ -250,10 +256,12 @@ The specification includes these core sections:
 
 ### Documentation
 
-- **[OpenAPIA 0.1 Specification](docs/openapia-0.1-specification.md)** - Complete formal specification documentation
+- **[Documentation Index](docs/README.md)** - Complete documentation overview and learning paths
 - **[Getting Started Guide](docs/getting-started.md)** - Step-by-step tutorial for new users
+- **[OpenAPIA 0.1 Specification](docs/openapia-0.1-specification.md)** - Complete formal specification documentation
 - **[Hierarchical Composition Guide](docs/hierarchical-composition.md)** - Advanced inheritance and composition patterns
 - **[Multi-Agent Systems Guide](docs/multi-agent-systems.md)** - Building multi-agent systems using existing OpenAPIA features
+- **[Automation Integration Guide](docs/automation-integration.md)** - Integrating with external automation platforms
 
 ## Tools and Libraries
 
@@ -348,8 +356,8 @@ tasks:
 ### Documentation
 
 - **[Automation Integration Guide](docs/automation-integration.md)** - Complete guide with examples and best practices
-- **[E-commerce Example](spec/examples/ecommerce-automation.yaml)** - Full n8n integration example
-- **[Zapier Example](spec/examples/zapier-automation.yaml)** - Simple webhook integration example
+- **[E-commerce Example](examples/automation/ecommerce-automation.yaml)** - Full n8n integration example
+- **[Zapier Example](examples/automation/zapier-automation.yaml)** - Simple webhook integration example
 
 ## Contributing
 

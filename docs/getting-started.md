@@ -182,11 +182,11 @@ evaluation:
 
 ## Examples
 
-Check out our [examples directory](../spec/examples/) for complete implementations:
+Check out our [examples directory](../examples/) for complete implementations:
 
-- [Customer Support AI](../spec/examples/customer-support.yaml) - E-commerce assistant
-- [Content Moderator](../spec/examples/content-moderator.yaml) - AI-powered content filtering
-- [Multilingual Chatbot](../spec/examples/multilingual-chatbot.yaml) - Multi-language support
+- [Customer Support AI](../examples/core/customer-support.yaml) - E-commerce assistant
+- [Content Moderator](../examples/core/content-moderator.yaml) - AI-powered content filtering
+- [Multilingual Chatbot](../examples/core/multilingual-chatbot.yaml) - Multi-language support
 
 ## Tools
 
@@ -296,7 +296,7 @@ prompts:
 ### Getting Help
 
 - **Documentation**: Check the [specification](../specification.md)
-- **Examples**: See [examples](../spec/examples/)
+- **Examples**: See [examples](../examples/)
 - **Issues**: Search [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
 - **Discussions**: Use [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
 
@@ -356,6 +356,6 @@ For detailed information, see the [Hierarchical Composition Guide](hierarchical-
 ## Resources
 
 - [OpenAPIA Specification](../spec/openapia-0.1.yaml)
-- [Examples](../spec/examples/)
+- [Examples](../examples/)
 - [Validators](../validators/)
 - [Contributing Guide](../CONTRIBUTING.md)

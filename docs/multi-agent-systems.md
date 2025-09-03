@@ -492,15 +492,15 @@ evaluation:
 
 ### Example 1: Customer Support Multi-Agent System
 
-See `spec/examples/multi-agent-customer-support.yaml` for a complete implementation.
+See `../examples/multi-agent/multi-agent-customer-support.yaml` for a complete implementation.
 
 ### Example 2: E-commerce Multi-Agent System
 
-See `spec/examples/multi-agent-ecommerce.yaml` for a complete implementation.
+See `../examples/automation/ecommerce-automation.yaml` for a complete implementation with automation integration.
 
 ### Example 3: Content Moderation Multi-Agent System
 
-See `spec/examples/multi-agent-content-moderation.yaml` for a complete implementation.
+See `../examples/core/content-moderator.yaml` for a complete implementation.
 
 ## Migration from Single-Agent to Multi-Agent
 

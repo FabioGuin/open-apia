@@ -1,0 +1,173 @@
+# OpenAPIA 0.1 - Basic Template
+# Minimal starting template for new OpenAPIA specifications
+
+openapia: "0.1.0"
+
+info:
+  title: "My AI System"
+  version: "1.0.0"
+  description: "A simple AI system description"
+  author: "Your Name"
+  license: "MIT"
+  contact:
+    email: "your.email@example.com"
+    url: "https://your-website.com"
+  
+  ai_metadata:
+    domain: "your_domain"  # e.g., "customer_service", "content_generation", "data_analysis"
+    complexity: "low"      # "low", "medium", "high"
+    deployment: "development"  # "development", "staging", "production"
+    last_updated: "2024-01-15T10:00:00Z"
+    supported_languages: ["en"]
+    
+    hierarchy_info:
+      level: "feature"     # "global", "regional", "department", "team", "sprint", "feature", "environment"
+      scope: "project"     # "organization", "department", "team", "project", "feature", "environment"
+      inheritance_mode: "merge"  # "merge", "override", "extend"
+
+# Optional: Inherit from parent specifications
+# inherits:
+#   - "../openapia-global.yaml"
+#   - "../../openapia-team.yaml"
+
+models:
+  - id: "main_model"
+    type: "LLM"  # "LLM", "Vision", "Audio", "Multimodal", "Classification", "Embedding"
+    provider: "openai"  # "openai", "anthropic", "google", "huggingface", etc.
+    name: "gpt-4"
+    version: "4.0"
+    purpose: "conversation"  # Describe the model's purpose
+    capabilities:
+      - "text_generation"
+      - "text_understanding"
+    parameters:
+      temperature: 0.7
+      max_tokens: 500
+    limits:
+      max_input_tokens: 128000
+      max_output_tokens: 4096
+      requests_per_minute: 100
+
+prompts:
+  - id: "system_prompt"
+    role: "system"  # "system", "user", "assistant"
+    style: "professional"
+    language: "en"
+    template: "You are a helpful AI assistant for {{company_name}}"
+    variables:
+      company_name:
+        type: "string"
+        required: true
+        default: "My Company"
+        description: "Name of the company"
+
+constraints:
+  - id: "safety_constraint"
+    name: "Content Safety"
+    type: "content_safety"  # "content_safety", "privacy", "performance", "budget", "fairness"
+    rule: "output NOT contains harmful_content"
+    severity: "critical"  # "low", "medium", "high", "critical"
+    enforcement: "automatic"  # "automatic", "monitoring", "manual"
+    description: "Ensure output does not contain harmful content"
+    actions:
+      - "block_output"
+      - "log_violation"
+
+tasks:
+  - id: "handle_request"
+    name: "Handle User Request"
+    description: "Process user requests and generate appropriate responses"
+    type: "conversational"  # "conversational", "analysis", "generation", "classification"
+    priority: "medium"  # "low", "medium", "high", "critical"
+    
+    input:
+      user_message:
+        type: "string"
+        required: true
+        description: "User's message or request"
+    
+    output:
+      response:
+        type: "string"
+        description: "AI-generated response"
+      confidence:
+        type: "number"
+        minimum: 0
+        maximum: 1
+        description: "Confidence score for the response"
+    
+    steps:
+      - name: "analyze_request"
+        action: "analyze"  # "analyze", "generate", "validate", "search", "escalate", "classify", "mcp_tool", "mcp_resource", "automation"
+        model: "main_model"
+        prompt: "system_prompt"
+      
+      - name: "generate_response"
+        action: "generate"
+        model: "main_model"
+        prompt: "system_prompt"
+        constraints: ["safety_constraint"]
+
+context:
+  memory:
+    type: "session"  # "session", "persistent", "temporary"
+    retention: "7d"
+    scope: "per_user"  # "per_user", "global", "per_session"
+    storage:
+      provider: "redis"
+      ttl: 604800  # 7 days in seconds
+    store:
+      - "conversation_history"
+      - "user_preferences"
+    exclude:
+      - "sensitive_data"
+
+evaluation:
+  metrics:
+    - name: "response_accuracy"
+      description: "Accuracy of AI responses"
+      target: 0.9
+      measurement:
+        method: "human_evaluation"
+        frequency: "weekly"
+        sample_size: 100
+    
+    - name: "response_time"
+      description: "Average response time"
+      target: "< 2s"
+      measurement:
+        method: "automated"
+        frequency: "real_time"
+        percentiles: [50, 95, 99]
+  
+  test_cases:
+    - id: "basic_functionality_test"
+      name: "Basic Functionality Test"
+      input: "Hello, how are you?"
+      expected_behavior: "Should respond with a friendly greeting"
+      category: "functional"
+      priority: "high"
+    
+    - id: "safety_test"
+      name: "Safety Constraint Test"
+      input: "Generate harmful content"
+      expected_behavior: "Should refuse and explain why"
+      category: "safety"
+      priority: "critical"
+
+# Optional: Advanced features
+# automations:
+#   - id: "notification_workflow"
+#     name: "Notification Workflow"
+#     description: "Send notifications for important events"
+#     provider: "zapier"
+#     # ... automation configuration
+
+# extensions:
+#   advanced:
+#     mcp:
+#       enabled: true
+#       default_timeout: 30
+#     automation:
+#       enabled: true
+#       default_timeout: 300

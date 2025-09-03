@@ -301,8 +301,8 @@ extensions:
 
 See the following example files for complete implementations:
 
-- `spec/examples/ecommerce-automation.yaml` - Comprehensive e-commerce example with n8n
-- `spec/examples/zapier-automation.yaml` - Simple customer support example with Zapier
+- `../examples/automation/ecommerce-automation.yaml` - Comprehensive e-commerce example with n8n
+- `../examples/automation/zapier-automation.yaml` - Simple customer support example with Zapier
 
 ## Migration Guide
 

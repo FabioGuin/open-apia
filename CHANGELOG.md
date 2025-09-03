@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - MCP-specific task step fields: `mcp_server`, `mcp_tool`, `mcp_resource`, `mcp_parameters`
   - Advanced MCP configuration in `extensions.advanced.mcp`
   - Comprehensive MCP validation in all validators
-  - Example MCP integration specification (`spec/examples/mcp-integration.yaml`)
+  - Example MCP integration specification (`examples/automation/mcp-integration.yaml`)
   - Updated documentation with complete MCP reference
 
 - **Automation Integration**: Declarative integration with external automation platforms
@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Task step fields: `automation`, `automation_parameters`, `check_automation`
   - Advanced automation configuration in `extensions.advanced.automation`
   - Provider-specific settings for n8n, Zapier, and other platforms
-  - Example specifications: e-commerce automation (`spec/examples/ecommerce-automation.yaml`) and Zapier integration (`spec/examples/zapier-automation.yaml`)
+  - Example specifications: e-commerce automation (`examples/automation/ecommerce-automation.yaml`) and Zapier integration (`examples/automation/zapier-automation.yaml`)
   - Complete automation integration guide (`docs/automation-integration.md`)
 
 ### Changed
