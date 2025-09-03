@@ -17,7 +17,7 @@ info:
     domain: "e-commerce"
     complexity: "medium"
     deployment: "production"
-    last_updated: "2024-01-15T10:30:00Z"
+    last_updated: "2025-09-03T10:30:00Z"
     supported_languages: ["en", "es", "fr", "de"]
 
 models:

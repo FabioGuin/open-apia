@@ -132,7 +132,7 @@ Contributors grant patent licenses under the Apache License 2.0.
 
 ## History
 
-- **2024-01-XX**: Project started, Bootstrap phase begins
+- **2025-09-03**: Project started, Bootstrap phase begins
 - **Future**: Transition to community governance when criteria are met
 
 ---
