@@ -1,5 +1,21 @@
 # OpenAPIA 0.1 Specification
 
+## Machine-Readable Formats
+
+This specification is available in multiple formats for different use cases:
+
+### Main Specification
+- **YAML**: `spec/openapia-0.1.yaml` - Official specification (human-readable)
+
+### Examples and Templates
+- **JSON Example**: `spec/examples/openapia-0.1-example.json` - Complete working example in JSON format
+- **Domain Examples**: `spec/examples/*.yaml` - Real-world use case examples
+
+### Validation
+- **JSON Schema**: `spec/schemas/openapia-0.1-schema.json` - Validation schema for OpenAPIA specifications
+
+See `spec/README.md` for detailed explanation of each file type and usage.
+
 ## Table of Contents
 
 1. [Introduction](#introduction)

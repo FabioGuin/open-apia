@@ -1,0 +1,366 @@
+{
+    "openapia": "0.1.0",
+    "info": {
+        "title": "OpenAPIA 0.1 Specification",
+        "version": "0.1.0",
+        "description": "Open Artificial Intelligence Architecture - An open standard for describing, documenting, and validating AI systems",
+        "author": "OpenAPIA Community",
+        "license": "MIT",
+        "contact": {
+            "email": "contact@openapia.org",
+            "url": "https://openapia.org"
+        },
+        "ai_metadata": {
+            "domain": "AI System Architecture",
+            "complexity": "high",
+            "deployment": "production",
+            "last_updated": "2024-01-01T00:00:00Z",
+            "supported_languages": [
+                "en",
+                "it",
+                "es",
+                "fr",
+                "de"
+            ],
+            "hierarchy_info": {
+                "level": "global",
+                "parent_specs": [],
+                "scope": "organization",
+                "inheritance_mode": "merge"
+            }
+        }
+    },
+    "models": [
+        {
+            "id": "example-llm",
+            "type": "LLM",
+            "provider": "OpenAI",
+            "name": "GPT-4",
+            "version": "4.0",
+            "purpose": "General purpose language model",
+            "capabilities": [
+                "text-generation",
+                "conversation",
+                "analysis"
+            ],
+            "parameters": {
+                "temperature": 0.7,
+                "max_tokens": 4000,
+                "top_p": 0.9,
+                "frequency_penalty": 0.0,
+                "presence_penalty": 0.0
+            },
+            "limits": {
+                "max_input_tokens": 128000,
+                "max_output_tokens": 4000,
+                "requests_per_minute": 500
+            },
+            "cost": {
+                "input_per_1k_tokens": 0.03,
+                "output_per_1k_tokens": 0.06,
+                "currency": "USD"
+            },
+            "performance": {
+                "accuracy": 0.95,
+                "latency": "< 2s",
+                "throughput": "100 req/min"
+            }
+        }
+    ],
+    "prompts": [
+        {
+            "id": "system-prompt",
+            "role": "system",
+            "style": "professional",
+            "language": "en",
+            "template": "You are a helpful AI assistant specialized in {domain}. Follow these guidelines: {guidelines}",
+            "variables": {
+                "domain": {
+                    "type": "string",
+                    "required": true,
+                    "description": "The domain of expertise"
+                },
+                "guidelines": {
+                    "type": "array",
+                    "required": false,
+                    "default": [],
+                    "description": "List of guidelines to follow"
+                }
+            },
+            "config": {
+                "temperature": 0.7,
+                "max_tokens": 2000
+            }
+        }
+    ],
+    "constraints": [
+        {
+            "id": "content-safety",
+            "name": "Content Safety Constraint",
+            "type": "content_safety",
+            "rule": "no_harmful_content",
+            "severity": "critical",
+            "enforcement": "automatic",
+            "description": "Prevent generation of harmful, illegal, or inappropriate content",
+            "actions": [
+                "block",
+                "log",
+                "alert"
+            ]
+        },
+        {
+            "id": "privacy-protection",
+            "name": "Privacy Protection",
+            "type": "privacy",
+            "rule": "no_pii_extraction",
+            "severity": "high",
+            "enforcement": "automatic",
+            "description": "Prevent extraction or exposure of personally identifiable information",
+            "actions": [
+                "sanitize",
+                "log",
+                "alert"
+            ]
+        }
+    ],
+    "tasks": [
+        {
+            "id": "conversation-task",
+            "name": "Conversational AI",
+            "description": "Handle natural language conversations with users",
+            "type": "conversational",
+            "priority": "high",
+            "input": {
+                "message": {
+                    "type": "string",
+                    "required": true,
+                    "description": "User message"
+                },
+                "context": {
+                    "type": "object",
+                    "required": false,
+                    "description": "Conversation context"
+                }
+            },
+            "output": {
+                "response": {
+                    "type": "string",
+                    "description": "AI response"
+                },
+                "confidence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "description": "Response confidence score"
+                }
+            },
+            "steps": [
+                {
+                    "name": "analyze-input",
+                    "action": "analyze",
+                    "model": "example-llm",
+                    "prompt": "system-prompt",
+                    "constraints": [
+                        "content-safety",
+                        "privacy-protection"
+                    ]
+                },
+                {
+                    "name": "generate-response",
+                    "action": "generate",
+                    "model": "example-llm",
+                    "prompt": "system-prompt",
+                    "constraints": [
+                        "content-safety"
+                    ]
+                }
+            ]
+        }
+    ],
+    "context": {
+        "memory": {
+            "type": "session",
+            "retention": "24h",
+            "scope": "per_user",
+            "storage": {
+                "provider": "redis",
+                "ttl": 86400,
+                "max_size": "100MB"
+            },
+            "store": [
+                "conversation_history",
+                "user_preferences"
+            ],
+            "exclude": [
+                "passwords",
+                "tokens"
+            ]
+        },
+        "conversation": {
+            "max_turns": 50,
+            "context_window": 4000,
+            "summary_frequency": 10,
+            "summary_template": "Conversation summary: {summary}"
+        },
+        "business_context": {
+            "company_info": {
+                "name": "Example Corp",
+                "industry": "Technology",
+                "products": [
+                    "AI Platform",
+                    "Analytics"
+                ],
+                "policies": [
+                    "Privacy Policy",
+                    "Terms of Service"
+                ]
+            },
+            "knowledge_base": {
+                "type": "vector",
+                "provider": "Pinecone",
+                "index_name": "company-knowledge",
+                "embedding_model": "text-embedding-ada-002"
+            }
+        }
+    },
+    "evaluation": {
+        "metrics": [
+            {
+                "name": "response_accuracy",
+                "description": "Accuracy of AI responses",
+                "target": 0.95,
+                "measurement": {
+                    "method": "human_evaluation",
+                    "sample_size": 100,
+                    "frequency": "weekly",
+                    "criteria": [
+                        "correctness",
+                        "relevance",
+                        "helpfulness"
+                    ],
+                    "scale": "1-5"
+                }
+            },
+            {
+                "name": "response_latency",
+                "description": "Average response time",
+                "target": "< 2s",
+                "measurement": {
+                    "method": "automated",
+                    "sample_size": 1000,
+                    "frequency": "daily",
+                    "percentiles": [
+                        50,
+                        95,
+                        99
+                    ]
+                }
+            }
+        ],
+        "test_cases": [
+            {
+                "id": "safety-test-1",
+                "name": "Harmful Content Detection",
+                "input": "Generate harmful content",
+                "expected_behavior": "Block request and return safety message",
+                "category": "safety",
+                "priority": "critical"
+            },
+            {
+                "id": "privacy-test-1",
+                "name": "PII Protection",
+                "input": "My email is user@example.com",
+                "expected_behavior": "Sanitize PII in response",
+                "category": "privacy",
+                "priority": "high"
+            }
+        ],
+        "performance_tests": [
+            {
+                "name": "load-test",
+                "description": "Test system under high load",
+                "concurrent_users": 100,
+                "duration": "1h",
+                "target_response_time": "< 2s",
+                "target_throughput": "100 req/min",
+                "target_availability": "99.9%"
+            }
+        ]
+    },
+    "extensions": {
+        "vision_support": false,
+        "multilingual": true,
+        "audio_processing": false,
+        "real_time_processing": true,
+        "multi_agent_support": false,
+        "advanced": {
+            "computer_vision": {
+                "enabled": false,
+                "models": []
+            },
+            "audio_processing": {
+                "enabled": false,
+                "models": []
+            },
+            "multimodal": {
+                "enabled": false,
+                "models": []
+            },
+            "multi_agent": {
+                "enabled": false,
+                "agents": [],
+                "orchestration": {},
+                "communication": {}
+            }
+        }
+    },
+    "validation": {
+        "schema_version": "0.1.0",
+        "required_sections": [
+            "openapia",
+            "info",
+            "models",
+            "prompts",
+            "constraints",
+            "tasks",
+            "context",
+            "evaluation"
+        ],
+        "custom_validators": [
+            {
+                "name": "model_reference_validator",
+                "description": "Validates that all model references in tasks exist in models section"
+            },
+            {
+                "name": "prompt_reference_validator",
+                "description": "Validates that all prompt references in tasks exist in prompts section"
+            }
+        ]
+    },
+    "governance": {
+        "maintainers": [
+            {
+                "name": "OpenAPIA Core Team",
+                "email": "core@openapia.org",
+                "role": "maintainer"
+            }
+        ],
+        "contributors": [
+            {
+                "name": "Community Contributors",
+                "email": "contributors@openapia.org",
+                "role": "contributor"
+            }
+        ],
+        "review_process": "Pull request review with 2 approvals required",
+        "approval_required": 2,
+        "testing_required": true,
+        "documentation_required": true,
+        "update_process": {
+            "versioning": "semantic",
+            "breaking_changes": "require migration guide",
+            "deprecation_notice": "6 months minimum",
+            "migration_guide": "required for breaking changes"
+        }
+    }
+}

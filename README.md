@@ -158,7 +158,16 @@ info:
 
 ## Specification
 
-The OpenAPIA specification is defined in YAML format and includes these core sections:
+The OpenAPIA specification is available in multiple formats:
+
+- **YAML**: `spec/openapia-0.1.yaml` - Official specification (human-readable)
+- **JSON Example**: `spec/examples/openapia-0.1-example.json` - Complete working example for tools and SDKs
+- **JSON Schema**: `spec/schemas/openapia-0.1-schema.json` - Validation schema
+- **Examples**: `spec/examples/*.yaml` - Real-world use case examples
+
+See `spec/README.md` for detailed file structure and usage guide.
+
+The specification includes these core sections:
 
 - **`openapia`** - Specification version
 - **`info`** - System metadata and AI-specific information
