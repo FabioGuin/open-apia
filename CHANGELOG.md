@@ -28,12 +28,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing yet
 
-## [0.1.0] - 2024-01-XX
+## [0.1.0] - 2025-09-03
 
 ### Added
-- Initial OpenAPIA specification
+- Initial OpenAPIA v0.1.0 specification and validators
 - Core sections: `openapia`, `info`, `models`, `prompts`, `constraints`, `tasks`, `context`, `evaluation`
-- Example specifications for customer support AI
+- Example specifications for customer support AI, content moderation, and multilingual chatbot
+- Multi-language validators (JavaScript, PHP, Python, Go)
+- Hierarchical composition support for complex AI systems
+- Machine-readable JSON specification format
 - Basic governance structure
 - Apache 2.0 license
 - Contributing guidelines
@@ -47,9 +50,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Context**: State management and memory configuration
 - **Evaluation**: Metrics, tests, and performance monitoring
 - **Extensions**: Support for custom use cases
+- **Hierarchical Composition**: Support for multi-agent systems and complex workflows
+
+### Validators
+- JavaScript validator with CLI support
+- PHP validator with comprehensive testing
+- Python validator for cross-platform validation
+- Go validator for high-performance validation
 
 ### Documentation
 - Comprehensive README with examples
+- Formal OpenAPIA 0.1 specification documentation
+- Hierarchical composition documentation
 - Contributing guidelines
 - Governance documentation
 - License and legal information
