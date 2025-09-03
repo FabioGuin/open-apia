@@ -306,7 +306,7 @@ extensions:         # Optional extensions
   multilingual: boolean  # Multilingual support
   audio_processing: boolean  # Audio processing support
   real_time_processing: boolean  # Real-time processing support
-  multi_agent_support: boolean  # Multi-agent system support (planned for v0.2.0)
+
   mcp_support: boolean  # Model Context Protocol support
   automation_support: boolean  # External automation workflows support
   
@@ -320,12 +320,7 @@ extensions:         # Optional extensions
     multimodal:      # Multimodal configuration
       enabled: boolean
       models: [object]
-    multi_agent:     # Multi-agent system configuration (planned for v0.2.0)
-      enabled: boolean
-      agents: [object]  # Agent definitions
-      orchestration: object  # Coordination strategy
-      communication: object  # Inter-agent communication
-    
+
     mcp:            # Model Context Protocol configuration
       enabled: boolean
       default_timeout: number  # Default timeout for MCP operations

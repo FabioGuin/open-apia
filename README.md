@@ -125,6 +125,10 @@ Check out our [examples directory](spec/examples/) for complete implementations:
 - [Content Moderator](spec/examples/content-moderator.yaml) - AI-powered content filtering
 - [Multilingual Chatbot](spec/examples/multilingual-chatbot.yaml) - Multi-language support
 
+### Multi-Agent System Examples
+- [Multi-Agent Customer Support](spec/examples/multi-agent-customer-support.yaml) - Complete multi-agent system using hierarchical composition
+- [Sentiment Analysis Agent](spec/examples/agents/sentiment-analyzer.yaml) - Specialized agent for sentiment analysis
+
 ### Automation Integration Examples
 - [E-commerce with n8n](spec/examples/ecommerce-automation.yaml) - Complete order processing with automation workflows
 - [Customer Support with Zapier](spec/examples/zapier-automation.yaml) - Simple webhook-based automation integration
@@ -190,6 +194,7 @@ The specification includes these core sections:
 - **[OpenAPIA 0.1 Specification](docs/openapia-0.1-specification.md)** - Complete formal specification documentation
 - **[Getting Started Guide](docs/getting-started.md)** - Step-by-step tutorial for new users
 - **[Hierarchical Composition Guide](docs/hierarchical-composition.md)** - Advanced inheritance and composition patterns
+- **[Multi-Agent Systems Guide](docs/multi-agent-systems.md)** - Building multi-agent systems using existing OpenAPIA features
 
 ## Tools and Libraries
 
@@ -304,12 +309,7 @@ See [GOVERNANCE.md](GOVERNANCE.md) for details.
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-## Roadmap
 
-- [x] **v0.1.0** - Core specification, validators, and automation integration
-- [ ] **v0.2.0** - Multi-agent support and advanced automation features
-- [ ] **v0.3.0** - CLI tools and documentation generator
-- [ ] **v1.0.0** - Community governance and ecosystem
 
 ## Community
 

@@ -1,0 +1,522 @@
+# OpenAPIA 0.1 - Sentiment Analysis Agent
+# Specialized agent for analyzing customer sentiment and emotional state
+
+openapia: "0.1.0"
+
+info:
+  title: "Sentiment Analysis Agent"
+  version: "1.0.0"
+  description: "Specialized agent for analyzing customer sentiment, emotional state, and urgency levels"
+  author: "Sentiment Analysis Team"
+  license: "MIT"
+  contact:
+    email: "sentiment-team@example.com"
+    url: "https://docs.example.com/agents/sentiment-analyzer"
+  
+  ai_metadata:
+    domain: "sentiment_analysis"
+    complexity: "medium"
+    deployment: "production"
+    last_updated: "2024-01-15T16:30:00Z"
+    supported_languages: ["en", "es", "fr", "de"]
+    
+    hierarchy_info:
+      level: "agent"
+      scope: "specialized"
+      inheritance_mode: "extend"
+
+models:
+  - id: "sentiment_classifier"
+    type: "Classification"
+    provider: "HuggingFace"
+    name: "cardiffnlp/twitter-roberta-base-sentiment-latest"
+    version: "1.0"
+    purpose: "Customer sentiment classification"
+    capabilities: ["sentiment_analysis", "emotion_detection", "urgency_assessment"]
+    parameters:
+      temperature: 0.1
+      max_tokens: 100
+    limits:
+      max_input_tokens: 512
+      max_output_tokens: 100
+      requests_per_minute: 1000
+  
+  - id: "emotion_analyzer"
+    type: "Classification"
+    provider: "HuggingFace"
+    name: "j-hartmann/emotion-english-distilroberta-base"
+    version: "1.0"
+    purpose: "Emotion detection and analysis"
+    capabilities: ["emotion_classification", "emotional_intensity"]
+    parameters:
+      temperature: 0.1
+      max_tokens: 50
+    limits:
+      max_input_tokens: 512
+      max_output_tokens: 50
+      requests_per_minute: 1000
+  
+  - id: "urgency_detector"
+    type: "LLM"
+    provider: "OpenAI"
+    name: "GPT-3.5-turbo"
+    version: "3.5"
+    purpose: "Urgency level detection"
+    capabilities: ["urgency_assessment", "priority_classification"]
+    parameters:
+      temperature: 0.2
+      max_tokens: 200
+      top_p: 0.8
+    limits:
+      max_input_tokens: 4000
+      max_output_tokens: 200
+      requests_per_minute: 500
+
+prompts:
+  - id: "sentiment_analysis_prompt"
+    role: "system"
+    style: "analytical"
+    language: "en"
+    template: |
+      You are a specialized sentiment analysis agent. Your job is to analyze customer messages and provide detailed sentiment insights.
+      
+      ANALYSIS REQUIREMENTS:
+      1. Overall sentiment (positive, negative, neutral)
+      2. Confidence level (0.0 to 1.0)
+      3. Emotional intensity (low, medium, high)
+      4. Specific emotions detected
+      5. Urgency level (low, medium, high, critical)
+      6. Key emotional indicators
+      
+      RESPONSE FORMAT:
+      {
+        "sentiment": "positive|negative|neutral",
+        "confidence": 0.95,
+        "emotional_intensity": "low|medium|high",
+        "emotions": ["joy", "frustration", "anxiety"],
+        "urgency": "low|medium|high|critical",
+        "key_indicators": ["urgent language", "emotional words", "tone indicators"],
+        "reasoning": "Brief explanation of analysis"
+      }
+      
+      Be thorough but concise in your analysis.
+    variables:
+      customer_message:
+        type: "string"
+        required: true
+        description: "Customer message to analyze"
+      context:
+        type: "object"
+        required: false
+        description: "Additional context about the customer or situation"
+
+  - id: "urgency_assessment_prompt"
+    role: "system"
+    style: "analytical"
+    language: "en"
+    template: |
+      You are an urgency assessment specialist. Analyze customer messages to determine urgency levels.
+      
+      URGENCY INDICATORS:
+      - Critical: Immediate threats, safety issues, system outages
+      - High: Time-sensitive requests, payment issues, service disruptions
+      - Medium: General complaints, feature requests, standard inquiries
+      - Low: General questions, feedback, non-urgent requests
+      
+      ASSESSMENT FACTORS:
+      1. Language intensity and emotional tone
+      2. Time-sensitive keywords
+      3. Business impact indicators
+      4. Customer history and context
+      5. Explicit urgency statements
+      
+      Provide a clear urgency assessment with reasoning.
+    variables:
+      customer_message:
+        type: "string"
+        required: true
+        description: "Customer message to assess"
+      customer_context:
+        type: "object"
+        required: false
+        description: "Customer context and history"
+
+constraints:
+  - id: "sentiment_analysis_accuracy"
+    name: "Sentiment Analysis Accuracy"
+    type: "performance"
+    rule: "sentiment_accuracy > 0.85"
+    severity: "high"
+    enforcement: "monitoring"
+    description: "Maintain high accuracy in sentiment analysis"
+    actions: ["log_accuracy", "alert_if_low"]
+  
+  - id: "response_time_limit"
+    name: "Response Time Limit"
+    type: "performance"
+    rule: "response_time < 2s"
+    severity: "medium"
+    enforcement: "automatic"
+    description: "Ensure fast sentiment analysis response"
+    actions: ["timeout_fallback", "log_performance"]
+  
+  - id: "privacy_protection"
+    name: "Privacy Protection"
+    type: "privacy"
+    rule: "no_pii_in_analysis"
+    severity: "critical"
+    enforcement: "automatic"
+    description: "Protect customer privacy in sentiment analysis"
+    actions: ["sanitize_data", "log_violation", "alert"]
+
+tasks:
+  - id: "analyze_sentiment"
+    name: "Analyze Customer Sentiment"
+    description: "Comprehensive sentiment analysis of customer messages"
+    type: "classification"
+    priority: "high"
+    
+    input:
+      message:
+        type: "string"
+        required: true
+        description: "Customer message to analyze"
+      context:
+        type: "object"
+        required: false
+        description: "Additional context about the customer or situation"
+      customer_id:
+        type: "string"
+        required: false
+        description: "Customer ID for context"
+    
+    output:
+      sentiment:
+        type: "string"
+        enum: ["positive", "negative", "neutral"]
+        description: "Overall sentiment classification"
+      confidence:
+        type: "number"
+        minimum: 0
+        maximum: 1
+        description: "Confidence level of sentiment analysis"
+      emotional_intensity:
+        type: "string"
+        enum: ["low", "medium", "high"]
+        description: "Intensity of emotional expression"
+      emotions:
+        type: "array"
+        items:
+          type: "string"
+        description: "Specific emotions detected"
+      urgency:
+        type: "string"
+        enum: ["low", "medium", "high", "critical"]
+        description: "Urgency level assessment"
+      key_indicators:
+        type: "array"
+        items:
+          type: "string"
+        description: "Key emotional and urgency indicators"
+      reasoning:
+        type: "string"
+        description: "Brief explanation of analysis"
+    
+    steps:
+      - name: "classify_sentiment"
+        action: "classify"
+        model: "sentiment_classifier"
+        constraints: ["sentiment_analysis_accuracy", "response_time_limit", "privacy_protection"]
+      
+      - name: "detect_emotions"
+        action: "classify"
+        model: "emotion_analyzer"
+        constraints: ["privacy_protection"]
+      
+      - name: "assess_urgency"
+        action: "analyze"
+        model: "urgency_detector"
+        prompt: "urgency_assessment_prompt"
+        constraints: ["response_time_limit", "privacy_protection"]
+      
+      - name: "synthesize_analysis"
+        action: "generate"
+        model: "urgency_detector"
+        prompt: "sentiment_analysis_prompt"
+        constraints: ["privacy_protection"]
+
+  - id: "detect_emotional_crisis"
+    name: "Detect Emotional Crisis"
+    description: "Detect if customer is in emotional distress requiring immediate attention"
+    type: "classification"
+    priority: "critical"
+    
+    input:
+      message:
+        type: "string"
+        required: true
+        description: "Customer message to analyze"
+      conversation_history:
+        type: "array"
+        required: false
+        description: "Previous conversation context"
+    
+    output:
+      crisis_detected:
+        type: "boolean"
+        description: "Whether emotional crisis is detected"
+      crisis_level:
+        type: "string"
+        enum: ["low", "medium", "high", "critical"]
+        description: "Level of emotional crisis"
+      recommended_action:
+        type: "string"
+        enum: ["monitor", "escalate", "immediate_intervention"]
+        description: "Recommended action based on crisis level"
+      crisis_indicators:
+        type: "array"
+        items:
+          type: "string"
+        description: "Specific crisis indicators found"
+    
+    steps:
+      - name: "analyze_crisis_indicators"
+        action: "analyze"
+        model: "urgency_detector"
+        prompt: "urgency_assessment_prompt"
+        constraints: ["privacy_protection"]
+      
+      - name: "assess_crisis_level"
+        action: "classify"
+        model: "emotion_analyzer"
+        constraints: ["privacy_protection"]
+      
+      - name: "determine_action"
+        action: "generate"
+        model: "urgency_detector"
+        prompt: "urgency_assessment_prompt"
+        constraints: ["privacy_protection"]
+
+  - id: "track_sentiment_trends"
+    name: "Track Sentiment Trends"
+    description: "Track sentiment trends over time for customer relationship management"
+    type: "analysis"
+    priority: "medium"
+    
+    input:
+      customer_id:
+        type: "string"
+        required: true
+        description: "Customer ID to track"
+      time_period:
+        type: "string"
+        enum: ["day", "week", "month", "quarter"]
+        required: true
+        description: "Time period for trend analysis"
+    
+    output:
+      sentiment_trend:
+        type: "string"
+        enum: ["improving", "declining", "stable", "volatile"]
+        description: "Overall sentiment trend"
+      trend_data:
+        type: "array"
+        description: "Detailed trend data points"
+      recommendations:
+        type: "array"
+        items:
+          type: "string"
+        description: "Recommendations based on trend analysis"
+    
+    steps:
+      - name: "retrieve_historical_data"
+        action: "search"
+        source: "customer_sentiment_history"
+        constraints: ["privacy_protection"]
+      
+      - name: "analyze_trends"
+        action: "analyze"
+        model: "urgency_detector"
+        constraints: ["privacy_protection"]
+      
+      - name: "generate_recommendations"
+        action: "generate"
+        model: "urgency_detector"
+        constraints: ["privacy_protection"]
+
+context:
+  memory:
+    type: "persistent"
+    retention: "180d"
+    scope: "per_customer"
+    storage:
+      provider: "redis"
+      ttl: 15552000  # 180 days
+      max_size: "500MB"
+    store:
+      - "sentiment_history"
+      - "emotion_patterns"
+      - "urgency_assessments"
+      - "crisis_indicators"
+    exclude:
+      - "personal_information"
+      - "payment_data"
+      - "passwords"
+  
+  conversation:
+    max_turns: 20
+    context_window: 4000
+    summary_frequency: 10
+    summary_template: |
+      Sentiment Analysis Summary:
+      - Customer: {{customer_id}}
+      - Overall sentiment: {{sentiment}}
+      - Emotional intensity: {{intensity}}
+      - Urgency level: {{urgency}}
+      - Key emotions: {{emotions}}
+      - Crisis indicators: {{crisis_indicators}}
+  
+  business_context:
+    company_info:
+      name: "Example Corp"
+      industry: "Technology"
+      support_policies:
+        - "crisis_intervention_protocol"
+        - "escalation_guidelines"
+        - "sentiment_tracking_policy"
+    
+    knowledge_base:
+      type: "vector"
+      provider: "Pinecone"
+      index_name: "sentiment-analysis-knowledge"
+      embedding_model: "text-embedding-ada-002"
+
+evaluation:
+  metrics:
+    - name: "sentiment_analysis_accuracy"
+      description: "Accuracy of sentiment classification"
+      target: 0.85
+      measurement:
+        method: "automated"
+        sample_size: 1000
+        frequency: "daily"
+        criteria: ["precision", "recall", "f1_score"]
+    
+    - name: "emotion_detection_accuracy"
+      description: "Accuracy of emotion detection"
+      target: 0.80
+      measurement:
+        method: "automated"
+        sample_size: 500
+        frequency: "weekly"
+    
+    - name: "urgency_assessment_accuracy"
+      description: "Accuracy of urgency level assessment"
+      target: 0.90
+      measurement:
+        method: "automated"
+        sample_size: 200
+        frequency: "weekly"
+    
+    - name: "crisis_detection_rate"
+      description: "Rate of correctly detected emotional crises"
+      target: 0.95
+      measurement:
+        method: "manual_review"
+        sample_size: 50
+        frequency: "monthly"
+    
+    - name: "response_time"
+      description: "Average response time for sentiment analysis"
+      target: "< 2s"
+      measurement:
+        method: "automated"
+        frequency: "real_time"
+        percentiles: [50, 95, 99]
+  
+  test_cases:
+    - id: "sentiment_classification_test"
+      name: "Sentiment Classification Test"
+      input: "Test various customer messages for sentiment classification"
+      expected_behavior: "Should correctly classify positive, negative, and neutral sentiments"
+      category: "functional"
+      priority: "high"
+    
+    - id: "emotion_detection_test"
+      name: "Emotion Detection Test"
+      input: "Test emotion detection across different emotional states"
+      expected_behavior: "Should accurately detect and classify emotions"
+      category: "functional"
+      priority: "high"
+    
+    - id: "urgency_assessment_test"
+      name: "Urgency Assessment Test"
+      input: "Test urgency level assessment for various scenarios"
+      expected_behavior: "Should correctly assess urgency levels"
+      category: "functional"
+      priority: "high"
+    
+    - id: "crisis_detection_test"
+      name: "Crisis Detection Test"
+      input: "Test detection of emotional crisis situations"
+      expected_behavior: "Should accurately detect crisis situations and recommend appropriate actions"
+      category: "safety"
+      priority: "critical"
+
+extensions:
+  vision_support: false
+  multilingual: true
+  audio_processing: false
+  real_time_processing: true
+
+  mcp_support: true
+  automation_support: true
+  
+  advanced:
+    sentiment_analysis:
+      enabled: true
+      models:
+        - "sentiment_classifier"
+        - "emotion_analyzer"
+        - "urgency_detector"
+      real_time_processing: true
+      batch_processing: true
+      trend_analysis: true
+      crisis_detection: true
+
+validation:
+  schema_version: "0.1.0"
+  required_sections: ["openapia", "info", "models", "prompts", "tasks", "context"]
+  
+  custom_validators:
+    - name: "sentiment_model_validator"
+      description: "Validates that sentiment analysis models are properly configured"
+    - name: "crisis_detection_validator"
+      description: "Validates that crisis detection logic is properly implemented"
+    - name: "privacy_compliance_validator"
+      description: "Validates that privacy protection measures are in place"
+
+governance:
+  maintainers:
+    - name: "Sentiment Analysis Team Lead"
+      email: "sentiment-lead@example.com"
+      role: "maintainer"
+  
+  contributors:
+    - name: "ML Engineering Team"
+      email: "ml-engineering@example.com"
+      role: "contributor"
+    - name: "Psychology Consultant"
+      email: "psychology@example.com"
+      role: "advisor"
+  
+  review_process: "Technical review with psychology consultant input"
+  approval_required: 2
+  testing_required: true
+  documentation_required: true
+  
+  update_process:
+    versioning: "semantic"
+    breaking_changes: "require migration guide"
+    deprecation_notice: "3 months minimum"
+    migration_guide: "required for breaking changes"

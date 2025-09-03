@@ -1332,10 +1332,6 @@
                 "real_time_processing": {
                     "type": "boolean"
                 },
-                "multi_agent_support": {
-                    "type": "boolean",
-                    "description": "Multi-agent system support (planned for v0.2.0)"
-                },
                 "mcp_support": {
                     "type": "boolean",
                     "description": "Model Context Protocol support"
@@ -1386,30 +1382,6 @@
                                     "items": {
                                         "type": "object"
                                     }
-                                }
-                            }
-                        },
-                        "multi_agent": {
-                            "type": "object",
-                            "description": "Multi-agent system configuration (planned for v0.2.0)",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "agents": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object"
-                                    },
-                                    "description": "Agent definitions"
-                                },
-                                "orchestration": {
-                                    "type": "object",
-                                    "description": "Coordination strategy"
-                                },
-                                "communication": {
-                                    "type": "object",
-                                    "description": "Inter-agent communication"
                                 }
                             }
                         },

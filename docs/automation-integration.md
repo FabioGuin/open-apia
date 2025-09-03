@@ -352,8 +352,9 @@ See the following example files for complete implementations:
 
 Planned features for future OpenAPIA versions:
 
-- **Multi-agent Automation**: Support for complex multi-agent workflows
 - **Dynamic Automation Discovery**: Automatic discovery of available automations
 - **Advanced Monitoring**: Real-time dashboards and alerting
 - **Automation Templates**: Reusable automation patterns
 - **Cross-platform Orchestration**: Coordination between different automation platforms
+
+**Note**: Multi-agent automation is already supported through hierarchical composition and MCP integration. See the [Multi-Agent Systems Guide](multi-agent-systems.md) for details.

@@ -1,0 +1,477 @@
+# OpenAPIA 0.1 - Multi-Agent Customer Support System
+# Example showing how to create a multi-agent system using hierarchical composition
+
+openapia: "0.1.0"
+
+info:
+  title: "Multi-Agent Customer Support System"
+  version: "1.0.0"
+  description: "Customer support system with specialized agents for sentiment analysis, order processing, FAQ responses, and escalation management"
+  author: "Support AI Team"
+  license: "MIT"
+  contact:
+    email: "support-ai@example.com"
+    url: "https://support.example.com/ai"
+  
+  ai_metadata:
+    domain: "customer_support"
+    complexity: "high"
+    deployment: "production"
+    last_updated: "2024-01-15T16:00:00Z"
+    supported_languages: ["en", "es", "fr", "de"]
+    
+    hierarchy_info:
+      level: "orchestrator"
+      scope: "multi_agent"
+      inheritance_mode: "merge"
+
+# Inherit from specialized agent specifications
+inherits:
+  - "./agents/sentiment-analyzer.yaml"
+  - "./agents/order-processor.yaml"
+  - "./agents/faq-responder.yaml"
+  - "./agents/escalation-manager.yaml"
+
+models:
+  - id: "orchestrator_llm"
+    type: "LLM"
+    provider: "OpenAI"
+    name: "GPT-4"
+    version: "4.0"
+    purpose: "Agent coordination and routing"
+    capabilities: ["analysis", "routing", "coordination", "synthesis"]
+    parameters:
+      temperature: 0.2
+      max_tokens: 1500
+      top_p: 0.8
+    limits:
+      max_input_tokens: 128000
+      max_output_tokens: 1500
+      requests_per_minute: 200
+
+prompts:
+  - id: "routing_prompt"
+    role: "system"
+    style: "analytical"
+    language: "en"
+    template: |
+      You are an intelligent routing system for customer support inquiries.
+      
+      Your job is to analyze customer messages and determine the best agent to handle them:
+      
+      AVAILABLE AGENTS:
+      - sentiment-analyzer: For emotional analysis and urgency detection
+      - order-processor: For order-related questions and issues
+      - faq-responder: For general questions and information requests
+      - escalation-manager: For complex issues requiring human intervention
+      
+      ROUTING RULES:
+      1. If the message contains order numbers, shipping info, or payment issues → route to order-processor
+      2. If the message shows strong emotions (anger, frustration, urgency) → route to escalation-manager
+      3. If the message asks general questions about products, policies, or procedures → route to faq-responder
+      4. If the message tone is unclear or mixed → route to sentiment-analyzer first
+      
+      Always provide clear reasoning for your routing decision.
+    variables:
+      customer_message:
+        type: "string"
+        required: true
+        description: "The customer's message to analyze"
+
+  - id: "multi_agent_response_synthesis"
+    role: "system"
+    style: "professional"
+    language: "en"
+    template: |
+      You are synthesizing responses from multiple specialized agents into a coherent, helpful response for the customer.
+      
+      AGENT RESPONSES TO SYNTHESIZE:
+      {{agent_responses}}
+      
+      SYNTHESIS GUIDELINES:
+      1. Combine insights from all relevant agents
+      2. Maintain a consistent, professional tone
+      3. Address all aspects of the customer's inquiry
+      4. Provide clear next steps when appropriate
+      5. Ensure the response feels unified, not like multiple separate responses
+      
+      If there are conflicting recommendations, prioritize the most customer-friendly approach.
+    variables:
+      agent_responses:
+        type: "array"
+        required: true
+        description: "Responses from multiple agents"
+
+constraints:
+  - id: "multi_agent_response_time"
+    name: "Multi-Agent Response Time"
+    type: "performance"
+    rule: "total_response_time < 10s"
+    severity: "high"
+    enforcement: "automatic"
+    description: "Ensure multi-agent coordination completes within acceptable time"
+    actions: ["timeout_fallback", "log_performance"]
+  
+  - id: "agent_coordination_consistency"
+    name: "Agent Coordination Consistency"
+    type: "content_safety"
+    rule: "agent_responses_consistent"
+    severity: "medium"
+    enforcement: "monitoring"
+    description: "Ensure agent responses are consistent with each other"
+    actions: ["log_inconsistency", "escalate_if_severe"]
+
+tasks:
+  - id: "route_customer_inquiry"
+    name: "Route Customer Inquiry"
+    description: "Analyze and route customer inquiries to appropriate specialized agents"
+    type: "analysis"
+    priority: "high"
+    
+    input:
+      customer_message:
+        type: "string"
+        required: true
+        description: "Customer's message or inquiry"
+      customer_id:
+        type: "string"
+        required: false
+        description: "Customer ID if available"
+      session_id:
+        type: "string"
+        required: true
+        description: "Session identifier for tracking"
+    
+    output:
+      routing_decision:
+        type: "object"
+        description: "Routing decision with reasoning"
+      selected_agents:
+        type: "array"
+        description: "List of agents to involve"
+      priority:
+        type: "string"
+        enum: ["low", "medium", "high", "urgent"]
+        description: "Inquiry priority level"
+    
+    steps:
+      - name: "analyze_inquiry"
+        action: "analyze"
+        model: "orchestrator_llm"
+        prompt: "routing_prompt"
+        constraints: ["multi_agent_response_time"]
+      
+      - name: "determine_agent_sequence"
+        action: "generate"
+        model: "orchestrator_llm"
+        prompt: "routing_prompt"
+        constraints: ["agent_coordination_consistency"]
+
+  - id: "coordinate_multi_agent_response"
+    name: "Coordinate Multi-Agent Response"
+    description: "Coordinate multiple agents to provide comprehensive customer support"
+    type: "conversational"
+    priority: "high"
+    
+    input:
+      customer_message:
+        type: "string"
+        required: true
+        description: "Customer's message"
+      routing_decision:
+        type: "object"
+        required: true
+        description: "Routing decision from route_customer_inquiry task"
+      customer_context:
+        type: "object"
+        required: false
+        description: "Additional customer context"
+    
+    output:
+      final_response:
+        type: "string"
+        description: "Synthesized response from multiple agents"
+      agent_contributions:
+        type: "array"
+        description: "Contributions from each agent"
+      escalation_required:
+        type: "boolean"
+        description: "Whether human escalation is needed"
+    
+    steps:
+      # Step 1: Get sentiment analysis
+      - name: "analyze_sentiment"
+        action: "escalate"
+        conditions:
+          - if: "routing_decision.requires_sentiment_analysis == true"
+            then: "get_order_info"
+        target_agent: "sentiment-analyzer"
+        parameters:
+          message: "${input.customer_message}"
+      
+      # Step 2: Get order information if relevant
+      - name: "get_order_info"
+        action: "escalate"
+        conditions:
+          - if: "routing_decision.inquiry_type == 'order'"
+            then: "get_faq_response"
+        target_agent: "order-processor"
+        parameters:
+          customer_message: "${input.customer_message}"
+          customer_id: "${input.customer_context.customer_id}"
+      
+      # Step 3: Get FAQ response if needed
+      - name: "get_faq_response"
+        action: "escalate"
+        conditions:
+          - if: "routing_decision.inquiry_type == 'general'"
+            then: "check_escalation_need"
+        target_agent: "faq-responder"
+        parameters:
+          question: "${input.customer_message}"
+          context: "${input.customer_context}"
+      
+      # Step 4: Check if escalation is needed
+      - name: "check_escalation_need"
+        action: "escalate"
+        conditions:
+          - if: "sentiment.urgency == 'high' OR routing_decision.complexity == 'high'"
+            then: "synthesize_responses"
+        target_agent: "escalation-manager"
+        parameters:
+          customer_message: "${input.customer_message}"
+          sentiment_analysis: "${sentiment}"
+          routing_decision: "${input.routing_decision}"
+      
+      # Step 5: Synthesize all agent responses
+      - name: "synthesize_responses"
+        action: "generate"
+        model: "orchestrator_llm"
+        prompt: "multi_agent_response_synthesis"
+        constraints: ["multi_agent_response_time", "agent_coordination_consistency"]
+
+  - id: "handle_escalation"
+    name: "Handle Escalation"
+    description: "Handle cases that require human agent intervention"
+    type: "escalation"
+    priority: "critical"
+    
+    input:
+      customer_message:
+        type: "string"
+        required: true
+        description: "Original customer message"
+      escalation_reason:
+        type: "string"
+        required: true
+        description: "Reason for escalation"
+      agent_analysis:
+        type: "object"
+        required: true
+        description: "Analysis from all involved agents"
+    
+    output:
+      escalation_ticket:
+        type: "object"
+        description: "Escalation ticket information"
+      priority_level:
+        type: "string"
+        enum: ["low", "medium", "high", "urgent"]
+        description: "Escalation priority"
+      human_agent_notes:
+        type: "string"
+        description: "Notes for human agent"
+    
+    steps:
+      - name: "create_escalation_ticket"
+        action: "escalate"
+        target_agent: "escalation-manager"
+        parameters:
+          customer_message: "${input.customer_message}"
+          escalation_reason: "${input.escalation_reason}"
+          agent_analysis: "${input.agent_analysis}"
+
+context:
+  memory:
+    type: "persistent"
+    retention: "90d"
+    scope: "per_user"
+    storage:
+      provider: "redis"
+      ttl: 7776000  # 90 days
+      max_size: "1GB"
+    store:
+      - "conversation_history"
+      - "agent_interactions"
+      - "routing_decisions"
+      - "escalation_history"
+    exclude:
+      - "payment_information"
+      - "passwords"
+      - "api_keys"
+  
+  conversation:
+    max_turns: 50
+    context_window: 12000
+    summary_frequency: 15
+    summary_template: |
+      Multi-Agent Customer Support Summary:
+      - Customer: {{customer_id}}
+      - Agents involved: {{agents_used}}
+      - Main topics: {{topics}}
+      - Routing decisions: {{routing_decisions}}
+      - Escalation status: {{escalation_status}}
+  
+  business_context:
+    company_info:
+      name: "Example Corp"
+      industry: "Technology"
+      products: ["SaaS Platform", "Mobile App", "API Services"]
+      policies:
+        - "return_policy"
+        - "shipping_policy"
+        - "privacy_policy"
+        - "support_sla"
+    
+    knowledge_base:
+      type: "vector"
+      provider: "Pinecone"
+      index_name: "multi-agent-support"
+      embedding_model: "text-embedding-ada-002"
+
+evaluation:
+  metrics:
+    - name: "multi_agent_coordination_time"
+      description: "Time to coordinate all agents"
+      target: "< 8s"
+      measurement:
+        method: "automated"
+        sample_size: 1000
+        frequency: "real_time"
+        percentiles: [50, 95, 99]
+    
+    - name: "agent_routing_accuracy"
+      description: "Accuracy of agent routing decisions"
+      target: 0.95
+      measurement:
+        method: "automated"
+        sample_size: 500
+        frequency: "daily"
+    
+    - name: "multi_agent_response_quality"
+      description: "Quality of synthesized multi-agent responses"
+      target: 4.5
+      measurement:
+        method: "survey"
+        sample_size: 100
+        frequency: "weekly"
+        scale: "1-5"
+    
+    - name: "escalation_rate"
+      description: "Rate of escalations to human agents"
+      target: "< 15%"
+      measurement:
+        method: "automated"
+        frequency: "daily"
+  
+  test_cases:
+    - id: "multi_agent_routing_test"
+      name: "Multi-Agent Routing Test"
+      input: "Test various customer inquiries for proper agent routing"
+      expected_behavior: "Inquiries should be routed to appropriate agents based on content and context"
+      category: "functional"
+      priority: "high"
+    
+    - id: "agent_coordination_test"
+      name: "Agent Coordination Test"
+      input: "Test coordination between multiple agents"
+      expected_behavior: "Agents should coordinate effectively and provide consistent responses"
+      category: "functional"
+      priority: "high"
+    
+    - id: "escalation_handling_test"
+      name: "Escalation Handling Test"
+      input: "Test escalation scenarios"
+      expected_behavior: "System should properly escalate complex cases to human agents"
+      category: "functional"
+      priority: "high"
+
+extensions:
+  vision_support: false
+  multilingual: true
+  audio_processing: false
+  real_time_processing: true
+
+  mcp_support: true
+  automation_support: true
+  
+  advanced:
+    mcp:
+      enabled: true
+      default_timeout: 30
+      retry_policy:
+        max_retries: 3
+        backoff_strategy: "exponential"
+        initial_delay: 1000
+      connection_pool:
+        max_connections: 20
+        idle_timeout: 300
+      monitoring:
+        enabled: true
+        metrics_collection: true
+        health_check_interval: 60
+    
+    automation:
+      enabled: true
+      default_timeout: 300
+      retry_policy:
+        max_retries: 2
+        backoff_strategy: "exponential"
+        initial_delay: 2000
+      monitoring:
+        enabled: true
+        health_check_interval: 60
+        metrics_collection: true
+
+validation:
+  schema_version: "0.1.0"
+  required_sections: ["openapia", "info", "models", "prompts", "tasks", "context"]
+  
+  custom_validators:
+    - name: "multi_agent_routing_validator"
+      description: "Validates that routing logic properly references available agents"
+    - name: "agent_coordination_validator"
+      description: "Validates that agent coordination tasks are properly defined"
+    - name: "escalation_flow_validator"
+      description: "Validates that escalation flows are complete and logical"
+
+governance:
+  maintainers:
+    - name: "Support AI Team Lead"
+      email: "support-ai-lead@example.com"
+      role: "maintainer"
+  
+  contributors:
+    - name: "Sentiment Analysis Team"
+      email: "sentiment-team@example.com"
+      role: "contributor"
+    - name: "Order Processing Team"
+      email: "order-team@example.com"
+      role: "contributor"
+    - name: "FAQ Team"
+      email: "faq-team@example.com"
+      role: "contributor"
+    - name: "Escalation Team"
+      email: "escalation-team@example.com"
+      role: "contributor"
+  
+  review_process: "Multi-team review with AI team lead approval"
+  approval_required: 2
+  testing_required: true
+  documentation_required: true
+  
+  update_process:
+    versioning: "semantic"
+    breaking_changes: "require migration guide"
+    deprecation_notice: "3 months minimum"
+    migration_guide: "required for breaking changes"

@@ -293,7 +293,7 @@ extensions:
   multilingual: true
   audio_processing: false
   real_time_processing: true
-  multi_agent_support: false
+
   mcp_support: true
   
   advanced:

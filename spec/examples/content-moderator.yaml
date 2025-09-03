@@ -478,7 +478,7 @@ extensions:
   multilingual: true
   audio_processing: false
   real_time_processing: true
-  multi_agent_support: false
+
 
 validation:
   schema_version: "0.1.0"

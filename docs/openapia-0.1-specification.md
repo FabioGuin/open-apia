@@ -1585,11 +1585,7 @@ This field allows AI systems to inherit configurations from parent specification
 **Required:** No  
 **Description:** Whether the system supports real-time processing.
 
-#### extensions.multi_agent_support
 
-**Type:** `boolean`  
-**Required:** No  
-**Description:** Whether the system supports multi-agent architectures (planned for v0.2.0).
 
 #### extensions.mcp_support
 
@@ -1663,34 +1659,7 @@ This field allows AI systems to inherit configurations from parent specification
 **Required:** No  
 **Description:** Multimodal models configuration.
 
-##### extensions.advanced.multi_agent
-
-**Type:** `object`  
-**Required:** No  
-**Description:** Multi-agent system configuration (planned for v0.2.0).
-
-###### extensions.advanced.multi_agent.enabled
-
-**Type:** `boolean`  
-**Required:** No  
-**Description:** Whether multi-agent capabilities are enabled.
-
-###### extensions.advanced.multi_agent.agents
-
-**Type:** `array[object]`  
-**Required:** No  
-**Description:** Agent definitions for multi-agent systems.
-
-###### extensions.advanced.multi_agent.orchestration
-
-**Type:** `object`  
-**Required:** No  
-**Description:** Coordination strategy for multi-agent systems.
-
-###### extensions.advanced.multi_agent.communication
-
-**Type:** `object`  
-**Required:** No  
+  
 **Description:** Inter-agent communication configuration.
 
 ##### extensions.advanced.mcp
