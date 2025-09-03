@@ -2,7 +2,7 @@
 ## A Comprehensive Standard for AI System Documentation and Validation
 
 **Version 1.0**  
-**January 2024**
+**September 2025**
 
 ---
 
