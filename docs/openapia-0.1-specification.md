@@ -26,11 +26,12 @@ See `spec/README.md` for detailed explanation of each file type and usage.
 6. [Prompts](#prompts)
 7. [Constraints](#constraints)
 8. [Tasks](#tasks)
-9. [Context](#context)
-10. [Evaluation](#evaluation)
-11. [Extensions](#extensions)
-12. [Validation](#validation)
-13. [Governance](#governance)
+9. [Automations](#automations)
+10. [Context](#context)
+11. [Evaluation](#evaluation)
+12. [Extensions](#extensions)
+13. [Validation](#validation)
+14. [Governance](#governance)
 
 ## Introduction
 
@@ -649,7 +650,7 @@ This field allows AI systems to inherit configurations from parent specification
 
 **Type:** `string`  
 **Required:** Yes  
-**Enum:** `["analyze", "generate", "validate", "search", "escalate", "classify", "mcp_tool", "mcp_resource"]`  
+**Enum:** `["analyze", "generate", "validate", "search", "escalate", "classify", "mcp_tool", "mcp_resource", "automation"]`  
 **Description:** The action to perform in this step.
 
 ##### tasks[].steps[].model
@@ -694,6 +695,24 @@ This field allows AI systems to inherit configurations from parent specification
 **Required:** No  
 **Description:** Parameters to pass to the MCP tool or resource.
 
+##### tasks[].steps[].automation
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Reference to an automation ID to trigger (if action is automation).
+
+##### tasks[].steps[].automation_parameters
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Parameters to pass to the automation.
+
+##### tasks[].steps[].check_automation
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Reference to an automation ID to check status (for wait actions).
+
 ##### tasks[].steps[].constraints
 
 **Type:** `array[string]`  
@@ -717,6 +736,272 @@ This field allows AI systems to inherit configurations from parent specification
 **Type:** `string`  
 **Required:** Yes  
 **Description:** Next step or action to take if condition is true.
+
+## Automations
+
+### automations
+
+**Type:** `array[object]`  
+**Required:** No  
+**Description:** External automation workflows that can be triggered by the AI system. This section enables declarative integration with automation platforms like n8n, Zapier, Microsoft Power Automate, and custom webhooks.
+
+**Philosophy:** OpenAPIA follows a declarative approach to automation integration. Instead of describing the internal logic of automation workflows, it declares where and when external automations should be triggered, maintaining clear separation of concerns between AI logic and automation workflows.
+
+**Key Benefits:**
+- **Vendor Agnostic**: Works with any automation platform
+- **Maintainable**: AI logic remains separate from automation details  
+- **Monitored**: Built-in health checks and performance metrics
+- **Secure**: Configurable authentication and data validation
+
+#### automations[].id
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** Unique identifier for the automation.
+
+#### automations[].name
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** Human-readable name of the automation.
+
+#### automations[].description
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** Detailed description of what the automation does.
+
+#### automations[].provider
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** The automation platform provider (e.g., "n8n", "zapier", "power_automate", "custom").
+
+#### automations[].version
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Version of the automation workflow.
+
+#### automations[].trigger
+
+**Type:** `object`  
+**Required:** Yes  
+**Description:** Configuration for how the automation is triggered.
+
+##### automations[].trigger.type
+
+**Type:** `string`  
+**Required:** Yes  
+**Enum:** `["webhook", "scheduled", "event", "manual"]`  
+**Description:** The type of trigger for the automation.
+
+##### automations[].trigger.endpoint
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Webhook endpoint URL (if type is webhook).
+
+##### automations[].trigger.method
+
+**Type:** `string`  
+**Required:** No  
+**Description:** HTTP method for webhook triggers (e.g., "POST", "GET").
+
+##### automations[].trigger.schedule
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Cron expression for scheduled triggers.
+
+##### automations[].trigger.authentication
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Authentication configuration for the trigger.
+
+###### automations[].trigger.authentication.type
+
+**Type:** `string`  
+**Required:** Yes  
+**Enum:** `["none", "api_key", "bearer", "basic"]`  
+**Description:** Authentication type for the trigger.
+
+###### automations[].trigger.authentication.header
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Header name for API key authentication.
+
+###### automations[].trigger.authentication.value
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Authentication value (API key, token, etc.).
+
+##### automations[].trigger.conditions
+
+**Type:** `array[string]`  
+**Required:** No  
+**Description:** Conditions that must be met for the automation to trigger.
+
+#### automations[].integration
+
+**Type:** `object`  
+**Required:** Yes  
+**Description:** Integration configuration for the external automation platform.
+
+##### automations[].integration.type
+
+**Type:** `string`  
+**Required:** Yes  
+**Enum:** `["external_workflow", "webhook", "api_call", "zap", "flow"]`  
+**Description:** The type of integration with the automation platform.
+
+##### automations[].integration.workflow_id
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Identifier for the external workflow (e.g., n8n workflow ID).
+
+##### automations[].integration.environment
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Environment where the automation runs (e.g., "production", "staging").
+
+##### automations[].integration.timeout
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Maximum time to wait for automation completion.
+
+##### automations[].integration.retry_policy
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Retry configuration for failed automation executions.
+
+###### automations[].integration.retry_policy.max_retries
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Maximum number of retry attempts.
+
+###### automations[].integration.retry_policy.backoff_strategy
+
+**Type:** `string`  
+**Required:** No  
+**Enum:** `["linear", "exponential"]`  
+**Description:** Backoff strategy for retries.
+
+###### automations[].integration.retry_policy.initial_delay
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Initial delay in milliseconds before first retry.
+
+#### automations[].data_contract
+
+**Type:** `object`  
+**Required:** Yes  
+**Description:** Contract defining the data structure for automation input and output.
+
+##### automations[].data_contract.input
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Schema for input data sent to the automation.
+
+##### automations[].data_contract.output
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Schema for output data returned by the automation.
+
+#### automations[].monitoring
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Monitoring and health check configuration for the automation.
+
+##### automations[].monitoring.health_check
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Health check configuration.
+
+###### automations[].monitoring.health_check.endpoint
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Health check endpoint URL.
+
+###### automations[].monitoring.health_check.interval
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Health check interval (e.g., "1m", "5m").
+
+###### automations[].monitoring.health_check.timeout
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Health check timeout (e.g., "10s", "30s").
+
+##### automations[].monitoring.metrics
+
+**Type:** `array[object]`  
+**Required:** No  
+**Description:** Metrics to track for the automation.
+
+###### automations[].monitoring.metrics[].name
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** Name of the metric.
+
+###### automations[].monitoring.metrics[].description
+
+**Type:** `string`  
+**Required:** Yes  
+**Description:** Description of what the metric measures.
+
+###### automations[].monitoring.metrics[].target
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Target value for the metric.
+
+#### automations[].metadata
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Additional metadata for the automation.
+
+##### automations[].metadata.tags
+
+**Type:** `array[string]`  
+**Required:** No  
+**Description:** Tags for categorizing the automation.
+
+##### automations[].metadata.category
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Category of the automation (e.g., "business_process", "data_processing", "notification").
+
+##### automations[].metadata.maintainer
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Team or person responsible for maintaining the automation.
+
+##### automations[].metadata.documentation_url
+
+**Type:** `string`  
+**Required:** No  
+**Description:** URL to documentation for the automation.
 
 ## Context
 
@@ -1312,6 +1597,12 @@ This field allows AI systems to inherit configurations from parent specification
 **Required:** No  
 **Description:** Whether the system supports Model Context Protocol (MCP) servers.
 
+#### extensions.automation_support
+
+**Type:** `boolean`  
+**Required:** No  
+**Description:** Whether the system supports external automation workflows.
+
 #### extensions.advanced
 
 **Type:** `object`  
@@ -1486,6 +1777,121 @@ This field allows AI systems to inherit configurations from parent specification
 **Type:** `number`  
 **Required:** No  
 **Description:** Health check interval in seconds.
+
+##### extensions.advanced.automation
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Advanced automation configuration.
+
+###### extensions.advanced.automation.enabled
+
+**Type:** `boolean`  
+**Required:** No  
+**Description:** Whether advanced automation features are enabled.
+
+###### extensions.advanced.automation.default_timeout
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Default timeout for automation operations in seconds.
+
+###### extensions.advanced.automation.retry_policy
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Default retry configuration for failed automation operations.
+
+####### extensions.advanced.automation.retry_policy.max_retries
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Maximum number of retry attempts.
+
+####### extensions.advanced.automation.retry_policy.backoff_strategy
+
+**Type:** `string`  
+**Required:** No  
+**Enum:** `["linear", "exponential"]`  
+**Description:** Backoff strategy for retries.
+
+####### extensions.advanced.automation.retry_policy.initial_delay
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Initial delay in milliseconds before first retry.
+
+###### extensions.advanced.automation.monitoring
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Automation monitoring configuration.
+
+####### extensions.advanced.automation.monitoring.enabled
+
+**Type:** `boolean`  
+**Required:** No  
+**Description:** Whether automation monitoring is enabled.
+
+####### extensions.advanced.automation.monitoring.health_check_interval
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Health check interval in seconds.
+
+####### extensions.advanced.automation.monitoring.metrics_collection
+
+**Type:** `boolean`  
+**Required:** No  
+**Description:** Whether to collect automation performance metrics.
+
+###### extensions.advanced.automation.providers
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Configuration for specific automation providers.
+
+####### extensions.advanced.automation.providers.n8n
+
+**Type:** `object`  
+**Required:** No  
+**Description:** n8n automation platform configuration.
+
+######## extensions.advanced.automation.providers.n8n.base_url
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Base URL for n8n instance.
+
+######## extensions.advanced.automation.providers.n8n.api_version
+
+**Type:** `string`  
+**Required:** No  
+**Description:** API version for n8n.
+
+######## extensions.advanced.automation.providers.n8n.timeout
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Default timeout for n8n operations in seconds.
+
+####### extensions.advanced.automation.providers.zapier
+
+**Type:** `object`  
+**Required:** No  
+**Description:** Zapier automation platform configuration.
+
+######## extensions.advanced.automation.providers.zapier.base_url
+
+**Type:** `string`  
+**Required:** No  
+**Description:** Base URL for Zapier webhooks.
+
+######## extensions.advanced.automation.providers.zapier.timeout
+
+**Type:** `number`  
+**Required:** No  
+**Description:** Default timeout for Zapier operations in seconds.
 
 ## Validation
 

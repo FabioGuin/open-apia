@@ -128,7 +128,7 @@ tasks:              # Declarative workflows
     
     steps:          # Task execution steps
       - name: string  # Step name
-        action: string  # Action type: analyze, generate, validate, search, escalate, classify, mcp_tool, mcp_resource
+        action: string  # Action type: analyze, generate, validate, search, escalate, classify, mcp_tool, mcp_resource, automation
         model: string  # Referenced model ID
         prompt: string  # Referenced prompt ID
         source: string  # Data source
@@ -136,10 +136,64 @@ tasks:              # Declarative workflows
         mcp_tool: string  # MCP tool name (if action is mcp_tool)
         mcp_resource: string  # MCP resource name (if action is mcp_resource)
         mcp_parameters: object  # Parameters for MCP tool/resource
+        automation: string  # Referenced automation ID (if action is automation)
+        automation_parameters: object  # Parameters for automation
+        check_automation: string  # Automation ID to check status (for wait actions)
         constraints: [string]  # Referenced constraint IDs
         conditions:    # Conditional execution
           - if: string  # Condition expression
             then: string  # Next step or action
+
+# =============================================================================
+# AUTOMATIONS
+# =============================================================================
+automations:        # External automation workflows
+  - id: string      # Unique automation identifier
+    name: string    # Automation name
+    description: string  # Automation description
+    provider: string  # Automation provider: n8n, zapier, power_automate, custom
+    version: string  # Automation version
+    
+    trigger:        # Trigger configuration
+      type: string  # Trigger type: webhook, scheduled, event, manual
+      endpoint: string  # Webhook endpoint URL
+      method: string  # HTTP method for webhooks
+      schedule: string  # Cron expression for scheduled triggers
+      authentication:  # Authentication configuration
+        type: string  # Auth type: none, api_key, bearer, basic
+        header: string  # Header name for API key
+        value: string  # Authentication value
+      conditions: [string]  # Trigger conditions
+    
+    integration:    # Integration configuration
+      type: string  # Integration type: external_workflow, webhook, api_call, zap, flow
+      workflow_id: string  # External workflow identifier
+      environment: string  # Environment: production, staging, development
+      timeout: string  # Maximum execution time
+      retry_policy:  # Retry configuration
+        max_retries: number
+        backoff_strategy: string  # linear, exponential
+        initial_delay: number
+    
+    data_contract:  # Data contract definition
+      input: object  # Input data schema
+      output: object  # Output data schema
+    
+    monitoring:     # Monitoring configuration
+      health_check:  # Health check configuration
+        endpoint: string  # Health check URL
+        interval: string  # Check interval
+        timeout: string  # Health check timeout
+      metrics:  # Metrics to track
+        - name: string
+          description: string
+          target: string
+    
+    metadata:       # Additional metadata
+      tags: [string]  # Automation tags
+      category: string  # Automation category
+      maintainer: string  # Maintainer information
+      documentation_url: string  # Documentation URL
 
 # =============================================================================
 # CONTEXT
@@ -254,6 +308,7 @@ extensions:         # Optional extensions
   real_time_processing: boolean  # Real-time processing support
   multi_agent_support: boolean  # Multi-agent system support (planned for v0.2.0)
   mcp_support: boolean  # Model Context Protocol support
+  automation_support: boolean  # External automation workflows support
   
   advanced:         # Advanced configurations
     computer_vision:  # Computer vision configuration
@@ -285,6 +340,26 @@ extensions:         # Optional extensions
         enabled: boolean
         metrics_collection: boolean
         health_check_interval: number
+    
+    automation:     # Automation configuration
+      enabled: boolean
+      default_timeout: number  # Default timeout for automation operations
+      retry_policy: object  # Retry configuration
+        max_retries: number
+        backoff_strategy: string  # linear, exponential
+        initial_delay: number
+      monitoring: object  # Automation monitoring configuration
+        enabled: boolean
+        health_check_interval: number
+        metrics_collection: boolean
+      providers: object  # Provider-specific configuration
+        n8n: object  # n8n configuration
+          base_url: string
+          api_version: string
+          timeout: number
+        zapier: object  # Zapier configuration
+          base_url: string
+          timeout: number
 
 # =============================================================================
 # VALIDATION

@@ -21,10 +21,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Example MCP integration specification (`spec/examples/mcp-integration.yaml`)
   - Updated documentation with complete MCP reference
 
+- **Automation Integration**: Declarative integration with external automation platforms
+  - New `automations` section for defining external automation workflows
+  - Support for multiple automation providers: n8n, Zapier, Microsoft Power Automate, custom webhooks
+  - Trigger configuration: webhook, scheduled, event, and manual triggers
+  - Data contracts for explicit input/output schemas
+  - Monitoring and health check configuration
+  - New task action: `automation` for triggering external workflows
+  - Task step fields: `automation`, `automation_parameters`, `check_automation`
+  - Advanced automation configuration in `extensions.advanced.automation`
+  - Provider-specific settings for n8n, Zapier, and other platforms
+  - Example specifications: e-commerce automation (`spec/examples/ecommerce-automation.yaml`) and Zapier integration (`spec/examples/zapier-automation.yaml`)
+  - Complete automation integration guide (`docs/automation-integration.md`)
+
 ### Changed
-- Extended task step actions to include MCP operations
+- Extended task step actions to include MCP operations and automation triggers
 - Enhanced context section with MCP server configuration
 - Updated validators to support MCP validation and cross-references
+- Extended task step actions to include automation operations
+- Enhanced extensions section with automation support configuration
+- Updated JSON schema to include automation validation
 
 ### Deprecated
 - Nothing yet

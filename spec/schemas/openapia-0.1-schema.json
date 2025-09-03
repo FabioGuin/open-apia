@@ -6,13 +6,7 @@
     "type": "object",
     "required": [
         "openapia",
-        "info",
-        "models",
-        "prompts",
-        "constraints",
-        "tasks",
-        "context",
-        "evaluation"
+        "info"
     ],
     "properties": {
         "openapia": {
@@ -570,7 +564,8 @@
                                         "escalate",
                                         "classify",
                                         "mcp_tool",
-                                        "mcp_resource"
+                                        "mcp_resource",
+                                        "automation"
                                     ],
                                     "description": "Action type"
                                 },
@@ -602,6 +597,18 @@
                                     "type": "object",
                                     "description": "Parameters for MCP tool/resource"
                                 },
+                                "automation": {
+                                    "type": "string",
+                                    "description": "Referenced automation ID (if action is automation)"
+                                },
+                                "automation_parameters": {
+                                    "type": "object",
+                                    "description": "Parameters for automation"
+                                },
+                                "check_automation": {
+                                    "type": "string",
+                                    "description": "Automation ID to check status (for wait actions)"
+                                },
                                 "constraints": {
                                     "type": "array",
                                     "items": {
@@ -629,6 +636,222 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "automations": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "provider",
+                    "trigger",
+                    "integration",
+                    "data_contract"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique automation identifier"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Automation name"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Automation description"
+                    },
+                    "provider": {
+                        "type": "string",
+                        "description": "Automation platform provider"
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Automation version"
+                    },
+                    "trigger": {
+                        "type": "object",
+                        "required": [
+                            "type"
+                        ],
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "webhook",
+                                    "scheduled",
+                                    "event",
+                                    "manual"
+                                ],
+                                "description": "Trigger type"
+                            },
+                            "endpoint": {
+                                "type": "string",
+                                "description": "Webhook endpoint URL"
+                            },
+                            "method": {
+                                "type": "string",
+                                "description": "HTTP method for webhook triggers"
+                            },
+                            "schedule": {
+                                "type": "string",
+                                "description": "Cron expression for scheduled triggers"
+                            },
+                            "authentication": {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "none",
+                                            "api_key",
+                                            "bearer",
+                                            "basic"
+                                        ]
+                                    },
+                                    "header": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "conditions": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Trigger conditions"
+                            }
+                        }
+                    },
+                    "integration": {
+                        "type": "object",
+                        "required": [
+                            "type"
+                        ],
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "external_workflow",
+                                    "webhook",
+                                    "api_call",
+                                    "zap",
+                                    "flow"
+                                ],
+                                "description": "Integration type"
+                            },
+                            "workflow_id": {
+                                "type": "string",
+                                "description": "External workflow identifier"
+                            },
+                            "environment": {
+                                "type": "string",
+                                "description": "Environment where automation runs"
+                            },
+                            "timeout": {
+                                "type": "string",
+                                "description": "Maximum execution time"
+                            },
+                            "retry_policy": {
+                                "type": "object",
+                                "properties": {
+                                    "max_retries": {
+                                        "type": "number"
+                                    },
+                                    "backoff_strategy": {
+                                        "type": "string",
+                                        "enum": [
+                                            "linear",
+                                            "exponential"
+                                        ]
+                                    },
+                                    "initial_delay": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "data_contract": {
+                        "type": "object",
+                        "properties": {
+                            "input": {
+                                "type": "object",
+                                "description": "Input data schema"
+                            },
+                            "output": {
+                                "type": "object",
+                                "description": "Output data schema"
+                            }
+                        }
+                    },
+                    "monitoring": {
+                        "type": "object",
+                        "properties": {
+                            "health_check": {
+                                "type": "object",
+                                "properties": {
+                                    "endpoint": {
+                                        "type": "string"
+                                    },
+                                    "interval": {
+                                        "type": "string"
+                                    },
+                                    "timeout": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "metrics": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "required": [
+                                        "name",
+                                        "description"
+                                    ],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "target": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "metadata": {
+                        "type": "object",
+                        "properties": {
+                            "tags": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "category": {
+                                "type": "string"
+                            },
+                            "maintainer": {
+                                "type": "string"
+                            },
+                            "documentation_url": {
+                                "type": "string"
                             }
                         }
                     }
@@ -1117,6 +1340,10 @@
                     "type": "boolean",
                     "description": "Model Context Protocol support"
                 },
+                "automation_support": {
+                    "type": "boolean",
+                    "description": "External automation workflows support"
+                },
                 "advanced": {
                     "type": "object",
                     "properties": {
@@ -1237,6 +1464,81 @@
                                         },
                                         "health_check_interval": {
                                             "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "automation": {
+                            "type": "object",
+                            "description": "Automation configuration",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "default_timeout": {
+                                    "type": "number",
+                                    "description": "Default timeout for automation operations"
+                                },
+                                "retry_policy": {
+                                    "type": "object",
+                                    "properties": {
+                                        "max_retries": {
+                                            "type": "number"
+                                        },
+                                        "backoff_strategy": {
+                                            "type": "string",
+                                            "enum": [
+                                                "linear",
+                                                "exponential"
+                                            ]
+                                        },
+                                        "initial_delay": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "monitoring": {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "health_check_interval": {
+                                            "type": "number"
+                                        },
+                                        "metrics_collection": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "providers": {
+                                    "type": "object",
+                                    "properties": {
+                                        "n8n": {
+                                            "type": "object",
+                                            "properties": {
+                                                "base_url": {
+                                                    "type": "string"
+                                                },
+                                                "api_version": {
+                                                    "type": "string"
+                                                },
+                                                "timeout": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        },
+                                        "zapier": {
+                                            "type": "object",
+                                            "properties": {
+                                                "base_url": {
+                                                    "type": "string"
+                                                },
+                                                "timeout": {
+                                                    "type": "number"
+                                                }
+                                            }
                                         }
                                     }
                                 }

@@ -12,6 +12,7 @@ OpenAPIA is an open, vendor-agnostic standard for describing, documenting, and v
 - **AI-Native Design**: Models, prompts, and constraints as first-class entities
 - **Vendor Agnostic**: Works with any AI provider (OpenAI, Anthropic, Google, etc.)
 - **Multi-Modal Support**: LLM, Vision, Audio, and Multimodal AI systems
+- **Automation Integration**: Declarative integration with n8n, Zapier, and other automation platforms
 - **Built-in Ethics**: Mandatory fields for safety, bias prevention, and explainability
 - **Comprehensive Evaluation**: Metrics for accuracy, performance, and safety
 - **Extensible**: Support for custom use cases and domain-specific requirements
@@ -119,9 +120,15 @@ go run validators/go/cli.go validate spec/my-ai-system.yaml
 
 Check out our [examples directory](spec/examples/) for complete implementations:
 
+### Core AI Examples
 - [Customer Support AI](spec/examples/customer-support.yaml) - E-commerce assistant
 - [Content Moderator](spec/examples/content-moderator.yaml) - AI-powered content filtering
 - [Multilingual Chatbot](spec/examples/multilingual-chatbot.yaml) - Multi-language support
+
+### Automation Integration Examples
+- [E-commerce with n8n](spec/examples/ecommerce-automation.yaml) - Complete order processing with automation workflows
+- [Customer Support with Zapier](spec/examples/zapier-automation.yaml) - Simple webhook-based automation integration
+- [MCP Integration](spec/examples/mcp-integration.yaml) - Model Context Protocol server integration
 
 ## Hierarchical Composition
 
@@ -209,6 +216,73 @@ node validators/javascript/cli.js -f spec.yaml
 go run validators/go/. -f spec.yaml
 ```
 
+## Automation Integration
+
+OpenAPIA 0.1 introduces declarative integration with external automation platforms, enabling AI systems to trigger and coordinate with automation workflows without tight coupling.
+
+### Supported Platforms
+
+- **n8n**: Complex business process automation
+- **Zapier**: Simple integrations and notifications  
+- **Microsoft Power Automate**: Enterprise workflows
+- **Custom Webhooks**: Legacy system connections
+
+### Example: E-commerce Order Processing
+
+```yaml
+automations:
+  - id: "order_processing_workflow"
+    name: "Order Processing Automation"
+    provider: "n8n"
+    
+    trigger:
+      type: "webhook"
+      endpoint: "/webhooks/order-created"
+      conditions:
+        - "order_status == 'validated'"
+    
+    integration:
+      type: "external_workflow"
+      workflow_id: "n8n://workflows/order-processing"
+      timeout: "5m"
+    
+    data_contract:
+      input:
+        order_id:
+          type: "string"
+          required: true
+        customer_id:
+          type: "string"
+          required: true
+      output:
+        processing_status:
+          type: "string"
+          enum: ["processing", "shipped", "delivered", "failed"]
+
+tasks:
+  - id: "process_order"
+    steps:
+      - name: "trigger_processing"
+        action: "automation"
+        automation: "order_processing_workflow"
+        automation_parameters:
+          order_id: "${input.order_id}"
+          customer_id: "${input.customer_id}"
+```
+
+### Key Benefits
+
+- **Declarative**: Define what automations to trigger, not how
+- **Vendor Agnostic**: Works with any automation platform
+- **Monitored**: Built-in health checks and metrics
+- **Secure**: Configurable authentication and validation
+
+### Documentation
+
+- **[Automation Integration Guide](docs/automation-integration.md)** - Complete guide with examples and best practices
+- **[E-commerce Example](spec/examples/ecommerce-automation.yaml)** - Full n8n integration example
+- **[Zapier Example](spec/examples/zapier-automation.yaml)** - Simple webhook integration example
+
 ## Contributing
 
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
@@ -232,8 +306,8 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Roadmap
 
-- [x] **v0.1.0** - Core specification and validators (Python, PHP, JavaScript, Go)
-- [ ] **v0.2.0** - Multi-agent support and advanced features
+- [x] **v0.1.0** - Core specification, validators, and automation integration
+- [ ] **v0.2.0** - Multi-agent support and advanced automation features
 - [ ] **v0.3.0** - CLI tools and documentation generator
 - [ ] **v1.0.0** - Community governance and ecosystem
 

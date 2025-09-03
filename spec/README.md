@@ -11,7 +11,10 @@ spec/
 │   ├── openapia-0.1-example.json  # Complete example in JSON format
 │   ├── content-moderator.yaml     # Content moderation example
 │   ├── customer-support.yaml      # Customer support example
-│   └── multilingual-chatbot.yaml  # Multilingual chatbot example
+│   ├── multilingual-chatbot.yaml  # Multilingual chatbot example
+│   ├── mcp-integration.yaml       # Model Context Protocol integration
+│   ├── ecommerce-automation.yaml  # E-commerce with n8n automation
+│   └── zapier-automation.yaml     # Customer support with Zapier
 └── schemas/                        # Validation schemas
     └── openapia-0.1-schema.json   # JSON Schema for validation
 ```
@@ -34,6 +37,16 @@ spec/
   - Real-world use cases
   - Different complexity levels
   - Reference implementations
+
+#### Core AI Examples
+- **`content-moderator.yaml`** - AI-powered content filtering system
+- **`customer-support.yaml`** - E-commerce customer support assistant
+- **`multilingual-chatbot.yaml`** - Multi-language chatbot implementation
+
+#### Integration Examples
+- **`mcp-integration.yaml`** - Model Context Protocol server integration
+- **`ecommerce-automation.yaml`** - Complete e-commerce system with n8n automation workflows
+- **`zapier-automation.yaml`** - Customer support with Zapier webhook automation
 
 ### 3. Validation Schemas
 - **`schemas/openapia-0.1-schema.json`** - JSON Schema for validation

@@ -1,0 +1,673 @@
+# OpenAPIA 0.1 - E-commerce AI with Automation Integration Example
+# Complete example showing integration with n8n automation workflows
+
+openapia: "0.1.0"
+
+info:
+  title: "E-commerce AI with Automation Integration"
+  version: "1.0.0"
+  description: "AI-powered e-commerce system with n8n automation workflows for order processing, inventory management, and customer onboarding"
+  author: "E-commerce AI Team"
+  license: "MIT"
+  contact:
+    email: "ai-team@ecommerce.com"
+    url: "https://ecommerce.com/ai"
+  
+  ai_metadata:
+    domain: "e-commerce"
+    complexity: "high"
+    deployment: "production"
+    last_updated: "2024-01-15T14:30:00Z"
+    supported_languages: ["en", "es", "fr", "de", "it"]
+    
+    hierarchy_info:
+      level: "team"
+      parent_specs: ["../openapia-global.yaml"]
+      scope: "project"
+      inheritance_mode: "merge"
+
+models:
+  - id: "customer_service_llm"
+    type: "LLM"
+    provider: "OpenAI"
+    name: "GPT-4"
+    version: "4.0"
+    purpose: "Customer service and support"
+    capabilities: ["conversation", "analysis", "problem-solving", "multilingual"]
+    parameters:
+      temperature: 0.3
+      max_tokens: 2000
+      top_p: 0.9
+    limits:
+      max_input_tokens: 128000
+      max_output_tokens: 2000
+      requests_per_minute: 100
+  
+  - id: "product_recommender"
+    type: "LLM"
+    provider: "Anthropic"
+    name: "Claude-3"
+    version: "3.0"
+    purpose: "Product recommendations"
+    capabilities: ["recommendation", "analysis", "personalization"]
+    parameters:
+      temperature: 0.2
+      max_tokens: 1000
+      top_p: 0.8
+
+prompts:
+  - id: "customer_service_system"
+    role: "system"
+    style: "professional"
+    language: "en"
+    template: |
+      You are an expert e-commerce customer service assistant for {{company_name}}.
+      
+      COMPANY CONTEXT:
+      - Company: {{company_name}}
+      - Industry: {{industry}}
+      - Products: {{product_categories}}
+      - Policies: {{company_policies}}
+      
+      CAPABILITIES:
+      - Answer product questions
+      - Help with orders and shipping
+      - Process returns and exchanges
+      - Provide personalized recommendations
+      - Escalate complex issues to human agents
+      
+      AUTOMATION INTEGRATION:
+      You can trigger automated workflows for:
+      - Order processing and fulfillment
+      - Inventory updates
+      - Customer onboarding
+      - Marketing campaigns
+      
+      Always be helpful, accurate, and maintain a professional tone.
+    variables:
+      company_name:
+        type: "string"
+        required: true
+        default: "TechStore"
+      industry:
+        type: "string"
+        required: true
+        default: "e-commerce"
+      product_categories:
+        type: "array"
+        required: true
+        default: ["electronics", "clothing", "home", "books"]
+      company_policies:
+        type: "array"
+        required: true
+        default: ["return_policy", "shipping_policy", "privacy_policy"]
+
+constraints:
+  - id: "data_privacy"
+    name: "Customer Data Privacy"
+    type: "privacy"
+    rule: "no_pii_exposure"
+    severity: "critical"
+    enforcement: "automatic"
+    description: "Protect customer personal and payment information"
+    actions: ["sanitize", "log", "alert", "escalate"]
+  
+  - id: "response_time"
+    name: "Response Time Limit"
+    type: "performance"
+    rule: "response_time < 3s"
+    severity: "medium"
+    enforcement: "monitoring"
+    description: "Maintain fast response times for customer satisfaction"
+    actions: ["log_performance", "alert_if_exceeded"]
+  
+  - id: "automation_timeout"
+    name: "Automation Timeout"
+    type: "performance"
+    rule: "automation_timeout < 5m"
+    severity: "high"
+    enforcement: "automatic"
+    description: "Prevent automation workflows from hanging"
+    actions: ["timeout_automation", "fallback_response"]
+
+# =============================================================================
+# AUTOMATIONS - External workflow integrations
+# =============================================================================
+automations:
+  - id: "order_processing_workflow"
+    name: "Order Processing Automation"
+    description: "Complete order processing workflow including payment, inventory, and fulfillment"
+    provider: "n8n"
+    version: "1.2.0"
+    
+    trigger:
+      type: "webhook"
+      endpoint: "/webhooks/order-created"
+      method: "POST"
+      authentication:
+        type: "api_key"
+        header: "X-API-Key"
+        value: "${N8N_WEBHOOK_KEY}"
+      conditions:
+        - "order_status == 'validated'"
+        - "payment_status == 'confirmed'"
+        - "inventory_available == true"
+    
+    integration:
+      type: "external_workflow"
+      workflow_id: "n8n://workflows/order-processing"
+      environment: "production"
+      timeout: "5m"
+      retry_policy:
+        max_retries: 3
+        backoff_strategy: "exponential"
+        initial_delay: 1000
+    
+    data_contract:
+      input:
+        order_id:
+          type: "string"
+          required: true
+          description: "Unique order identifier"
+        customer_id:
+          type: "string"
+          required: true
+          description: "Customer identifier"
+        items:
+          type: "array"
+          required: true
+          description: "Order items with quantities"
+        shipping_address:
+          type: "object"
+          required: true
+          description: "Customer shipping address"
+        payment_method:
+          type: "string"
+          required: true
+          description: "Payment method used"
+      
+      output:
+        processing_status:
+          type: "string"
+          enum: ["processing", "shipped", "delivered", "failed"]
+          description: "Current processing status"
+        tracking_number:
+          type: "string"
+          required: false
+          description: "Shipping tracking number"
+        estimated_delivery:
+          type: "string"
+          format: "date"
+          description: "Estimated delivery date"
+        fulfillment_center:
+          type: "string"
+          description: "Fulfillment center handling the order"
+    
+    monitoring:
+      health_check:
+        endpoint: "https://n8n.ecommerce.com/health/order-processing"
+        interval: "1m"
+        timeout: "10s"
+      metrics:
+        - name: "processing_time"
+          description: "Average order processing time"
+          target: "< 2m"
+        - name: "success_rate"
+          description: "Successful processing rate"
+          target: "> 99%"
+    
+    metadata:
+      tags: ["order", "fulfillment", "inventory"]
+      category: "business_process"
+      maintainer: "Operations Team"
+      documentation_url: "https://docs.ecommerce.com/automations/order-processing"
+  
+  - id: "inventory_management_workflow"
+    name: "Inventory Management Automation"
+    description: "Automated inventory updates and low-stock alerts"
+    provider: "n8n"
+    version: "1.1.0"
+    
+    trigger:
+      type: "scheduled"
+      schedule: "0 */6 * * *"  # Every 6 hours
+      conditions:
+        - "inventory_sync_enabled == true"
+    
+    integration:
+      type: "external_workflow"
+      workflow_id: "n8n://workflows/inventory-management"
+      environment: "production"
+      timeout: "10m"
+    
+    data_contract:
+      input:
+        sync_type:
+          type: "string"
+          enum: ["full", "incremental"]
+          default: "incremental"
+        product_categories:
+          type: "array"
+          required: false
+          description: "Specific categories to sync"
+      
+      output:
+        sync_status:
+          type: "string"
+          enum: ["completed", "partial", "failed"]
+        products_updated:
+          type: "number"
+          description: "Number of products updated"
+        low_stock_alerts:
+          type: "array"
+          description: "Products with low stock"
+        reorder_recommendations:
+          type: "array"
+          description: "Recommended reorder quantities"
+    
+    monitoring:
+      health_check:
+        endpoint: "https://n8n.ecommerce.com/health/inventory"
+        interval: "5m"
+      metrics:
+        - name: "sync_duration"
+          description: "Inventory sync duration"
+          target: "< 5m"
+        - name: "accuracy_rate"
+          description: "Inventory accuracy rate"
+          target: "> 98%"
+  
+  - id: "customer_onboarding_workflow"
+    name: "Customer Onboarding Automation"
+    description: "Automated welcome sequence and account setup"
+    provider: "n8n"
+    version: "1.0.0"
+    
+    trigger:
+      type: "webhook"
+      endpoint: "/webhooks/customer-registered"
+      method: "POST"
+      conditions:
+        - "customer_status == 'new'"
+        - "email_verified == true"
+    
+    integration:
+      type: "external_workflow"
+      workflow_id: "n8n://workflows/customer-onboarding"
+      environment: "production"
+      timeout: "3m"
+    
+    data_contract:
+      input:
+        customer_id:
+          type: "string"
+          required: true
+        email:
+          type: "string"
+          format: "email"
+          required: true
+        first_name:
+          type: "string"
+          required: true
+        preferences:
+          type: "object"
+          required: false
+      
+      output:
+        onboarding_status:
+          type: "string"
+          enum: ["started", "completed", "failed"]
+        welcome_email_sent:
+          type: "boolean"
+        preferences_set:
+          type: "boolean"
+        recommendations_generated:
+          type: "boolean"
+    
+    monitoring:
+      health_check:
+        endpoint: "https://n8n.ecommerce.com/health/onboarding"
+        interval: "2m"
+      metrics:
+        - name: "completion_rate"
+          description: "Onboarding completion rate"
+          target: "> 95%"
+        - name: "engagement_score"
+          description: "Customer engagement score"
+          target: "> 7.0"
+
+tasks:
+  - id: "handle_customer_inquiry"
+    name: "Customer Inquiry Handler"
+    description: "Process customer questions and provide assistance"
+    type: "conversational"
+    priority: "high"
+    
+    input:
+      message:
+        type: "string"
+        required: true
+        description: "Customer message"
+      customer_id:
+        type: "string"
+        required: false
+        description: "Customer ID if available"
+      session_id:
+        type: "string"
+        required: true
+        description: "Session identifier"
+    
+    output:
+      response:
+        type: "string"
+        description: "AI-generated response"
+      actions_taken:
+        type: "array"
+        description: "List of actions performed"
+      requires_followup:
+        type: "boolean"
+        description: "Whether follow-up is needed"
+    
+    steps:
+      - name: "analyze_inquiry"
+        action: "analyze"
+        model: "customer_service_llm"
+        prompt: "customer_service_system"
+        constraints: ["data_privacy", "response_time"]
+      
+      - name: "check_order_status"
+        action: "automation"
+        automation: "order_processing_workflow"
+        conditions:
+          - if: "inquiry_type == 'order_status'"
+            then: "format_response"
+        mcp_parameters:
+          query_type: "status_check"
+          order_id: "${input.order_id}"
+      
+      - name: "generate_response"
+        action: "generate"
+        model: "customer_service_llm"
+        prompt: "customer_service_system"
+        constraints: ["data_privacy", "response_time"]
+      
+      - name: "trigger_followup_automation"
+        action: "automation"
+        automation: "customer_onboarding_workflow"
+        conditions:
+          - if: "requires_followup == true"
+            then: "complete"
+        mcp_parameters:
+          followup_type: "customer_support"
+          customer_id: "${input.customer_id}"
+  
+  - id: "process_new_order"
+    name: "New Order Processor"
+    description: "Process and validate new customer orders"
+    type: "analysis"
+    priority: "critical"
+    
+    input:
+      order_data:
+        type: "object"
+        required: true
+        description: "Complete order information"
+      customer_id:
+        type: "string"
+        required: true
+        description: "Customer identifier"
+    
+    output:
+      validation_result:
+        type: "object"
+        description: "Order validation results"
+      processing_status:
+        type: "string"
+        description: "Order processing status"
+      automation_triggered:
+        type: "boolean"
+        description: "Whether automation was triggered"
+    
+    steps:
+      - name: "validate_order"
+        action: "validate"
+        model: "customer_service_llm"
+        constraints: ["data_privacy"]
+      
+      - name: "check_inventory"
+        action: "automation"
+        automation: "inventory_management_workflow"
+        mcp_parameters:
+          action: "check_availability"
+          items: "${input.order_data.items}"
+      
+      - name: "trigger_order_processing"
+        action: "automation"
+        automation: "order_processing_workflow"
+        conditions:
+          - if: "validation_result.valid == true"
+            then: "monitor_processing"
+        mcp_parameters:
+          order_id: "${input.order_data.order_id}"
+          customer_id: "${input.customer_id}"
+          items: "${input.order_data.items}"
+          shipping_address: "${input.order_data.shipping_address}"
+          payment_method: "${input.order_data.payment_method}"
+      
+      - name: "monitor_processing"
+        action: "wait"
+        timeout: "5m"
+        check_automation: "order_processing_workflow"
+        conditions:
+          - if: "processing_status == 'completed'"
+            then: "complete"
+          - if: "processing_status == 'failed'"
+            then: "escalate"
+
+context:
+  memory:
+    type: "persistent"
+    retention: "90d"
+    scope: "per_user"
+    storage:
+      provider: "redis"
+      ttl: 7776000  # 90 days
+      max_size: "1GB"
+    store:
+      - "conversation_history"
+      - "customer_preferences"
+      - "order_history"
+      - "automation_states"
+    exclude:
+      - "payment_information"
+      - "passwords"
+      - "api_keys"
+  
+  conversation:
+    max_turns: 100
+    context_window: 8000
+    summary_frequency: 20
+    summary_template: |
+      Customer Support Conversation Summary:
+      - Customer: {{customer_id}}
+      - Main topics: {{topics}}
+      - Actions taken: {{actions}}
+      - Automation triggers: {{automations}}
+      - Resolution status: {{status}}
+  
+  business_context:
+    company_info:
+      name: "TechStore"
+      industry: "e-commerce"
+      products: ["electronics", "clothing", "home", "books"]
+      policies:
+        - "return_policy"
+        - "shipping_policy"
+        - "privacy_policy"
+        - "terms_of_service"
+    
+    knowledge_base:
+      type: "vector"
+      provider: "Pinecone"
+      index_name: "ecommerce-knowledge"
+      embedding_model: "text-embedding-ada-002"
+  
+  mcp_servers:
+    - id: "order-database-server"
+      name: "Order Database MCP Server"
+      description: "Provides access to order and customer data"
+      version: "1.0.0"
+      transport:
+        type: "stdio"
+        command: "python"
+        args: ["-m", "order_db_mcp_server"]
+      capabilities:
+        tools: ["get_order", "update_order", "search_orders", "get_customer"]
+        resources: ["db://orders/*", "db://customers/*"]
+      authentication:
+        type: "api_key"
+        api_key: "${ORDER_DB_API_KEY}"
+      security:
+        allowed_operations: ["read", "update"]
+        rate_limits:
+          requests_per_minute: 100
+          requests_per_hour: 2000
+        timeout: 30
+
+evaluation:
+  metrics:
+    - name: "automation_success_rate"
+      description: "Success rate of automation workflows"
+      target: 0.99
+      measurement:
+        method: "automated"
+        sample_size: 1000
+        frequency: "hourly"
+    
+    - name: "automation_response_time"
+      description: "Average automation response time"
+      target: "< 2m"
+      measurement:
+        method: "automated"
+        frequency: "real_time"
+        percentiles: [50, 95, 99]
+    
+    - name: "customer_satisfaction"
+      description: "Customer satisfaction with AI + automation"
+      target: 4.5
+      measurement:
+        method: "survey"
+        sample_size: 100
+        frequency: "weekly"
+        scale: "1-5"
+    
+    - name: "order_processing_efficiency"
+      description: "Orders processed per hour"
+      target: 100
+      measurement:
+        method: "system_metrics"
+        frequency: "hourly"
+  
+  test_cases:
+    - id: "automation-integration-test"
+      name: "Automation Integration Test"
+      input: "Test order processing automation"
+      expected_behavior: "Automation should trigger and complete successfully"
+      category: "functional"
+      priority: "high"
+    
+    - id: "automation-timeout-test"
+      name: "Automation Timeout Test"
+      input: "Simulate slow automation response"
+      expected_behavior: "System should timeout gracefully and provide fallback"
+      category: "performance"
+      priority: "medium"
+    
+    - id: "automation-failure-test"
+      name: "Automation Failure Test"
+      input: "Simulate automation failure"
+      expected_behavior: "System should handle failure gracefully and escalate"
+      category: "functional"
+      priority: "high"
+
+extensions:
+  vision_support: false
+  multilingual: true
+  audio_processing: false
+  real_time_processing: true
+  multi_agent_support: false
+  mcp_support: true
+  automation_support: true  # New extension flag
+  
+  advanced:
+    mcp:
+      enabled: true
+      default_timeout: 30
+      retry_policy:
+        max_retries: 3
+        backoff_strategy: "exponential"
+        initial_delay: 1000
+      connection_pool:
+        max_connections: 20
+        idle_timeout: 300
+      monitoring:
+        enabled: true
+        metrics_collection: true
+        health_check_interval: 60
+    
+    automation:
+      enabled: true
+      default_timeout: 300  # 5 minutes
+      retry_policy:
+        max_retries: 2
+        backoff_strategy: "exponential"
+        initial_delay: 2000
+      monitoring:
+        enabled: true
+        health_check_interval: 60
+        metrics_collection: true
+      providers:
+        n8n:
+          base_url: "https://n8n.ecommerce.com"
+          api_version: "v1"
+          timeout: 300
+        zapier:
+          base_url: "https://hooks.zapier.com"
+          timeout: 120
+
+validation:
+  schema_version: "0.1.0"
+  required_sections: ["openapia", "info", "models", "prompts", "automations", "tasks", "context"]
+  
+  custom_validators:
+    - name: "automation_reference_validator"
+      description: "Validates that all automation references in tasks exist in automations section"
+    - name: "automation_data_contract_validator"
+      description: "Validates that automation data contracts are properly defined"
+    - name: "automation_provider_validator"
+      description: "Validates that automation providers are supported and configured"
+
+governance:
+  maintainers:
+    - name: "E-commerce AI Team"
+      email: "ai-team@ecommerce.com"
+      role: "lead"
+  
+  contributors:
+    - name: "Operations Team"
+      email: "ops@ecommerce.com"
+      role: "contributor"
+    - name: "DevOps Team"
+      email: "devops@ecommerce.com"
+      role: "contributor"
+  
+  review_process: "Pull request review with team lead approval"
+  approval_required: 2
+  testing_required: true
+  documentation_required: true
+  
+  update_process:
+    versioning: "semantic"
+    breaking_changes: "require migration guide"
+    deprecation_notice: "3 months minimum"
+    migration_guide: "required for breaking changes"

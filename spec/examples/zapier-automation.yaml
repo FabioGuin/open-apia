@@ -1,0 +1,516 @@
+# OpenAPIA 0.1 - Zapier Automation Integration Example
+# Simple example showing integration with Zapier automation workflows
+
+openapia: "0.1.0"
+
+info:
+  title: "Customer Support AI with Zapier Integration"
+  version: "1.0.0"
+  description: "AI-powered customer support with Zapier automation for notifications and data sync"
+  author: "Support Team"
+  license: "MIT"
+  contact:
+    email: "support@example.com"
+    url: "https://support.example.com"
+  
+  ai_metadata:
+    domain: "customer_support"
+    complexity: "medium"
+    deployment: "production"
+    last_updated: "2024-01-15T12:00:00Z"
+    supported_languages: ["en", "es"]
+
+models:
+  - id: "support-llm"
+    type: "LLM"
+    provider: "OpenAI"
+    name: "GPT-4"
+    version: "4.0"
+    purpose: "Customer support conversations"
+    capabilities: ["conversation", "analysis", "problem-solving"]
+    parameters:
+      temperature: 0.3
+      max_tokens: 1500
+      top_p: 0.9
+
+prompts:
+  - id: "support-system-prompt"
+    role: "system"
+    style: "helpful"
+    language: "en"
+    template: |
+      You are a helpful customer support assistant. You can trigger automated workflows for:
+      - Sending notifications to team members
+      - Creating tickets in external systems
+      - Syncing customer data
+      
+      Always be professional and helpful.
+
+constraints:
+  - id: "data-privacy"
+    name: "Data Privacy Protection"
+    type: "privacy"
+    rule: "no_pii_exposure"
+    severity: "critical"
+    enforcement: "automatic"
+    description: "Protect customer personal information"
+    actions: ["sanitize", "log", "alert"]
+
+# =============================================================================
+# AUTOMATIONS - Zapier Integration Examples
+# =============================================================================
+automations:
+  - id: "team_notification_zap"
+    name: "Team Notification Zap"
+    description: "Send notifications to team members when high-priority issues arise"
+    provider: "zapier"
+    version: "1.0.0"
+    
+    trigger:
+      type: "webhook"
+      endpoint: "https://hooks.zapier.com/hooks/catch/123456/abcdef/"
+      method: "POST"
+      authentication:
+        type: "none"
+      conditions:
+        - "priority == 'high'"
+        - "escalation_required == true"
+    
+    integration:
+      type: "zap"
+      workflow_id: "zap_12345"
+      environment: "production"
+      timeout: "2m"
+      retry_policy:
+        max_retries: 2
+        backoff_strategy: "exponential"
+        initial_delay: 1000
+    
+    data_contract:
+      input:
+        customer_id:
+          type: "string"
+          required: true
+          description: "Customer identifier"
+        issue_type:
+          type: "string"
+          required: true
+          description: "Type of issue"
+        priority:
+          type: "string"
+          enum: ["low", "medium", "high", "urgent"]
+          required: true
+          description: "Issue priority level"
+        message:
+          type: "string"
+          required: true
+          description: "Issue description"
+        team_member:
+          type: "string"
+          required: false
+          description: "Specific team member to notify"
+      
+      output:
+        notification_sent:
+          type: "boolean"
+          description: "Whether notification was sent successfully"
+        notification_id:
+          type: "string"
+          required: false
+          description: "Notification identifier"
+        delivery_status:
+          type: "string"
+          enum: ["sent", "delivered", "failed"]
+          description: "Notification delivery status"
+    
+    monitoring:
+      health_check:
+        endpoint: "https://hooks.zapier.com/hooks/catch/123456/abcdef/health"
+        interval: "5m"
+        timeout: "10s"
+      metrics:
+        - name: "notification_delivery_rate"
+          description: "Percentage of notifications delivered successfully"
+          target: "> 95%"
+        - name: "notification_response_time"
+          description: "Average time to send notification"
+          target: "< 30s"
+    
+    metadata:
+      tags: ["notification", "team", "escalation"]
+      category: "communication"
+      maintainer: "Support Team"
+      documentation_url: "https://docs.example.com/zaps/team-notifications"
+  
+  - id: "ticket_creation_zap"
+    name: "Ticket Creation Zap"
+    description: "Create tickets in external ticketing system for complex issues"
+    provider: "zapier"
+    version: "1.0.0"
+    
+    trigger:
+      type: "webhook"
+      endpoint: "https://hooks.zapier.com/hooks/catch/789012/ghijkl/"
+      method: "POST"
+      authentication:
+        type: "none"
+      conditions:
+        - "requires_ticket == true"
+        - "issue_complexity == 'high'"
+    
+    integration:
+      type: "zap"
+      workflow_id: "zap_67890"
+      environment: "production"
+      timeout: "3m"
+      retry_policy:
+        max_retries: 3
+        backoff_strategy: "exponential"
+        initial_delay: 2000
+    
+    data_contract:
+      input:
+        customer_id:
+          type: "string"
+          required: true
+          description: "Customer identifier"
+        issue_title:
+          type: "string"
+          required: true
+          description: "Ticket title"
+        issue_description:
+          type: "string"
+          required: true
+          description: "Detailed issue description"
+        category:
+          type: "string"
+          enum: ["technical", "billing", "general", "complaint"]
+          required: true
+          description: "Issue category"
+        priority:
+          type: "string"
+          enum: ["low", "medium", "high", "urgent"]
+          required: true
+          description: "Ticket priority"
+        assigned_team:
+          type: "string"
+          required: false
+          description: "Team to assign ticket to"
+      
+      output:
+        ticket_created:
+          type: "boolean"
+          description: "Whether ticket was created successfully"
+        ticket_id:
+          type: "string"
+          required: false
+          description: "Created ticket identifier"
+        ticket_url:
+          type: "string"
+          required: false
+          description: "URL to view the ticket"
+        assignment_status:
+          type: "string"
+          enum: ["assigned", "unassigned", "failed"]
+          description: "Ticket assignment status"
+    
+    monitoring:
+      health_check:
+        endpoint: "https://hooks.zapier.com/hooks/catch/789012/ghijkl/health"
+        interval: "10m"
+        timeout: "15s"
+      metrics:
+        - name: "ticket_creation_success_rate"
+          description: "Percentage of tickets created successfully"
+          target: "> 98%"
+        - name: "ticket_creation_time"
+          description: "Average time to create ticket"
+          target: "< 1m"
+    
+    metadata:
+      tags: ["ticket", "support", "integration"]
+      category: "business_process"
+      maintainer: "Support Team"
+      documentation_url: "https://docs.example.com/zaps/ticket-creation"
+  
+  - id: "customer_data_sync_zap"
+    name: "Customer Data Sync Zap"
+    description: "Sync customer interaction data with CRM system"
+    provider: "zapier"
+    version: "1.0.0"
+    
+    trigger:
+      type: "scheduled"
+      schedule: "0 */2 * * *"  # Every 2 hours
+      conditions:
+        - "sync_enabled == true"
+    
+    integration:
+      type: "zap"
+      workflow_id: "zap_11111"
+      environment: "production"
+      timeout: "5m"
+      retry_policy:
+        max_retries: 2
+        backoff_strategy: "linear"
+        initial_delay: 5000
+    
+    data_contract:
+      input:
+        sync_type:
+          type: "string"
+          enum: ["full", "incremental"]
+          default: "incremental"
+          description: "Type of sync to perform"
+        customer_filter:
+          type: "object"
+          required: false
+          description: "Filter criteria for customers to sync"
+      
+      output:
+        sync_status:
+          type: "string"
+          enum: ["completed", "partial", "failed"]
+          description: "Overall sync status"
+        records_processed:
+          type: "number"
+          description: "Number of customer records processed"
+        records_updated:
+          type: "number"
+          description: "Number of records updated in CRM"
+        sync_duration:
+          type: "string"
+          description: "Time taken to complete sync"
+    
+    monitoring:
+      health_check:
+        endpoint: "https://hooks.zapier.com/hooks/catch/11111/mnopqr/health"
+        interval: "15m"
+        timeout: "20s"
+      metrics:
+        - name: "sync_success_rate"
+          description: "Percentage of successful syncs"
+          target: "> 99%"
+        - name: "sync_duration"
+          description: "Average sync duration"
+          target: "< 3m"
+        - name: "data_accuracy"
+          description: "Data accuracy after sync"
+          target: "> 99.5%"
+    
+    metadata:
+      tags: ["sync", "crm", "data"]
+      category: "data_processing"
+      maintainer: "Data Team"
+      documentation_url: "https://docs.example.com/zaps/customer-sync"
+
+tasks:
+  - id: "handle_customer_inquiry"
+    name: "Customer Inquiry Handler"
+    description: "Process customer questions and trigger appropriate automations"
+    type: "conversational"
+    priority: "high"
+    
+    input:
+      message:
+        type: "string"
+        required: true
+        description: "Customer message"
+      customer_id:
+        type: "string"
+        required: false
+        description: "Customer ID if available"
+      session_id:
+        type: "string"
+        required: true
+        description: "Session identifier"
+    
+    output:
+      response:
+        type: "string"
+        description: "AI-generated response"
+      actions_taken:
+        type: "array"
+        description: "List of actions performed"
+      automations_triggered:
+        type: "array"
+        description: "List of automations triggered"
+    
+    steps:
+      - name: "analyze_inquiry"
+        action: "analyze"
+        model: "support-llm"
+        prompt: "support-system-prompt"
+        constraints: ["data-privacy"]
+      
+      - name: "check_escalation_need"
+        action: "validate"
+        model: "support-llm"
+        conditions:
+          - if: "priority == 'high'"
+            then: "notify_team"
+          - if: "requires_ticket == true"
+            then: "create_ticket"
+      
+      - name: "notify_team"
+        action: "automation"
+        automation: "team_notification_zap"
+        automation_parameters:
+          customer_id: "${input.customer_id}"
+          issue_type: "${analysis.issue_type}"
+          priority: "${analysis.priority}"
+          message: "${input.message}"
+        conditions:
+          - if: "escalation_required == true"
+            then: "generate_response"
+      
+      - name: "create_ticket"
+        action: "automation"
+        automation: "ticket_creation_zap"
+        automation_parameters:
+          customer_id: "${input.customer_id}"
+          issue_title: "${analysis.issue_title}"
+          issue_description: "${analysis.issue_description}"
+          category: "${analysis.category}"
+          priority: "${analysis.priority}"
+        conditions:
+          - if: "requires_ticket == true"
+            then: "generate_response"
+      
+      - name: "generate_response"
+        action: "generate"
+        model: "support-llm"
+        prompt: "support-system-prompt"
+        constraints: ["data-privacy"]
+      
+      - name: "trigger_data_sync"
+        action: "automation"
+        automation: "customer_data_sync_zap"
+        automation_parameters:
+          sync_type: "incremental"
+          customer_filter:
+            customer_id: "${input.customer_id}"
+        conditions:
+          - if: "data_updated == true"
+            then: "complete"
+
+context:
+  memory:
+    type: "persistent"
+    retention: "30d"
+    scope: "per_user"
+    storage:
+      provider: "redis"
+      ttl: 2592000
+      max_size: "100MB"
+    store: ["conversation_history", "customer_preferences", "automation_states"]
+    exclude: ["passwords", "tokens", "pii"]
+  
+  conversation:
+    max_turns: 50
+    context_window: 4000
+    summary_frequency: 10
+    summary_template: "Customer support conversation: {summary}"
+
+evaluation:
+  metrics:
+    - name: "automation_trigger_rate"
+      description: "Percentage of conversations that trigger automations"
+      target: "> 20%"
+      measurement:
+        method: "automated"
+        sample_size: 1000
+        frequency: "daily"
+    
+    - name: "automation_success_rate"
+      description: "Success rate of triggered automations"
+      target: "> 95%"
+      measurement:
+        method: "automated"
+        sample_size: 500
+        frequency: "hourly"
+    
+    - name: "customer_satisfaction"
+      description: "Customer satisfaction with AI + automation responses"
+      target: 4.0
+      measurement:
+        method: "survey"
+        sample_size: 50
+        frequency: "weekly"
+        scale: "1-5"
+  
+  test_cases:
+    - id: "zapier-notification-test"
+      name: "Zapier Notification Test"
+      input: "High priority customer issue"
+      expected_behavior: "Team notification should be sent via Zapier"
+      category: "functional"
+      priority: "high"
+    
+    - id: "zapier-ticket-test"
+      name: "Zapier Ticket Creation Test"
+      input: "Complex technical issue requiring ticket"
+      expected_behavior: "Ticket should be created in external system"
+      category: "functional"
+      priority: "high"
+    
+    - id: "zapier-sync-test"
+      name: "Zapier Data Sync Test"
+      input: "Customer data update"
+      expected_behavior: "Data should sync to CRM system"
+      category: "functional"
+      priority: "medium"
+
+extensions:
+  vision_support: false
+  multilingual: true
+  audio_processing: false
+  real_time_processing: true
+  multi_agent_support: false
+  mcp_support: false
+  automation_support: true
+  
+  advanced:
+    automation:
+      enabled: true
+      default_timeout: 180  # 3 minutes
+      retry_policy:
+        max_retries: 2
+        backoff_strategy: "exponential"
+        initial_delay: 2000
+      monitoring:
+        enabled: true
+        health_check_interval: 300  # 5 minutes
+        metrics_collection: true
+      providers:
+        zapier:
+          base_url: "https://hooks.zapier.com"
+          timeout: 180
+
+validation:
+  schema_version: "0.1.0"
+  required_sections: ["openapia", "info", "models", "prompts", "automations", "tasks"]
+  
+  custom_validators:
+    - name: "automation_reference_validator"
+      description: "Validates that all automation references in tasks exist in automations section"
+    - name: "zapier_webhook_validator"
+      description: "Validates that Zapier webhook URLs are properly formatted"
+    - name: "automation_data_contract_validator"
+      description: "Validates that automation data contracts are properly defined"
+
+governance:
+  maintainers:
+    - name: "Support Team Lead"
+      email: "support-lead@example.com"
+      role: "maintainer"
+  
+  contributors:
+    - name: "Data Team"
+      email: "data@example.com"
+      role: "contributor"
+  
+  review_process: "Pull request review with team lead approval"
+  approval_required: 1
+  testing_required: true
+  documentation_required: true
