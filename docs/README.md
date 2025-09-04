@@ -36,23 +36,45 @@ Welcome to the OpenAPIA documentation. This directory contains comprehensive gui
   - Data contracts and monitoring
   - Best practices and troubleshooting
 
+### Security and Best Practices
+- **[Security Best Practices](security-best-practices.md)** - Managing secrets and environment variables securely
+  - Environment variable management
+  - Secure configuration patterns
+  - Implementation examples
+  - Compliance guidelines
+
+- **[AI Security Considerations](ai-security-considerations.md)** - Comprehensive AI-specific security framework
+  - AI-specific security threats and mitigations
+  - Infrastructure security for AI systems
+  - Operational security and monitoring
+  - Compliance and regulatory considerations
+
+- **[Security Vulnerabilities](security-vulnerabilities.md)** - Common AI security vulnerabilities and prevention
+  - OWASP Top 10 for AI systems
+  - Vulnerability testing and validation
+  - Incident response procedures
+  - Security monitoring and alerting
+
 ## 🎯 Learning Path
 
 ### For Beginners
 1. Start with the **[Getting Started Guide](getting-started.md)**
-2. Create your first simple specification
-3. Validate it using the provided tools
-4. Explore the **[examples directory](../examples/)** for inspiration
+2. Review **[Security Best Practices](security-best-practices.md)** for secure setup
+3. Create your first simple specification
+4. Validate it using the provided tools
+5. Explore the **[examples directory](../examples/)** for inspiration
 
 ### For Intermediate Users
 1. Review the **[OpenAPIA 0.1 Specification](openapia-0.1-specification.md)** for complete reference
 2. Learn **[Hierarchical Composition](hierarchical-composition.md)** for complex systems
 3. Study multi-agent patterns in **[Multi-Agent Systems](multi-agent-systems.md)**
+4. Implement security controls from **[AI Security Considerations](ai-security-considerations.md)**
 
 ### For Advanced Users
 1. Master **[Automation Integration](automation-integration.md)** for enterprise workflows
-2. Build sophisticated multi-agent systems
-3. Contribute to the OpenAPIA ecosystem
+2. Implement comprehensive security from **[Security Vulnerabilities](security-vulnerabilities.md)**
+3. Build sophisticated multi-agent systems with security controls
+4. Contribute to the OpenAPIA ecosystem
 
 ## 🔧 Quick Reference
 
@@ -71,12 +93,19 @@ Welcome to the OpenAPIA documentation. This directory contains comprehensive gui
 - **`automations`** - External automation workflow integration
 - **`extensions`** - Advanced capabilities and configurations
 
+### Security Sections
+- **`constraints`** - Security, privacy, and safety constraints
+- **`mcp_servers`** - Secure Model Context Protocol server configuration
+- **`evaluation.monitoring`** - Security monitoring and incident response
+- **Environment Variables** - Secure credential management with `${VARIABLE_NAME}` syntax
+
 ## 📖 Examples and Templates
 
 See the **[examples directory](../examples/)** for:
 - **Core AI Examples** - Basic AI system implementations
 - **Multi-Agent Examples** - Complex multi-agent systems
 - **Automation Examples** - Integration with external platforms
+- **Security Templates** - Production-ready secure configurations
 - **JSON Templates** - Machine-readable examples for tools
 
 ## 🛠️ Tools and Validation
