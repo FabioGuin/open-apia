@@ -87,7 +87,16 @@ git clone https://github.com/FabioGuin/OpenAPIA.git
 cd OpenAPIA
 ```
 
-### 2. Create Your First OpenAPIA Specification
+### 2. Set Up Environment Variables (Security)
+
+```bash
+# Copy the template and fill in your actual values
+cp .env.example .env
+# Edit .env with your API keys and credentials
+# NEVER commit the .env file to version control
+```
+
+### 3. Create Your First OpenAPIA Specification
 
 #### Simple Specification
 ```yaml
@@ -262,6 +271,9 @@ The specification includes these core sections:
 - **[Hierarchical Composition Guide](docs/hierarchical-composition.md)** - Advanced inheritance and composition patterns
 - **[Multi-Agent Systems Guide](docs/multi-agent-systems.md)** - Building multi-agent systems using existing OpenAPIA features
 - **[Automation Integration Guide](docs/automation-integration.md)** - Integrating with external automation platforms
+- **[Security Best Practices](docs/security-best-practices.md)** - Managing secrets and environment variables securely
+- **[AI Security Considerations](docs/ai-security-considerations.md)** - Comprehensive AI-specific security framework
+- **[Security Vulnerabilities](docs/security-vulnerabilities.md)** - Common AI security vulnerabilities and prevention
 
 ## Tools and Libraries
 

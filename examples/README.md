@@ -21,8 +21,40 @@ examples/
 │   ├── zapier-automation.yaml         # Zapier webhook integration
 │   └── mcp-integration.yaml           # Model Context Protocol integration
 └── templates/                         # Template examples
-    └── basic-template.yaml            # Minimal starting template
+    ├── basic-template.yaml            # Minimal starting template
+    └── security-template.yaml         # Security-focused production template
 ```
+
+## 🔐 Security and Environment Variables
+
+**IMPORTANT**: All examples use environment variables for sensitive data like API keys, passwords, and tokens. 
+
+### Setup Required
+1. Copy the environment template: `cp .env.example .env`
+2. Fill in your actual credentials in the `.env` file
+3. Never commit the `.env` file to version control
+
+### Environment Variable Usage
+Examples use the `${VARIABLE_NAME}` syntax for secure credential management:
+```yaml
+authentication:
+  type: "api_key"
+  api_key: "${OPENAI_API_KEY}"  # Secure API key from environment
+```
+
+See [Security Best Practices](../docs/security-best-practices.md) for complete guidelines.
+
+## 📋 Templates
+
+### [Basic Template](templates/basic-template.yaml)
+**Complexity**: Low  
+**Use Case**: Getting started, simple AI systems  
+**Features**: Minimal configuration, basic security
+
+### [Security Template](templates/security-template.yaml)
+**Complexity**: High  
+**Use Case**: Production systems, enterprise deployments  
+**Features**: Comprehensive security controls, compliance, monitoring
 
 ## 🎯 Examples by Category
 

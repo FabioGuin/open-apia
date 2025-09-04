@@ -115,12 +115,28 @@ context:
     scope: "per_user"  # "per_user", "global", "per_session"
     storage:
       provider: "redis"
+      url: "${REDIS_URL}"  # Use environment variable for Redis connection
+      password: "${REDIS_PASSWORD}"  # Secure password from environment
       ttl: 604800  # 7 days in seconds
     store:
       - "conversation_history"
       - "user_preferences"
     exclude:
       - "sensitive_data"
+      - "api_keys"
+      - "passwords"
+
+# Example: External service integration with secure authentication
+# external_services:
+#   - id: "database_service"
+#     name: "Customer Database"
+#     type: "database"
+#     authentication:
+#       type: "api_key"
+#       api_key: "${DB_API_KEY}"  # Secure API key from environment
+#     security:
+#       headers:
+#         "Authorization": "Bearer ${DB_TOKEN}"  # Secure token from environment
 
 evaluation:
   metrics:

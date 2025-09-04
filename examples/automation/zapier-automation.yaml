@@ -68,7 +68,7 @@ automations:
     
     trigger:
       type: "webhook"
-      endpoint: "https://hooks.zapier.com/hooks/catch/123456/abcdef/"
+      endpoint: "${ZAPIER_WEBHOOK_URL}"
       method: "POST"
       authentication:
         type: "none"
@@ -125,7 +125,7 @@ automations:
     
     monitoring:
       health_check:
-        endpoint: "https://hooks.zapier.com/hooks/catch/123456/abcdef/health"
+        endpoint: "${ZAPIER_WEBHOOK_URL}/health"
         interval: "5m"
         timeout: "10s"
       metrics:
@@ -150,7 +150,7 @@ automations:
     
     trigger:
       type: "webhook"
-      endpoint: "https://hooks.zapier.com/hooks/catch/789012/ghijkl/"
+      endpoint: "${ZAPIER_WEBHOOK_URL_2}"
       method: "POST"
       authentication:
         type: "none"
@@ -216,7 +216,7 @@ automations:
     
     monitoring:
       health_check:
-        endpoint: "https://hooks.zapier.com/hooks/catch/789012/ghijkl/health"
+        endpoint: "${ZAPIER_WEBHOOK_URL_2}/health"
         interval: "10m"
         timeout: "15s"
       metrics:
@@ -284,7 +284,7 @@ automations:
     
     monitoring:
       health_check:
-        endpoint: "https://hooks.zapier.com/hooks/catch/11111/mnopqr/health"
+        endpoint: "${ZAPIER_WEBHOOK_URL_3}/health"
         interval: "15m"
         timeout: "20s"
       metrics:
