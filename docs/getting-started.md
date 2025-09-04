@@ -1,6 +1,6 @@
 # Getting Started with OpenAPIA
 
-This guide will help you get started with OpenAPIA, the open standard for describing AI systems.
+This guide helps you get started with OpenAPIA, an open standard for describing AI systems.
 
 ## Table of Contents
 
@@ -41,15 +41,15 @@ This guide will help you get started with OpenAPIA, the open standard for descri
 
 ## What is OpenAPIA?
 
-OpenAPIA is an open, vendor-agnostic standard for describing, documenting, and validating artificial intelligence systems. It provides a machine-readable format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
+OpenAPIA is an open standard for describing, documenting, and validating artificial intelligence systems. It provides a structured format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
 
 ### Key Features
 
-- **AI-Native Design**: Models, prompts, and constraints as first-class entities
-- **Vendor Agnostic**: Works with any AI provider (OpenAI, Anthropic, Google, etc.)
+- **AI-Focused Design**: Models, prompts, and constraints as core components
+- **Provider Independence**: Works with any AI provider (OpenAI, Anthropic, Google, etc.)
 - **Multi-Modal Support**: LLM, Vision, Audio, and Multimodal AI systems
-- **Built-in Ethics**: Mandatory fields for safety, bias prevention, and explainability
-- **Comprehensive Evaluation**: Metrics for accuracy, performance, and safety
+- **Built-in Ethics**: Required fields for safety, bias prevention, and explainability
+- **Evaluation Framework**: Metrics for accuracy, performance, and safety
 - **Extensible**: Support for custom use cases and domain-specific requirements
 - **Hierarchical Composition**: Inherit and compose specifications across organizational levels
 - **Multi-Environment Support**: Different configurations for dev, staging, and production
@@ -163,7 +163,7 @@ prompts:
 
 ### Constraints
 
-Constraints ensure your AI system behaves safely and ethically:
+Constraints help your AI system behave safely and ethically:
 
 ```yaml
 constraints:
@@ -175,7 +175,7 @@ constraints:
 
 ### Tasks
 
-Tasks define the workflows and business logic:
+Tasks describe the workflows and business logic:
 
 ```yaml
 tasks:
@@ -193,7 +193,7 @@ tasks:
 
 ### Context
 
-Context manages state and memory:
+Context handles state and memory:
 
 ```yaml
 context:
@@ -205,7 +205,7 @@ context:
 
 ### Evaluation
 
-Evaluation defines metrics and tests:
+Evaluation describes metrics and tests:
 
 ```yaml
 evaluation:
@@ -262,9 +262,9 @@ Begin with a basic specification and add complexity gradually.
 
 Choose descriptive IDs and names for your models, prompts, and tasks.
 
-### 3. Define Constraints Early
+### 3. Add Constraints Early
 
-Always include safety and ethical constraints from the start.
+Include safety and ethical constraints from the start.
 
 ### 4. Test Regularly
 

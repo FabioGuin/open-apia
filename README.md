@@ -5,26 +5,26 @@
 
 ## Overview
 
-OpenAPIA is an open, vendor-agnostic standard for describing, documenting, and validating artificial intelligence systems. Inspired by the success of OpenAPI for REST APIs, OpenAPIA provides a machine-readable format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
+OpenAPIA is an open standard for describing, documenting, and validating artificial intelligence systems. Inspired by the success of OpenAPI for REST APIs, OpenAPIA provides a structured format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
 
-**🎯 Generative Map Concept**: The structured YAML specification serves as a **generative map** - a rich, machine-readable blueprint that opens up endless possibilities for automated code generation, documentation creation, system orchestration, and AI infrastructure deployment. The protocol's structured nature makes it an ideal foundation for generative development tools and workflows.
+**🎯 Generative Map Concept**: The structured YAML specification serves as a generative map - a machine-readable blueprint that enables automated code generation, documentation creation, system orchestration, and AI infrastructure deployment. The structured format makes it suitable for generative development tools and workflows.
 
 ## Key Features
 
-- **AI-Native Design**: Models, prompts, and constraints as first-class entities
-- **Vendor Agnostic**: Works with any AI provider (OpenAI, Anthropic, Google, etc.)
+- **AI-Focused Design**: Models, prompts, and constraints as core components
+- **Provider Independence**: Works with any AI provider (OpenAI, Anthropic, Google, etc.)
 - **Multi-Modal Support**: LLM, Vision, Audio, and Multimodal AI systems
-- **Automation Integration**: Declarative integration with n8n, Zapier, and other automation platforms
-- **Built-in Ethics**: Mandatory fields for safety, bias prevention, and explainability
-- **Comprehensive Evaluation**: Metrics for accuracy, performance, and safety
+- **Automation Integration**: Integration with n8n, Zapier, and other automation platforms
+- **Built-in Ethics**: Required fields for safety, bias prevention, and explainability
+- **Evaluation Framework**: Metrics for accuracy, performance, and safety
 - **Extensible**: Support for custom use cases and domain-specific requirements
 - **Hierarchical Composition**: Inherit and compose specifications across organizational levels
 - **Multi-Environment Support**: Different configurations for dev, staging, and production
-- **Generative Potential**: Structured format enables automated code generation, documentation, and system orchestration
+- **Code Generation**: Structured format enables automated code generation, documentation, and system orchestration
 
 ## Generative Map Potential
 
-The OpenAPIA YAML specification's structured nature makes it an ideal foundation for generative development. The protocol's rich metadata and standardized format enable developers to build tools that can automatically create:
+The OpenAPIA YAML specification's structured format makes it suitable for generative development. The protocol's metadata and standardized format help developers build tools that can automatically create:
 
 ### 🔧 Code Generation
 - **API Clients**: Generate client libraries in multiple languages (Python, JavaScript, PHP, Go)
@@ -68,7 +68,7 @@ tasks:
         model: "support_model"
 ```
 
-**The structured format enables developers to build tools that could generate:**
+**The structured format helps developers build tools that could generate:**
 - 🚀 API clients and server implementations
 - 📚 Interactive documentation and guides
 - ⚙️ Automation workflows and integrations
@@ -306,7 +306,7 @@ go run validators/go/. -f spec.yaml
 
 ## Automation Integration
 
-OpenAPIA 0.1 introduces declarative integration with external automation platforms, enabling AI systems to trigger and coordinate with automation workflows without tight coupling.
+OpenAPIA 0.1 includes integration with external automation platforms, allowing AI systems to trigger and coordinate with automation workflows without tight coupling.
 
 ### Supported Platforms
 
@@ -361,7 +361,7 @@ tasks:
 ### Key Benefits
 
 - **Declarative**: Define what automations to trigger, not how
-- **Vendor Agnostic**: Works with any automation platform
+- **Platform Independent**: Works with any automation platform
 - **Monitored**: Built-in health checks and metrics
 - **Secure**: Configurable authentication and validation
 
