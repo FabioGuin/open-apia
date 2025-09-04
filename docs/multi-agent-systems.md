@@ -1,5 +1,59 @@
 # OpenAPIA Multi-Agent Systems
 
+## Table of Contents
+
+1. [Overview](#overview)
+
+2. [Philosophy](#philosophy)
+
+3. [Multi-Agent Patterns](#multi-agent-patterns)
+   - [Pattern 1: Hierarchical Agent Composition](#pattern-1-hierarchical-agent-composition)
+   - [Pattern 2: MCP-Based Agent Networks](#pattern-2-mcp-based-agent-networks)
+   - [Pattern 3: Automation-Driven Orchestration](#pattern-3-automation-driven-orchestration)
+
+4. [Agent Coordination Strategies](#agent-coordination-strategies)
+   - [Sequential Processing](#sequential-processing)
+   - [Parallel Processing](#parallel-processing)
+   - [Conditional Routing](#conditional-routing)
+   - [Feedback Loops](#feedback-loops)
+
+5. [Communication Patterns](#communication-patterns)
+   - [Direct Communication](#direct-communication)
+   - [Event-Driven Communication](#event-driven-communication)
+   - [Shared State Management](#shared-state-management)
+
+6. [Error Handling and Resilience](#error-handling-and-resilience)
+   - [Agent Failure Recovery](#agent-failure-recovery)
+   - [Circuit Breaker Patterns](#circuit-breaker-patterns)
+   - [Fallback Strategies](#fallback-strategies)
+
+7. [Performance Optimization](#performance-optimization)
+   - [Load Balancing](#load-balancing)
+   - [Caching Strategies](#caching-strategies)
+   - [Resource Management](#resource-management)
+
+8. [Monitoring and Observability](#monitoring-and-observability)
+   - [Agent Performance Metrics](#agent-performance-metrics)
+   - [Communication Monitoring](#communication-monitoring)
+   - [System Health Checks](#system-health-checks)
+
+9. [Best Practices](#best-practices)
+   - [Agent Design Principles](#agent-design-principles)
+   - [Coordination Best Practices](#coordination-best-practices)
+   - [Testing Strategies](#testing-strategies)
+
+10. [Examples](#examples)
+    - [Customer Support System](#customer-support-system)
+    - [Content Moderation Pipeline](#content-moderation-pipeline)
+    - [Research Assistant Network](#research-assistant-network)
+
+11. [Advanced Topics](#advanced-topics)
+    - [Dynamic Agent Creation](#dynamic-agent-creation)
+    - [Agent Learning and Adaptation](#agent-learning-and-adaptation)
+    - [Distributed Agent Systems](#distributed-agent-systems)
+
+---
+
 ## Overview
 
 OpenAPIA supports multi-agent systems through its existing features: **Hierarchical Composition**, **MCP Integration**, and **Automation Workflows**. Instead of adding dedicated multi-agent syntax, OpenAPIA leverages these proven patterns to create sophisticated agent coordination.

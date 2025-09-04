@@ -2,6 +2,47 @@
 
 This document identifies common security vulnerabilities in AI systems and how to prevent them using OpenAPIA specifications.
 
+## Table of Contents
+
+1. [OWASP Top 10 for AI Systems](#owasp-top-10-for-ai-systems)
+   - [1. Prompt Injection](#1-prompt-injection-a012021---broken-access-control)
+   - [2. Insecure Output Handling](#2-insecure-output-handling-a022021---cryptographic-failures)
+   - [3. Training Data Poisoning](#3-training-data-poisoning-a032021---injection)
+   - [4. Model Theft](#4-model-theft-a042021---insecure-design)
+   - [5. Supply Chain Vulnerabilities](#5-supply-chain-vulnerabilities-a052021---security-misconfiguration)
+   - [6. Insecure Plugin Design](#6-insecure-plugin-design-a062021---vulnerable-components)
+   - [7. Data Leakage](#7-data-leakage-a072021---identification-failures)
+   - [8. Excessive Agency](#8-excessive-agency-a082021---software-integrity-failures)
+   - [9. Overreliance on AI](#9-overreliance-on-ai-a092021---logging-failures)
+   - [10. Model Skewing](#10-model-skewing-a102021---server-side-request-forgery)
+
+2. [Additional AI-Specific Vulnerabilities](#additional-ai-specific-vulnerabilities)
+   - [11. Adversarial Attacks](#11-adversarial-attacks)
+   - [12. Model Inversion Attacks](#12-model-inversion-attacks)
+   - [13. Membership Inference Attacks](#13-membership-inference-attacks)
+
+3. [Security Testing Framework](#security-testing-framework)
+   - [Automated Security Testing](#automated-security-testing)
+   - [Penetration Testing](#penetration-testing)
+
+4. [Incident Response for AI Security](#incident-response-for-ai-security)
+   - [Security Incident Classification](#security-incident-classification)
+   - [Response Procedures](#response-procedures)
+
+5. [Security Monitoring and Alerting](#security-monitoring-and-alerting)
+   - [Real-time Monitoring](#real-time-monitoring)
+   - [Security Metrics](#security-metrics)
+
+6. [Compliance and Regulatory Considerations](#compliance-and-regulatory-considerations)
+   - [GDPR Compliance](#gdpr-compliance)
+   - [SOC 2 Compliance](#soc-2-compliance)
+
+7. [Security Training and Awareness](#security-training-and-awareness)
+
+8. [Conclusion](#conclusion)
+
+---
+
 ## OWASP Top 10 for AI Systems
 
 ### 1. Prompt Injection (A01:2021 - Broken Access Control)

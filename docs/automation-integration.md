@@ -1,5 +1,67 @@
 # OpenAPIA Automation Integration
 
+## Table of Contents
+
+1. [Overview](#overview)
+
+2. [Philosophy](#philosophy)
+
+3. [Supported Platforms](#supported-platforms)
+   - [n8n](#n8n)
+   - [Zapier](#zapier)
+   - [Microsoft Power Automate](#microsoft-power-automate)
+   - [Custom Webhooks](#custom-webhooks)
+
+4. [Configuration Structure](#configuration-structure)
+   - [Basic Automation Definition](#basic-automation-definition)
+   - [Trigger Configuration](#trigger-configuration)
+   - [Integration Settings](#integration-settings)
+   - [Data Contracts](#data-contracts)
+   - [Monitoring Configuration](#monitoring-configuration)
+
+5. [Automation Types](#automation-types)
+   - [External Workflow](#external-workflow)
+   - [Zap](#zap)
+   - [Flow](#flow)
+   - [Webhook](#webhook)
+
+6. [Task Integration](#task-integration)
+   - [Automation Action](#automation-action)
+   - [Conditional Triggers](#conditional-triggers)
+   - [Data Flow](#data-flow)
+
+7. [Advanced Configuration](#advanced-configuration)
+   - [Multiple Automations](#multiple-automations)
+   - [Automation Chains](#automation-chains)
+   - [Error Handling](#error-handling)
+   - [Retry Policies](#retry-policies)
+
+8. [Monitoring and Health Checks](#monitoring-and-health-checks)
+   - [Health Check Configuration](#health-check-configuration)
+   - [Metrics and KPIs](#metrics-and-kpis)
+   - [Alerting](#alerting)
+
+9. [Best Practices](#best-practices)
+   - [Design Principles](#design-principles)
+   - [Security Considerations](#security-considerations)
+   - [Performance Optimization](#performance-optimization)
+
+10. [Examples](#examples)
+    - [Order Processing Workflow](#order-processing-workflow)
+    - [Customer Notification System](#customer-notification-system)
+    - [Data Synchronization Pipeline](#data-synchronization-pipeline)
+
+11. [Troubleshooting](#troubleshooting)
+    - [Common Issues](#common-issues)
+    - [Debugging Tips](#debugging-tips)
+    - [Performance Issues](#performance-issues)
+
+12. [Migration Guide](#migration-guide)
+    - [From Manual Integration](#from-manual-integration)
+    - [Platform Migration](#platform-migration)
+
+---
+
 ## Overview
 
 OpenAPIA 0.1 introduces declarative integration with external automation platforms, enabling AI systems to trigger and coordinate with automation workflows without becoming tightly coupled to specific automation tools.

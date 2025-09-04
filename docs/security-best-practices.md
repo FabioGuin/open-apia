@@ -2,6 +2,40 @@
 
 This document outlines security best practices for managing sensitive data in OpenAPIA specifications and implementations.
 
+## Table of Contents
+
+1. [Environment Variables and Secrets Management](#environment-variables-and-secrets-management)
+   - [Overview](#overview)
+   - [File Structure](#file-structure)
+   - [Environment Variables Template](#environment-variables-template)
+   - [YAML Configuration](#yaml-configuration)
+   - [Common Patterns](#common-patterns)
+
+2. [Security Guidelines](#security-guidelines)
+   - [1. Never Commit Secrets](#1-never-commit-secrets)
+   - [2. Use Strong, Unique Secrets](#2-use-strong-unique-secrets)
+   - [3. Principle of Least Privilege](#3-principle-of-least-privilege)
+   - [4. Secure Storage](#4-secure-storage)
+   - [5. Monitoring and Logging](#5-monitoring-and-logging)
+
+3. [Implementation Examples](#implementation-examples)
+   - [Basic Setup](#basic-setup)
+   - [Validation](#validation)
+
+4. [Common Security Anti-Patterns](#common-security-anti-patterns)
+
+5. [Environment-Specific Configurations](#environment-specific-configurations)
+   - [Development](#development)
+   - [Production](#production)
+
+6. [Compliance and Standards](#compliance-and-standards)
+
+7. [Additional Resources](#additional-resources)
+
+8. [Support](#support)
+
+---
+
 ## Environment Variables and Secrets Management
 
 ### Overview

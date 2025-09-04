@@ -2,6 +2,43 @@
 
 This guide will help you get started with OpenAPIA, the open standard for describing AI systems.
 
+## Table of Contents
+
+1. [What is OpenAPIA?](#what-is-openapia)
+   - [Key Features](#key-features)
+
+2. [Quick Start](#quick-start)
+   - [1. Clone the Repository](#1-clone-the-repository)
+   - [2. Create Your First Specification](#2-create-your-first-specification)
+   - [3. Validate Your Specification](#3-validate-your-specification)
+
+3. [Understanding the Specification Structure](#understanding-the-specification-structure)
+   - [Basic Structure](#basic-structure)
+   - [Required Fields](#required-fields)
+   - [Optional Fields](#optional-fields)
+
+4. [Core Concepts](#core-concepts)
+   - [Models](#models)
+   - [Prompts](#prompts)
+   - [Constraints](#constraints)
+   - [Tasks](#tasks)
+   - [Context](#context)
+   - [Evaluation](#evaluation)
+
+5. [Advanced Features](#advanced-features)
+   - [Hierarchical Composition](#hierarchical-composition)
+   - [Multi-Agent Systems](#multi-agent-systems)
+   - [Automation Integration](#automation-integration)
+
+6. [Best Practices](#best-practices)
+   - [Security](#security)
+   - [Performance](#performance)
+   - [Maintainability](#maintainability)
+
+7. [Next Steps](#next-steps)
+
+---
+
 ## What is OpenAPIA?
 
 OpenAPIA is an open, vendor-agnostic standard for describing, documenting, and validating artificial intelligence systems. It provides a machine-readable format to specify AI models, prompts, constraints, workflows, and evaluation metrics.

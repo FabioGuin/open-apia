@@ -2,6 +2,58 @@
 
 OpenAPIA supports hierarchical composition of specifications, enabling the creation of complex AI systems through inheritance and specialization of configurations.
 
+## Table of Contents
+
+1. [Key Concepts](#key-concepts)
+   - [1. Inheritance](#1-inheritance)
+   - [2. Composition](#2-composition)
+   - [3. Specialization](#3-specialization)
+
+2. [Hierarchical Structure](#hierarchical-structure)
+   - [Organizational Levels](#organizational-levels)
+   - [File Organization](#file-organization)
+
+3. [Inheritance Configuration](#inheritance-configuration)
+   - [Basic Inheritance](#basic-inheritance)
+   - [Multiple Inheritance](#multiple-inheritance)
+   - [Inheritance Modes](#inheritance-modes)
+
+4. [Composition Algorithms](#composition-algorithms)
+   - [Merge Mode](#merge-mode)
+   - [Override Mode](#override-mode)
+   - [Extend Mode](#extend-mode)
+
+5. [Hierarchy Information](#hierarchy-information)
+   - [Level Definition](#level-definition)
+   - [Scope Definition](#scope-definition)
+   - [Parent Specifications](#parent-specifications)
+
+6. [Best Practices](#best-practices)
+   - [Design Principles](#design-principles)
+   - [Naming Conventions](#naming-conventions)
+   - [File Organization](#file-organization)
+
+7. [Advanced Patterns](#advanced-patterns)
+   - [Cross-Department Inheritance](#cross-department-inheritance)
+   - [Environment-Specific Configurations](#environment-specific-configurations)
+   - [Feature Flags and Conditional Inheritance](#feature-flags-and-conditional-inheritance)
+
+8. [Tooling and Automation](#tooling-and-automation)
+   - [Validation Tools](#validation-tools)
+   - [Composition Tools](#composition-tools)
+   - [Documentation Generation](#documentation-generation)
+
+9. [Examples](#examples)
+   - [Simple Inheritance](#simple-inheritance)
+   - [Complex Multi-Level Hierarchy](#complex-multi-level-hierarchy)
+   - [Cross-Organizational Inheritance](#cross-organizational-inheritance)
+
+10. [Troubleshooting](#troubleshooting)
+    - [Common Issues](#common-issues)
+    - [Debugging Tips](#debugging-tips)
+
+---
+
 ## Key Concepts
 
 ### 1. **Inheritance**
