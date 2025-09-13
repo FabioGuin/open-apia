@@ -8,7 +8,7 @@
 
 ## Riassunto Esecutivo
 
-OpenAPIA (Open Artificial Intelligence Architecture) rappresenta uno standard aperto per descrivere, documentare e validare sistemi di intelligenza artificiale. Come "OpenAPI per l'AI," OpenAPIA fornisce un formato strutturato per specificare modelli AI, prompt, vincoli, workflow e metriche di valutazione, funzionando come una blueprint per l'architettura AI.
+OpenAPIA (Open Artificial Intelligence Architecture) rappresenta uno standard aperto per descrivere, documentare e validare sistemi di intelligenza artificiale. Fornisce un formato strutturato per specificare modelli AI, prompt, vincoli, workflow e metriche di valutazione, funzionando come una blueprint per l'architettura AI.
 
 Questo whitepaper presenta OpenAPIA come un framework di specifica per l'architettura dei sistemi AI che affronta la necessità di standardizzare le architetture AI, abilitando una migliore governance, interoperabilità e trasparenza nelle implementazioni di intelligenza artificiale nelle organizzazioni.
 
@@ -49,7 +49,7 @@ OpenAPIA è un framework di specifica per l'architettura dei sistemi AI che funz
 - **Elaborazione Automatica**: Abilita validazione, testing e deployment automatizzati
 - **Supporto Multi-Agente**: Supporta workflow AI complessi e interazioni tra agenti
 
-Pensa a OpenAPIA come "OpenAPI per l'AI" - proprio come OpenAPI ha migliorato la documentazione e integrazione delle API, OpenAPIA mira a fare lo stesso per le architetture dei sistemi AI.
+OpenAPIA mira a migliorare la documentazione e integrazione delle architetture dei sistemi AI, fornendo un approccio standardizzato per descrivere e gestire i sistemi AI.
 
 ## La Sfida della Standardizzazione AI
 

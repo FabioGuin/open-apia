@@ -5,7 +5,7 @@
 
 ## Overview
 
-OpenAPIA is an open standard for describing, documenting, and validating artificial intelligence systems. Inspired by the success of OpenAPI for REST APIs, OpenAPIA provides a structured format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
+OpenAPIA is an open standard for describing, documenting, and validating artificial intelligence systems. It provides a structured format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
 
 **🎯 Generative Map Concept**: The structured YAML specification serves as a generative map - a machine-readable blueprint that enables automated code generation, documentation creation, system orchestration, and AI infrastructure deployment. The structured format makes it suitable for generative development tools and workflows.
 
@@ -426,7 +426,6 @@ Perfect for:
 ## Acknowledgments
 
 OpenAPIA is inspired by:
-- [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification) for API documentation
 - [ISO/IEC 42001](https://www.iso.org/standard/81231.html) for AI governance
 - [LangChain](https://github.com/langchain-ai/langchain) for AI orchestration
 - [IEEE AI-ESTATE](https://standards.ieee.org/standard/1232-2010.html) for AI component formalization
