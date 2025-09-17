@@ -1,4 +1,4 @@
-# OpenAPIA: Open Artificial Intelligence Architecture
+# OpenAPIA: Open Architecture Protocol for Artificial Intelligence
 ## A Comprehensive Standard for AI System Documentation and Validation
 
 **Version 1.0**  
@@ -8,9 +8,9 @@
 
 ## Executive Summary
 
-OpenAPIA (Open Artificial Intelligence Architecture) represents a comprehensive **AI-Driven Architecture Blueprint Standard** for describing, documenting, and validating artificial intelligence systems. It provides a machine-readable format to specify AI models, prompts, constraints, workflows, and evaluation metrics in a vendor-agnostic, AI-native manner.
+OpenAPIA (Open Architecture Protocol for Artificial Intelligence) represents a comprehensive **AI-Driven Protocol Standard** for describing, documenting, and validating artificial intelligence systems. It provides a machine-readable format to specify AI models, prompts, constraints, workflows, and evaluation metrics in a vendor-agnostic, AI-native manner.
 
-This whitepaper presents OpenAPIA as a comprehensive **AI System Architecture Specification Framework** that addresses the growing need to standardize AI system architectures, enabling better governance, interoperability, and transparency in artificial intelligence deployments across organizations.
+This whitepaper presents OpenAPIA as a comprehensive **AI System Protocol Framework** that addresses the growing need to standardize AI system communication and interaction, enabling better governance, interoperability, and transparency in artificial intelligence deployments across organizations.
 
 ## Table of Contents
 

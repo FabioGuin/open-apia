@@ -1,6 +1,6 @@
 # OpenAPIA Specification Files
 
-This directory contains the OpenAPIA specification in different formats and related files.
+This directory contains the Open Architecture Protocol for Artificial Intelligence specification in different formats and related files.
 
 ## Structure
 

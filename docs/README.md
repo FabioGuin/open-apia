@@ -1,6 +1,6 @@
 # OpenAPIA Documentation
 
-Welcome to the OpenAPIA documentation. This directory contains guides and references for using the Open Artificial Intelligence Architecture standard.
+Welcome to the OpenAPIA documentation. This directory contains guides and references for using the Open Architecture Protocol for Artificial Intelligence standard.
 
 ## 📚 Documentation Structure
 

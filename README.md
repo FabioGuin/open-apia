@@ -1,11 +1,11 @@
-# OpenAPIA - Open Artificial Intelligence Architecture
+# OpenAPIA - Open Architecture Protocol for Artificial Intelligence
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](https://github.com/FabioGuin/OpenAPIA/releases)
 
 ## Overview
 
-OpenAPIA is an open standard for describing, documenting, and validating artificial intelligence systems. It provides a structured format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
+OpenAPIA is an open protocol for describing, documenting, and validating artificial intelligence systems. It provides a structured format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
 
 **🎯 Generative Map Concept**: The structured YAML specification serves as a generative map - a machine-readable blueprint that enables automated code generation, documentation creation, system orchestration, and AI infrastructure deployment. The structured format makes it suitable for generative development tools and workflows.
 
