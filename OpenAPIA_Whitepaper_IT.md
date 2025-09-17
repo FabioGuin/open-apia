@@ -345,19 +345,19 @@ OpenAPIA accoglie contributi in multiple aree:
 
 ## Roadmap Futura
 
-### Obiettivi a Breve Termine (6-12 mesi)
+### Obiettivi a Breve Termine
 - **Crescita Comunità**: Aumentare adozione e base contributor
 - **Ecosistema Tool**: Sviluppare tool aggiuntivi di validazione e generazione
 - **Esempi Integrazione**: Espandere esempi di integrazione automazione e MCP
 - **Documentazione**: Completare suite di documentazione completa
 
-### Obiettivi a Medio Termine (1-2 anni)
+### Obiettivi a Medio Termine
 - **Governance Comunitaria**: Transizione verso governance guidata dalla comunità
 - **Funzionalità Enterprise**: Capacità enterprise avanzate e integrazioni
 - **Standardizzazione**: Lavorare verso standardizzazione industriale
 - **Ecosistema**: Costruire ecosistema completo di tool e servizi
 
-### Visione a Lungo Termine (2+ anni)
+### Visione a Lungo Termine
 - **Standard Industriale**: Diventare lo standard de facto per la documentazione dei sistemi AI
 - **Adozione Globale**: Adozione diffusa attraverso settori e organizzazioni
 - **Piattaforma Innovazione**: Abilitare nuovi paradigmi di sviluppo AI e tool

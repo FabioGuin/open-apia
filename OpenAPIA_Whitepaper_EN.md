@@ -320,7 +320,7 @@ OpenAPIA is currently in the **Bootstrap Phase** with a single maintainer model:
 ### Transition to Community Governance
 
 The project will transition to community governance when:
-- 5+ active contributors in the last 6 months
+- 5+ active contributors with sustained participation
 - 10+ implementations of the specification
 - Sustained community engagement
 - Adoption by organizations or significant projects
@@ -345,19 +345,19 @@ OpenAPIA welcomes contributions in multiple areas:
 
 ## Future Roadmap
 
-### Short-term Goals (6-12 months)
+### Short-term Goals
 - **Community Growth**: Increase adoption and contributor base
 - **Tool Ecosystem**: Develop additional validation and generation tools
 - **Integration Examples**: Expand automation and MCP integration examples
 - **Documentation**: Complete comprehensive documentation suite
 
-### Medium-term Goals (1-2 years)
+### Medium-term Goals
 - **Community Governance**: Transition to community-driven governance
 - **Enterprise Features**: Advanced enterprise capabilities and integrations
 - **Standardization**: Work toward industry standardization
 - **Ecosystem**: Build comprehensive tool and service ecosystem
 
-### Long-term Vision (2+ years)
+### Long-term Vision
 - **Industry Standard**: Become the de facto standard for AI system documentation
 - **Global Adoption**: Widespread adoption across industries and organizations
 - **Innovation Platform**: Enable new AI development paradigms and tools

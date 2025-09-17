@@ -33,7 +33,7 @@ OpenAPIA is currently in the **Bootstrap Phase** with a single maintainer model.
 
 The project will transition to community governance when:
 
-- **5+ active contributors** in the last 6 months
+- **5+ active contributors** with sustained participation
 - **10+ implementations** of the specification
 - **Sustained community engagement** (issues, PRs, discussions)
 - **Adoption** by organizations or significant projects
@@ -81,7 +81,7 @@ We use [Semantic Versioning](https://semver.org/):
 
 - **Patch Releases**: As needed for bug fixes
 - **Minor Releases**: Every 3-6 months for new features
-- **Major Releases**: Every 1-2 years for breaking changes
+- **Major Releases**: Periodic releases for breaking changes
 
 ### Release Process
 
@@ -132,7 +132,7 @@ Contributors grant patent licenses under the Apache License 2.0.
 
 ## History
 
-- **2025-09-03**: Project started, Bootstrap phase begins
+- **Project Start**: Bootstrap phase begins
 - **Future**: Transition to community governance when criteria are met
 
 ---

@@ -146,7 +146,7 @@ We use [Semantic Versioning](https://semver.org/):
 
 - **Patch Releases**: As needed for bug fixes
 - **Minor Releases**: Every 3-6 months
-- **Major Releases**: Every 1-2 years
+- **Major Releases**: Periodic releases
 
 ## Community Guidelines
 
