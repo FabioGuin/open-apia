@@ -5,8 +5,7 @@
     "license": "Apache-2.0",
     "authors": [
         {
-            "name": "Fabio Guin",
-            "email": "random@starzero.it"
+            "name": "Fabio Guin"
         }
     ],
     "require": {

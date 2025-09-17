@@ -182,7 +182,6 @@ We use [Semantic Versioning](https://semver.org/):
 
 ### Contact
 
-- **General Questions**: random@starzero.it
 - **GitHub Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
 

@@ -385,7 +385,6 @@ The open-source nature of OpenAPIA ensures that it will continue to evolve with 
 - **Repository**: https://github.com/FabioGuin/OpenAPIA
 - **Documentation**: https://github.com/FabioGuin/OpenAPIA/tree/main/docs
 - **Examples**: https://github.com/FabioGuin/OpenAPIA/tree/main/examples
-- **Contact**: random@starzero.it
 
 **License**: Apache License 2.0
 

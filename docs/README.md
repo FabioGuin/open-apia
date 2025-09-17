@@ -128,7 +128,6 @@ We welcome contributions to improve OpenAPIA documentation:
 
 - **GitHub Issues**: [Report bugs or request features](https://github.com/FabioGuin/OpenAPIA/issues)
 - **GitHub Discussions**: [Ask questions and share ideas](https://github.com/FabioGuin/OpenAPIA/discussions)
-- **Email**: random@starzero.it
 
 ---
 

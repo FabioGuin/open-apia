@@ -7,7 +7,6 @@ OpenAPIA is currently in the **Bootstrap Phase** with a single maintainer model.
 ## Maintainer
 
 **Current Maintainer**: Fabio Guin  
-**Email**: random@starzero.it  
 **Role**: Project Lead and Decision Maker
 
 ## Decision Making Process
@@ -99,7 +98,7 @@ We are committed to providing a welcoming and inclusive environment. Please see 
 
 ### Reporting Security Issues
 
-Please report security issues to random@starzero.it (not in public issues).
+Please report security issues using GitHub Issues with security label (not in public issues).
 
 ### Security Process
 
@@ -125,8 +124,7 @@ Contributors grant patent licenses under the Apache License 2.0.
 
 ## Contact
 
-- **General Questions**: random@starzero.it
-- **Security Issues**: random@starzero.it
+- **Security Issues**: Use GitHub Issues with security label
 - **GitHub Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
 

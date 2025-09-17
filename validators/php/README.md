@@ -216,7 +216,6 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](../../
 
 - **Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
-- **Email**: random@starzero.it
 
 ## Changelog
 

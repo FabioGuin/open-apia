@@ -421,7 +421,6 @@ Perfect for:
 
 - **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
 - **Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
-- **Email**: random@starzero.it
 
 ## Acknowledgments
 
