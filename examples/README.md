@@ -2,7 +2,7 @@
 
 This directory contains comprehensive examples demonstrating the Open Architecture Protocol for Artificial Intelligence capabilities across different use cases and complexity levels.
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```
 examples/
@@ -25,7 +25,7 @@ examples/
     └── security-template.yaml         # Security-focused production template
 ```
 
-## 🔐 Security and Environment Variables
+## Security and Environment Variables
 
 **IMPORTANT**: All examples use environment variables for sensitive data like API keys, passwords, and tokens. 
 
@@ -44,7 +44,7 @@ authentication:
 
 See [Security Best Practices](../docs/security-best-practices.md) for complete guidelines.
 
-## 📋 Templates
+## Templates
 
 ### [Basic Template](templates/basic-template.yaml)
 **Complexity**: Low  
@@ -56,7 +56,7 @@ See [Security Best Practices](../docs/security-best-practices.md) for complete g
 **Use Case**: Production systems, enterprise deployments  
 **Features**: Comprehensive security controls, compliance, monitoring
 
-## 🎯 Examples by Category
+## Examples by Category
 
 ### Core AI Systems
 Basic AI system implementations for common use cases.
@@ -176,7 +176,7 @@ Complete OpenAPIA specification in JSON format with:
 - Proper validation structure
 - Tool-friendly format
 
-## 🚀 Getting Started with Examples
+## Getting Started with Examples
 
 ### 1. Choose Your Starting Point
 
@@ -215,7 +215,7 @@ python validators/python/openapia_validator.py validate examples/multi-agent/mul
 4. **Validate** your customized specification
 5. **Test** with your AI systems
 
-## 📋 Example Comparison
+## Example Comparison
 
 | Example | Complexity | Domain | Key Features |
 |---------|------------|--------|--------------|
@@ -227,7 +227,7 @@ python validators/python/openapia_validator.py validate examples/multi-agent/mul
 | Zapier Integration | Medium | Customer Support | Simple automation, notifications |
 | MCP Integration | Medium | Data Integration | External data, tools, resources |
 
-## 🔧 Customization Guide
+## Customization Guide
 
 ### Modifying Examples
 
@@ -245,7 +245,7 @@ python validators/python/openapia_validator.py validate examples/multi-agent/mul
 - **Test Thoroughly**: Validate with real data and scenarios
 - **Follow Patterns**: Use established patterns from examples
 
-## 🤝 Contributing Examples
+## Contributing Examples
 
 We welcome new examples that demonstrate OpenAPIA capabilities:
 
@@ -263,7 +263,7 @@ We welcome new examples that demonstrate OpenAPIA capabilities:
 - **Realistic**: Uses realistic data and scenarios
 - **Educational**: Demonstrates best practices
 
-## 📞 Support
+## Support
 
 - **Issues**: [Report problems with examples](https://github.com/FabioGuin/OpenAPIA/issues)
 - **Discussions**: [Ask questions about examples](https://github.com/FabioGuin/OpenAPIA/discussions)

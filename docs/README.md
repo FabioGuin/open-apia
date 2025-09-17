@@ -2,7 +2,7 @@
 
 Welcome to the OpenAPIA documentation. This directory contains guides and references for using the Open Architecture Protocol for Artificial Intelligence standard.
 
-## 📚 Documentation Structure
+## Documentation Structure
 
 ### Getting Started
 - **[Getting Started Guide](getting-started.md)** - Introduction to OpenAPIA
@@ -55,7 +55,7 @@ Welcome to the OpenAPIA documentation. This directory contains guides and refere
   - Incident response procedures
   - Security monitoring and alerting
 
-## 🎯 Learning Path
+## Learning Path
 
 ### For Beginners
 1. Start with the **[Getting Started Guide](getting-started.md)**
@@ -76,7 +76,7 @@ Welcome to the OpenAPIA documentation. This directory contains guides and refere
 3. Build multi-agent systems with security controls
 4. Contribute to the OpenAPIA ecosystem
 
-## 🔧 Quick Reference
+## Quick Reference
 
 ### Core Sections
 - **`openapia`** - Specification version
@@ -99,7 +99,7 @@ Welcome to the OpenAPIA documentation. This directory contains guides and refere
 - **`evaluation.monitoring`** - Security monitoring and incident response
 - **Environment Variables** - Secure credential management with `${VARIABLE_NAME}` syntax
 
-## 📖 Examples and Templates
+## Examples and Templates
 
 See the **[examples directory](../examples/)** for:
 - **Core AI Examples** - Basic AI system implementations
@@ -108,7 +108,7 @@ See the **[examples directory](../examples/)** for:
 - **Security Templates** - Production-ready secure configurations
 - **JSON Templates** - Machine-readable examples for tools
 
-## 🛠️ Tools and Validation
+## Tools and Validation
 
 OpenAPIA provides validators in multiple languages:
 - **[Python Validator](../validators/python/)** - Full-featured validation library
@@ -116,7 +116,7 @@ OpenAPIA provides validators in multiple languages:
 - **[JavaScript Validator](../validators/javascript/)** - Node.js and browser support
 - **[Go Validator](../validators/go/)** - High-performance validation
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions to improve OpenAPIA documentation:
 - Report issues or suggest improvements
@@ -124,7 +124,7 @@ We welcome contributions to improve OpenAPIA documentation:
 - Share your use cases and examples
 - Help translate documentation to other languages
 
-## 📞 Support
+## Support
 
 - **GitHub Issues**: [Report bugs or request features](https://github.com/FabioGuin/OpenAPIA/issues)
 - **GitHub Discussions**: [Ask questions and share ideas](https://github.com/FabioGuin/OpenAPIA/discussions)
