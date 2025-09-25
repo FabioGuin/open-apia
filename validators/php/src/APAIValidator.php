@@ -15,7 +15,7 @@ namespace OpenAPIA;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
-class OpenAPIAValidator
+class APAIValidator
 {
     private array $errors = [];
     private array $warnings = [];

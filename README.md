@@ -1,11 +1,11 @@
-# OpenAPIA - Open Architecture Protocol for Artificial Intelligence
+# APAI - Architecture Protocol for Artificial Intelligence
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](https://github.com/FabioGuin/OpenAPIA/releases)
 
 ## Overview
 
-OpenAPIA is an open protocol for describing, documenting, and validating artificial intelligence systems. It provides a structured format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
+APAI is an open protocol for describing, documenting, and validating artificial intelligence systems. It provides a structured format to specify AI models, prompts, constraints, workflows, and evaluation metrics.
 
 **Generative Map Concept**: The structured YAML specification serves as a generative map - a machine-readable blueprint that enables automated code generation, documentation creation, system orchestration, and AI infrastructure deployment. The structured format makes it suitable for generative development tools and workflows.
 
@@ -13,13 +13,13 @@ OpenAPIA is an open protocol for describing, documenting, and validating artific
 
 - **[Key Features](#key-features)** - Core capabilities and design principles
 - **[Generative Map Potential](#generative-map-potential)** - Code generation and automation possibilities
-- **[Quick Start](#quick-start)** - Get started with OpenAPIA in minutes
+- **[Quick Start](#quick-start)** - Get started with APAI in minutes
 - **[Examples](#examples)** - Real-world implementations and templates
 - **[Hierarchical Composition](#hierarchical-composition)** - Building complex systems through inheritance
 - **[Specification](#specification)** - Official specification and documentation
 - **[Tools and Libraries](#tools-and-libraries)** - Validators and community tools
 - **[Automation Integration](#automation-integration)** - External platform integration
-- **[Contributing](#contributing)** - How to contribute to OpenAPIA
+- **[Contributing](#contributing)** - How to contribute to APAI
 - **[Governance](#governance)** - Project governance and community structure
 - **[Whitepapers](#whitepapers)** - Comprehensive technical and business analysis
 
@@ -38,7 +38,7 @@ OpenAPIA is an open protocol for describing, documenting, and validating artific
 
 ## Generative Map Potential
 
-The OpenAPIA YAML specification's structured format makes it suitable for generative development. The protocol's metadata and standardized format help developers build tools that can automatically create:
+The APAI YAML specification's structured format makes it suitable for generative development. The protocol's metadata and standardized format help developers build tools that can automatically create:
 
 ### Code Generation
 - **API Clients**: Generate client libraries in multiple languages (Python, JavaScript, PHP, Go)
@@ -66,7 +66,7 @@ The OpenAPIA YAML specification's structured format makes it suitable for genera
 
 ### Example: Generative Development Possibilities
 ```yaml
-# Your OpenAPIA specification
+# Your APAI specification
 openapia: "0.1.0"
 info:
   title: "Customer Support AI"
@@ -97,8 +97,8 @@ tasks:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/FabioGuin/OpenAPIA.git
-cd OpenAPIA
+git clone https://github.com/FabioGuin/APAI.git
+cd APAI
 ```
 
 ### 2. Set Up Environment Variables (Security)
@@ -110,7 +110,7 @@ cp .env.example .env
 # NEVER commit the .env file to version control
 ```
 
-### 3. Create Your First OpenAPIA Specification
+### 3. Create Your First APAI Specification
 
 #### Simple Specification
 ```yaml
@@ -183,10 +183,10 @@ constraints:
 
 ```bash
 # Simple validation
-python validators/python/openapia_validator.py validate spec/my-ai-system.yaml
+python validators/python/apai_validator.py validate spec/my-ai-system.yaml
 
 # Hierarchical validation (with inheritance)
-python validators/python/openapia_validator.py validate spec/my-ai-system.yaml --hierarchical
+python validators/python/apai_validator.py validate spec/my-ai-system.yaml --hierarchical
 
 # Using JavaScript validator
 node validators/javascript/cli.js validate spec/my-ai-system.yaml
@@ -224,7 +224,7 @@ See the [Examples README](examples/README.md) for detailed descriptions and lear
 
 ## Hierarchical Composition
 
-OpenAPIA supports hierarchical composition for complex organizational structures:
+APAI supports hierarchical composition for complex organizational structures:
 
 - **[Hierarchical Composition Guide](docs/hierarchical-composition.md)** - Complete guide to inheritance and composition
 - **Enterprise Use Cases** - Global, regional, and department-level specifications
@@ -257,7 +257,7 @@ info:
 
 ## Specification
 
-The OpenAPIA specification is available in multiple formats:
+The APAI specification is available in multiple formats:
 
 - **YAML**: `spec/openapia-0.1.yaml` - Official specification (human-readable)
 - **JSON Example**: `examples/openapia-0.1-example.json` - Complete working example for tools and SDKs
@@ -281,9 +281,9 @@ The specification includes these core sections:
 
 - **[Documentation Index](docs/README.md)** - Complete documentation overview and learning paths
 - **[Getting Started Guide](docs/getting-started.md)** - Step-by-step tutorial for new users
-- **[OpenAPIA 0.1 Specification](docs/openapia-0.1-specification.md)** - Complete formal specification documentation
+- **[APAI 0.1 Specification](docs/apai-0.1-specification.md)** - Complete formal specification documentation
 - **[Hierarchical Composition Guide](docs/hierarchical-composition.md)** - Advanced inheritance and composition patterns
-- **[Multi-Agent Systems Guide](docs/multi-agent-systems.md)** - Building multi-agent systems using existing OpenAPIA features
+- **[Multi-Agent Systems Guide](docs/multi-agent-systems.md)** - Building multi-agent systems using existing APAI features
 - **[Automation Integration Guide](docs/automation-integration.md)** - Integrating with external automation platforms
 - **[Security Best Practices](docs/security-best-practices.md)** - Managing secrets and environment variables securely
 - **[AI Security Considerations](docs/ai-security-considerations.md)** - Comprehensive AI-specific security framework
@@ -298,7 +298,7 @@ The specification includes these core sections:
 - [Go Validator](validators/go/) - High-performance validation
 
 ### Community Tools
-- *The OpenAPIA community is encouraged to build generative tools and integrations*
+- *The APAI community is encouraged to build generative tools and integrations*
 - *Examples: Code generators, documentation tools, deployment automation, testing frameworks*
 
 ### CLI Usage
@@ -320,7 +320,7 @@ go run validators/go/. -f spec.yaml
 
 ## Automation Integration
 
-OpenAPIA 0.1 includes integration with external automation platforms, allowing AI systems to trigger and coordinate with automation workflows without tight coupling.
+APAI 0.1 includes integration with external automation platforms, allowing AI systems to trigger and coordinate with automation workflows without tight coupling.
 
 ### Supported Platforms
 
@@ -398,7 +398,7 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 ## Governance
 
-OpenAPIA is currently in **Bootstrap Phase** with Fabio Guin as the initial maintainer. We plan to transition to a community-driven governance model as the project grows.
+APAI is currently in **Bootstrap Phase** with Fabio Guin as the initial maintainer. We plan to transition to a community-driven governance model as the project grows.
 
 See [GOVERNANCE.md](GOVERNANCE.md) for details.
 
@@ -408,15 +408,15 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Whitepapers
 
-Comprehensive whitepapers providing detailed analysis and insights into OpenAPIA:
+Comprehensive whitepapers providing detailed analysis and insights into APAI:
 
-- **[OpenAPIA Whitepaper (English)](OpenAPIA_Whitepaper_EN.md)** - Complete technical and business analysis of OpenAPIA's capabilities, architecture, and potential
-- **[OpenAPIA Whitepaper (Italiano)](OpenAPIA_Whitepaper_IT.md)** - Analisi completa tecnica e business delle capacità, architettura e potenziale di OpenAPIA
+- **[APAI Whitepaper (English)](APAI_Whitepaper_EN.md)** - Complete technical and business analysis of APAI's capabilities, architecture, and potential
+- **[APAI Whitepaper (Italiano)](APAI_Whitepaper_IT.md)** - Analisi completa tecnica e business delle capacità, architettura e potenziale di APAI
 
 ### Whitepaper Contents
 
 Both whitepapers cover:
-- **Executive Summary** - Overview of OpenAPIA's value proposition
+- **Executive Summary** - Overview of APAI's value proposition
 - **AI Standardization Challenge** - Current industry challenges and needs
 - **Core Architecture** - Detailed technical specifications and features
 - **Advanced Capabilities** - Multi-agent systems, automation integration, MCP support
@@ -426,19 +426,19 @@ Both whitepapers cover:
 - **Future Roadmap** - Long-term vision and development plans
 
 Perfect for:
-- **Technical Leaders** - Understanding OpenAPIA's technical capabilities
-- **Business Stakeholders** - Evaluating OpenAPIA's business value
+- **Technical Leaders** - Understanding APAI's technical capabilities
+- **Business Stakeholders** - Evaluating APAI's business value
 - **Developers** - Learning implementation approaches and best practices
 - **Decision Makers** - Making informed adoption decisions
 
 ## Community
 
-- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
-- **Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/APAI/discussions)
+- **Issues**: [GitHub Issues](https://github.com/FabioGuin/APAI/issues)
 
 ## Acknowledgments
 
-OpenAPIA is inspired by:
+APAI is inspired by:
 - [ISO/IEC 42001](https://www.iso.org/standard/81231.html) for AI governance
 - [LangChain](https://github.com/langchain-ai/langchain) for AI orchestration
 - [IEEE AI-ESTATE](https://standards.ieee.org/standard/1232-2010.html) for AI component formalization

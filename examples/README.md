@@ -1,6 +1,6 @@
-# OpenAPIA Examples
+# APAI Examples
 
-This directory contains comprehensive examples demonstrating the Open Architecture Protocol for Artificial Intelligence capabilities across different use cases and complexity levels.
+This directory contains comprehensive examples demonstrating the Architecture Protocol for Artificial Intelligence capabilities across different use cases and complexity levels.
 
 ## Directory Structure
 

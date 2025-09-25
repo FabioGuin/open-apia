@@ -54,7 +54,7 @@ func handleValidate(options []string) {
 	fmt.Printf(": %s\n", filePath)
 	fmt.Println(strings.Repeat("-", 60))
 
-	validator := NewOpenAPIAValidator()
+	validator := NewAPAIValidator()
 	var isValid bool
 	var err error
 
@@ -106,7 +106,7 @@ func handleTree(options []string) {
 	fmt.Println("OpenAPIA Specification Hierarchy Tree")
 	fmt.Println(strings.Repeat("=", 50))
 
-	validator := NewOpenAPIAValidator()
+	validator := NewAPAIValidator()
 	validator.PrintHierarchyTree(filePath, 0)
 }
 
@@ -125,7 +125,7 @@ func handleMerge(options []string) {
 	fmt.Printf("Input files: %s\n", strings.Join(inputFiles, ", "))
 	fmt.Println(strings.Repeat("-", 60))
 
-	validator := NewOpenAPIAValidator()
+	validator := NewAPAIValidator()
 	specs := make([]map[string]interface{}, 0, len(inputFiles))
 
 	for _, file := range inputFiles {

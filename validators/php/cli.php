@@ -13,7 +13,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use OpenAPIA\OpenAPIAValidator;
+use OpenAPIA\APAIValidator;
 
 /**
  * CLI entry point
@@ -62,7 +62,7 @@ function handleValidate(array $options): void
     echo "Validating OpenAPIA specification" . ($hierarchical ? " with inheritance" : "") . ": {$filePath}\n";
     echo str_repeat('-', 60) . "\n";
     
-    $validator = new OpenAPIAValidator();
+    $validator = new APAIValidator();
     
     if ($hierarchical) {
         $isValid = $validator->validateWithInheritance($filePath);
@@ -103,7 +103,7 @@ function handleTree(array $options): void
     echo "OpenAPIA Specification Hierarchy Tree\n";
     echo str_repeat('=', 50) . "\n";
     
-    $validator = new OpenAPIAValidator();
+    $validator = new APAIValidator();
     $validator->printHierarchyTree($filePath);
 }
 
@@ -123,7 +123,7 @@ function handleMerge(array $options): void
     echo "Input files: " . implode(', ', $inputFiles) . "\n";
     echo str_repeat('-', 60) . "\n";
     
-    $validator = new OpenAPIAValidator();
+    $validator = new APAIValidator();
     $specs = [];
     
     foreach ($inputFiles as $file) {

@@ -11,15 +11,15 @@
 namespace OpenAPIA\Tests;
 
 use PHPUnit\Framework\TestCase;
-use OpenAPIA\OpenAPIAValidator;
+use OpenAPIA\APAIValidator;
 
-class OpenAPIAValidatorTest extends TestCase
+class APAIValidatorTest extends TestCase
 {
-    private OpenAPIAValidator $validator;
+    private APAIValidator $validator;
     
     protected function setUp(): void
     {
-        $this->validator = new OpenAPIAValidator();
+        $this->validator = new APAIValidator();
     }
     
     /**

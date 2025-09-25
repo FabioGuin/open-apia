@@ -12,7 +12,7 @@ const yaml = require('js-yaml');
 const Ajv = require('ajv');
 const addFormats = require('ajv-formats');
 
-class OpenAPIAValidator {
+class APAIValidator {
     constructor() {
         this.errors = [];
         this.warnings = [];
@@ -916,4 +916,4 @@ class OpenAPIAValidator {
     }
 }
 
-module.exports = OpenAPIAValidator;
+module.exports = APAIValidator;

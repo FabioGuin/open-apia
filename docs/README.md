@@ -1,11 +1,11 @@
-# OpenAPIA Documentation
+# APAI Documentation
 
-Welcome to the OpenAPIA documentation. This directory contains guides and references for using the Open Architecture Protocol for Artificial Intelligence standard.
+Welcome to the APAI documentation. This directory contains guides and references for using the Architecture Protocol for Artificial Intelligence standard.
 
 ## Documentation Structure
 
 ### Getting Started
-- **[Getting Started Guide](getting-started.md)** - Introduction to OpenAPIA
+- **[Getting Started Guide](getting-started.md)** - Introduction to APAI
   - Quick start tutorial
   - Core concepts explanation
   - First specification creation

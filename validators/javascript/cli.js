@@ -10,7 +10,7 @@
  * @license Apache-2.0
  */
 
-const OpenAPIAValidator = require('./src/OpenAPIAValidator');
+const APAIValidator = require('./src/APAIValidator');
 const path = require('path');
 
 /**
@@ -57,7 +57,7 @@ async function handleValidate(options) {
     console.log(`Validating OpenAPIA specification${hierarchical ? ' with inheritance' : ''}: ${filePath}`);
     console.log('-'.repeat(60));
 
-    const validator = new OpenAPIAValidator();
+    const validator = new APAIValidator();
 
     const isValid = hierarchical ?
         await validator.validateWithInheritance(filePath) :
@@ -96,7 +96,7 @@ function handleTree(options) {
     console.log('OpenAPIA Specification Hierarchy Tree');
     console.log('='.repeat(50));
 
-    const validator = new OpenAPIAValidator();
+    const validator = new APAIValidator();
     validator.printHierarchyTree(filePath);
 }
 
@@ -115,7 +115,7 @@ async function handleMerge(options) {
     console.log(`Input files: ${inputFiles.join(', ')}`);
     console.log('-'.repeat(60));
 
-    const validator = new OpenAPIAValidator();
+    const validator = new APAIValidator();
     const specs = [];
 
     for (const file of inputFiles) {

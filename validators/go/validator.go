@@ -11,8 +11,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// OpenAPIAValidator represents the main validator struct
-type OpenAPIAValidator struct {
+// APAIValidator represents the main validator struct
+type APAIValidator struct {
 	Errors      []string
 	Warnings    []string
 	SchemaVersion string
@@ -29,9 +29,9 @@ type ValidationResult struct {
 	Warnings []string `json:"warnings"`
 }
 
-// NewOpenAPIAValidator creates a new validator instance
-func NewOpenAPIAValidator() *OpenAPIAValidator {
-	return &OpenAPIAValidator{
+// NewAPAIValidator creates a new validator instance
+func NewAPAIValidator() *APAIValidator {
+	return &APAIValidator{
 		Errors:        make([]string, 0),
 		Warnings:      make([]string, 0),
 		SchemaVersion: "0.1.0",
@@ -41,7 +41,7 @@ func NewOpenAPIAValidator() *OpenAPIAValidator {
 }
 
 // ValidateFile validates an OpenAPIA specification file
-func (v *OpenAPIAValidator) ValidateFile(filePath string) (bool, error) {
+func (v *APAIValidator) ValidateFile(filePath string) (bool, error) {
 	content, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return false, fmt.Errorf("file not found: %s", filePath)
@@ -69,7 +69,7 @@ func (v *OpenAPIAValidator) ValidateFile(filePath string) (bool, error) {
 }
 
 // ValidateSpec validates an OpenAPIA specification map
-func (v *OpenAPIAValidator) ValidateSpec(spec map[string]interface{}) bool {
+func (v *APAIValidator) ValidateSpec(spec map[string]interface{}) bool {
 	v.Errors = make([]string, 0)
 	v.Warnings = make([]string, 0)
 
@@ -116,7 +116,7 @@ func (v *OpenAPIAValidator) ValidateSpec(spec map[string]interface{}) bool {
 }
 
 // validateRequiredSections validates that all required sections are present
-func (v *OpenAPIAValidator) validateRequiredSections(spec map[string]interface{}) {
+func (v *APAIValidator) validateRequiredSections(spec map[string]interface{}) {
 	requiredSections := []string{
 		"openapia", "info", "models", "prompts",
 		"constraints", "tasks", "context", "evaluation",
@@ -130,7 +130,7 @@ func (v *OpenAPIAValidator) validateRequiredSections(spec map[string]interface{}
 }
 
 // validateOpenAPIAVersion validates the OpenAPIA version
-func (v *OpenAPIAValidator) validateOpenAPIAVersion(version interface{}) {
+func (v *APAIValidator) validateOpenAPIAVersion(version interface{}) {
 	versionStr, ok := version.(string)
 	if !ok {
 		v.Errors = append(v.Errors, "openapia version must be a string")
@@ -144,7 +144,7 @@ func (v *OpenAPIAValidator) validateOpenAPIAVersion(version interface{}) {
 }
 
 // validateInfo validates the info section
-func (v *OpenAPIAValidator) validateInfo(info interface{}) {
+func (v *APAIValidator) validateInfo(info interface{}) {
 	infoMap, ok := info.(map[string]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, "info must be an object")
@@ -164,7 +164,7 @@ func (v *OpenAPIAValidator) validateInfo(info interface{}) {
 }
 
 // validateAIMetadata validates AI-specific metadata
-func (v *OpenAPIAValidator) validateAIMetadata(metadata interface{}) {
+func (v *APAIValidator) validateAIMetadata(metadata interface{}) {
 	metadataMap, ok := metadata.(map[string]interface{})
 	if !ok {
 		return
@@ -193,7 +193,7 @@ func (v *OpenAPIAValidator) validateAIMetadata(metadata interface{}) {
 }
 
 // validateModels validates the models section
-func (v *OpenAPIAValidator) validateModels(models interface{}) {
+func (v *APAIValidator) validateModels(models interface{}) {
 	modelsSlice, ok := models.([]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, "models must be an array")
@@ -253,7 +253,7 @@ func (v *OpenAPIAValidator) validateModels(models interface{}) {
 }
 
 // validatePrompts validates the prompts section
-func (v *OpenAPIAValidator) validatePrompts(prompts interface{}) {
+func (v *APAIValidator) validatePrompts(prompts interface{}) {
 	promptsSlice, ok := prompts.([]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, "prompts must be an array")
@@ -308,7 +308,7 @@ func (v *OpenAPIAValidator) validatePrompts(prompts interface{}) {
 }
 
 // validateConstraints validates the constraints section
-func (v *OpenAPIAValidator) validateConstraints(constraints interface{}) {
+func (v *APAIValidator) validateConstraints(constraints interface{}) {
 	constraintsSlice, ok := constraints.([]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, "constraints must be an array")
@@ -363,7 +363,7 @@ func (v *OpenAPIAValidator) validateConstraints(constraints interface{}) {
 }
 
 // validateTasks validates the tasks section
-func (v *OpenAPIAValidator) validateTasks(tasks interface{}) {
+func (v *APAIValidator) validateTasks(tasks interface{}) {
 	tasksSlice, ok := tasks.([]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, "tasks must be an array")
@@ -405,7 +405,7 @@ func (v *OpenAPIAValidator) validateTasks(tasks interface{}) {
 }
 
 // validateTaskSteps validates task steps
-func (v *OpenAPIAValidator) validateTaskSteps(steps interface{}, taskIndex int) {
+func (v *APAIValidator) validateTaskSteps(steps interface{}, taskIndex int) {
 	stepsSlice, ok := steps.([]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, fmt.Sprintf("Task %d steps must be an array", taskIndex))
@@ -470,7 +470,7 @@ func (v *OpenAPIAValidator) validateTaskSteps(steps interface{}, taskIndex int) 
 }
 
 // validateContext validates the context section
-func (v *OpenAPIAValidator) validateContext(context interface{}) {
+func (v *APAIValidator) validateContext(context interface{}) {
 	contextMap, ok := context.(map[string]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, "context must be an object")
@@ -488,7 +488,7 @@ func (v *OpenAPIAValidator) validateContext(context interface{}) {
 }
 
 // validateMcpServers validates MCP servers section
-func (v *OpenAPIAValidator) validateMcpServers(mcpServers interface{}) {
+func (v *APAIValidator) validateMcpServers(mcpServers interface{}) {
 	mcpServersSlice, ok := mcpServers.([]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, "mcp_servers must be an array")
@@ -534,7 +534,7 @@ func (v *OpenAPIAValidator) validateMcpServers(mcpServers interface{}) {
 }
 
 // validateMcpTransport validates MCP transport configuration
-func (v *OpenAPIAValidator) validateMcpTransport(transport interface{}, serverIndex int) {
+func (v *APAIValidator) validateMcpTransport(transport interface{}, serverIndex int) {
 	transportMap, ok := transport.(map[string]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d transport must be an object", serverIndex))
@@ -572,7 +572,7 @@ func (v *OpenAPIAValidator) validateMcpTransport(transport interface{}, serverIn
 }
 
 // validateMcpAuthentication validates MCP authentication configuration
-func (v *OpenAPIAValidator) validateMcpAuthentication(auth interface{}, serverIndex int) {
+func (v *APAIValidator) validateMcpAuthentication(auth interface{}, serverIndex int) {
 	authMap, ok := auth.(map[string]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, fmt.Sprintf("MCP server %d authentication must be an object", serverIndex))
@@ -611,7 +611,7 @@ func (v *OpenAPIAValidator) validateMcpAuthentication(auth interface{}, serverIn
 }
 
 // validateEvaluation validates the evaluation section
-func (v *OpenAPIAValidator) validateEvaluation(evaluation interface{}) {
+func (v *APAIValidator) validateEvaluation(evaluation interface{}) {
 	evaluationMap, ok := evaluation.(map[string]interface{})
 	if !ok {
 		v.Errors = append(v.Errors, "evaluation must be an object")
@@ -624,7 +624,7 @@ func (v *OpenAPIAValidator) validateEvaluation(evaluation interface{}) {
 }
 
 // crossValidate performs cross-validation between sections
-func (v *OpenAPIAValidator) crossValidate(spec map[string]interface{}) {
+func (v *APAIValidator) crossValidate(spec map[string]interface{}) {
 	// Validate that referenced models exist
 	if tasks, tasksExists := spec["tasks"]; tasksExists {
 		if models, modelsExists := spec["models"]; modelsExists {
@@ -751,17 +751,17 @@ func (v *OpenAPIAValidator) crossValidate(spec map[string]interface{}) {
 }
 
 // GetErrors returns the list of validation errors
-func (v *OpenAPIAValidator) GetErrors() []string {
+func (v *APAIValidator) GetErrors() []string {
 	return v.Errors
 }
 
 // GetWarnings returns the list of validation warnings
-func (v *OpenAPIAValidator) GetWarnings() []string {
+func (v *APAIValidator) GetWarnings() []string {
 	return v.Warnings
 }
 
 // PrintResults prints validation results
-func (v *OpenAPIAValidator) PrintResults() {
+func (v *APAIValidator) PrintResults() {
 	if len(v.Errors) > 0 {
 		fmt.Println("❌ Validation Errors:")
 		for _, error := range v.Errors {
@@ -784,7 +784,7 @@ func (v *OpenAPIAValidator) PrintResults() {
 }
 
 // GetResults returns validation results as a struct
-func (v *OpenAPIAValidator) GetResults() ValidationResult {
+func (v *APAIValidator) GetResults() ValidationResult {
 	return ValidationResult{
 		Valid:    len(v.Errors) == 0,
 		Errors:   v.Errors,
@@ -797,7 +797,7 @@ func (v *OpenAPIAValidator) GetResults() ValidationResult {
 // ============================================================================
 
 // ValidateWithInheritance validates specification with inheritance support
-func (v *OpenAPIAValidator) ValidateWithInheritance(filePath string) (bool, error) {
+func (v *APAIValidator) ValidateWithInheritance(filePath string) (bool, error) {
 	content, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return false, fmt.Errorf("file not found: %s", filePath)
@@ -830,7 +830,7 @@ func (v *OpenAPIAValidator) ValidateWithInheritance(filePath string) (bool, erro
 }
 
 // loadSpec loads specification from file (for hierarchical use)
-func (v *OpenAPIAValidator) loadSpec(filePath string) (map[string]interface{}, error) {
+func (v *APAIValidator) loadSpec(filePath string) (map[string]interface{}, error) {
 	content, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("file not found: %s", filePath)
@@ -858,13 +858,13 @@ func (v *OpenAPIAValidator) loadSpec(filePath string) (map[string]interface{}, e
 }
 
 // resolveInheritancePath resolves inheritance path to absolute path
-func (v *OpenAPIAValidator) resolveInheritancePath(inheritPath, currentSpecPath string) string {
+func (v *APAIValidator) resolveInheritancePath(inheritPath, currentSpecPath string) string {
 	currentDir := filepath.Dir(currentSpecPath)
 	return filepath.Join(currentDir, inheritPath)
 }
 
 // loadInheritedSpecs loads all inherited specifications
-func (v *OpenAPIAValidator) loadInheritedSpecs(spec map[string]interface{}, specPath string) {
+func (v *APAIValidator) loadInheritedSpecs(spec map[string]interface{}, specPath string) {
 	inherits, exists := spec["inherits"]
 	if !exists {
 		return
@@ -901,7 +901,7 @@ func (v *OpenAPIAValidator) loadInheritedSpecs(spec map[string]interface{}, spec
 }
 
 // deepMerge performs deep merge of two maps
-func (v *OpenAPIAValidator) deepMerge(base, override map[string]interface{}) map[string]interface{} {
+func (v *APAIValidator) deepMerge(base, override map[string]interface{}) map[string]interface{} {
 	result := make(map[string]interface{})
 
 	// Copy base values
@@ -926,7 +926,7 @@ func (v *OpenAPIAValidator) deepMerge(base, override map[string]interface{}) map
 }
 
 // mergeInheritedSpecifications merges specifications based on inheritance
-func (v *OpenAPIAValidator) mergeInheritedSpecifications(spec map[string]interface{}, specPath string) map[string]interface{} {
+func (v *APAIValidator) mergeInheritedSpecifications(spec map[string]interface{}, specPath string) map[string]interface{} {
 	if cached, exists := v.mergeCache[specPath]; exists {
 		return cached
 	}
@@ -962,7 +962,7 @@ func (v *OpenAPIAValidator) mergeInheritedSpecifications(spec map[string]interfa
 }
 
 // getHierarchyInfo extracts hierarchy information from specification
-func (v *OpenAPIAValidator) getHierarchyInfo(spec map[string]interface{}) map[string]interface{} {
+func (v *APAIValidator) getHierarchyInfo(spec map[string]interface{}) map[string]interface{} {
 	info, exists := spec["info"]
 	if !exists {
 		return make(map[string]interface{})
@@ -997,7 +997,7 @@ func (v *OpenAPIAValidator) getHierarchyInfo(spec map[string]interface{}) map[st
 }
 
 // PrintHierarchyTree prints hierarchy tree for a specification
-func (v *OpenAPIAValidator) PrintHierarchyTree(specPath string, level int) {
+func (v *APAIValidator) PrintHierarchyTree(specPath string, level int) {
 	indent := strings.Repeat("  ", level)
 
 	spec, err := v.loadSpec(specPath)
@@ -1049,7 +1049,7 @@ func (v *OpenAPIAValidator) PrintHierarchyTree(specPath string, level int) {
 }
 
 // MergeSpecifications merges multiple specifications
-func (v *OpenAPIAValidator) MergeSpecifications(specs []map[string]interface{}, outputPath, format string) error {
+func (v *APAIValidator) MergeSpecifications(specs []map[string]interface{}, outputPath, format string) error {
 	if len(specs) == 0 {
 		return fmt.Errorf("no specifications to merge")
 	}
