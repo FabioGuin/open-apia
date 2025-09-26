@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * OpenAPIA Validator CLI - JavaScript Implementation
+ * APAI Validator CLI - JavaScript Implementation
  * 
- * Command-line interface for validating OpenAPIA specifications.
+ * Command-line interface for validating APAI specifications.
  * 
- * @package OpenAPIA
+ * @package APAI
  * @version 0.1.0
  * @license Apache-2.0
  */
@@ -54,7 +54,7 @@ async function handleValidate(options) {
         process.exit(1);
     }
 
-    console.log(`Validating OpenAPIA specification${hierarchical ? ' with inheritance' : ''}: ${filePath}`);
+    console.log(`Validating APAI specification${hierarchical ? ' with inheritance' : ''}: ${filePath}`);
     console.log('-'.repeat(60));
 
     const validator = new APAIValidator();
@@ -93,7 +93,7 @@ function handleTree(options) {
         process.exit(1);
     }
 
-    console.log('OpenAPIA Specification Hierarchy Tree');
+    console.log('APAI Specification Hierarchy Tree');
     console.log('='.repeat(50));
 
     const validator = new APAIValidator();
@@ -110,7 +110,7 @@ async function handleMerge(options) {
     const outputPath = options[0];
     const inputFiles = options.slice(1);
 
-    console.log('Merging OpenAPIA specifications...');
+    console.log('Merging APAI specifications...');
     console.log(`Output: ${outputPath}`);
     console.log(`Input files: ${inputFiles.join(', ')}`);
     console.log('-'.repeat(60));
@@ -195,7 +195,7 @@ function parseArgs(args) {
  * Show help information
  */
 function showHelp() {
-    console.log('OpenAPIA Validator CLI - JavaScript Implementation');
+    console.log('APAI Validator CLI - JavaScript Implementation');
     console.log('==================================================');
     console.log('');
 
@@ -204,7 +204,7 @@ function showHelp() {
     console.log('');
 
     console.log('COMMANDS:');
-    console.log('  validate <file> [--hierarchical]  Validate OpenAPIA specification');
+    console.log('  validate <file> [--hierarchical]  Validate APAI specification');
     console.log('  tree <file>                       Show hierarchy tree for specification');
     console.log('  merge <output> <files...>         Merge multiple specifications');
     console.log('');
@@ -221,7 +221,7 @@ function showHelp() {
     console.log('  node cli.js merge output.yaml spec1.yaml spec2.yaml');
     console.log('');
 
-    console.log('For more information, visit: https://github.com/openapia/openapia');
+    console.log('For more information, visit: https://github.com/FabioGuin/APAI');
 }
 
 // Run CLI

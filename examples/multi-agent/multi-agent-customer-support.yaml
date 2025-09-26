@@ -1,7 +1,7 @@
-# OpenAPIA 0.1 - Multi-Agent Customer Support System
+# APAI 0.1 - Multi-Agent Customer Support System
 # Example showing how to create a multi-agent system using hierarchical composition
 
-openapia: "0.1.0"
+apai: "0.1.0"
 
 info:
   title: "Multi-Agent Customer Support System"
@@ -435,7 +435,7 @@ extensions:
 
 validation:
   schema_version: "0.1.0"
-  required_sections: ["openapia", "info", "models", "prompts", "tasks", "context"]
+  required_sections: ["apai", "info", "models", "prompts", "tasks", "context"]
   
   custom_validators:
     - name: "multi_agent_routing_validator"

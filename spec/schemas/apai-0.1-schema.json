@@ -1,25 +1,25 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://openapia.org/schemas/0.1.0/schema.json",
-    "title": "OpenAPIA Specification Schema",
-    "description": "JSON Schema for OpenAPIA 0.1.0 specifications",
+    "$id": "https://apai.org/schemas/0.1.0/schema.json",
+    "title": "APAI Specification Schema",
+    "description": "JSON Schema for APAI 0.1.0 specifications",
     "type": "object",
     "required": [
-        "openapia",
+        "apai",
         "info"
     ],
     "properties": {
-        "openapia": {
+        "apai": {
             "type": "string",
             "pattern": "^0\\.1\\.\\d+$",
-            "description": "OpenAPIA specification version"
+            "description": "APAI specification version"
         },
         "inherits": {
             "type": "array",
             "items": {
                 "type": "string"
             },
-            "description": "List of OpenAPIA specifications to inherit from (hierarchical composition)"
+            "description": "List of APAI specifications to inherit from (hierarchical composition)"
         },
         "info": {
             "type": "object",

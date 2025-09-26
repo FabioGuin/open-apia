@@ -1,7 +1,7 @@
-# OpenAPIA 0.1 - Content Moderator AI Example
+# APAI 0.1 - Content Moderator AI Example
 # AI-powered content filtering and moderation system
 
-openapia: "0.1.0"
+apai: "0.1.0"
 
 info:
   title: "Content Moderator AI"
@@ -482,7 +482,7 @@ extensions:
 
 validation:
   schema_version: "0.1.0"
-  required_sections: ["openapia", "info", "models", "prompts", "constraints", "tasks", "context", "evaluation"]
+  required_sections: ["apai", "info", "models", "prompts", "constraints", "tasks", "context", "evaluation"]
   
   custom_validators:
     - name: "bias_detection"

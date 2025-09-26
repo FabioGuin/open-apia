@@ -1,6 +1,6 @@
-# Contributing to OpenAPIA
+# Contributing to APAI
 
-Thank you for your interest in contributing to OpenAPIA! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to APAI! This document provides guidelines and information for contributors.
 
 ## How to Contribute
 
@@ -37,8 +37,8 @@ Before making changes, please open an issue to:
 
 ```bash
 # Clone your fork
-git clone https://github.com/FabioGuin/OpenAPIA.git
-cd OpenAPIA
+git clone https://github.com/FabioGuin/APAI.git
+cd APAI
 
 # Install Python dependencies
 cd validators/python
@@ -182,8 +182,8 @@ We use [Semantic Versioning](https://semver.org/):
 
 ### Contact
 
-- **GitHub Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
+- **GitHub Issues**: [GitHub Issues](https://github.com/FabioGuin/APAI/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/APAI/discussions)
 
 ## Recognition
 
@@ -194,8 +194,8 @@ Contributors will be recognized in:
 
 ## License
 
-By contributing to OpenAPIA, you agree that your contributions will be licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+By contributing to APAI, you agree that your contributions will be licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
 
 ---
 
-Thank you for contributing to OpenAPIA! Your contributions help make AI systems more transparent, safe, and interoperable.
+Thank you for contributing to APAI! Your contributions help make AI systems more transparent, safe, and interoperable.

@@ -1,7 +1,7 @@
-# OpenAPIA 0.1 - Basic Template
-# Minimal starting template for new OpenAPIA specifications
+# APAI 0.1 - Basic Template
+# Minimal starting template for new APAI specifications
 
-openapia: "0.1.0"
+apai: "0.1.0"
 
 info:
   title: "My AI System"
@@ -27,8 +27,8 @@ info:
 
 # Optional: Inherit from parent specifications
 # inherits:
-#   - "../openapia-global.yaml"
-#   - "../../openapia-team.yaml"
+#   - "../apai-global.yaml"
+#   - "../../apai-team.yaml"
 
 models:
   - id: "main_model"

@@ -7,7 +7,7 @@ This directory contains comprehensive examples demonstrating the Architecture Pr
 ```
 examples/
 ├── README.md                           # This file
-├── openapia-0.1-example.json          # Complete JSON example for tools
+├── apai-0.1-example.json          # Complete JSON example for tools
 ├── agents/                            # Multi-agent system components
 │   └── sentiment-analyzer.yaml        # Specialized sentiment analysis agent
 ├── core/                              # Core AI system examples
@@ -166,11 +166,11 @@ AI system with MCP server integration:
 
 ### Templates and References
 
-#### [Complete JSON Example](openapia-0.1-example.json)
+#### [Complete JSON Example](apai-0.1-example.json)
 **Purpose**: Machine-readable reference  
 **Use Case**: Tool development, SDK generation
 
-Complete OpenAPIA specification in JSON format with:
+Complete APAI specification in JSON format with:
 - All specification sections populated
 - Realistic example data
 - Proper validation structure
@@ -194,17 +194,17 @@ Complete OpenAPIA specification in JSON format with:
 
 ### 2. Validate Examples
 
-All examples can be validated using OpenAPIA validators:
+All examples can be validated using APAI validators:
 
 ```bash
 # Validate a specific example
-python validators/python/openapia_validator.py validate examples/core/customer-support.yaml
+python validators/python/apai_validator.py validate examples/core/customer-support.yaml
 
 # Validate all examples
-find examples -name "*.yaml" -exec python validators/python/openapia_validator.py validate {} \;
+find examples -name "*.yaml" -exec python validators/python/apai_validator.py validate {} \;
 
 # Validate with hierarchical composition
-python validators/python/openapia_validator.py validate examples/multi-agent/multi-agent-customer-support.yaml --hierarchical
+python validators/python/apai_validator.py validate examples/multi-agent/multi-agent-customer-support.yaml --hierarchical
 ```
 
 ### 3. Customize for Your Use Case
@@ -247,28 +247,28 @@ python validators/python/openapia_validator.py validate examples/multi-agent/mul
 
 ## Contributing Examples
 
-We welcome new examples that demonstrate OpenAPIA capabilities:
+We welcome new examples that demonstrate APAI capabilities:
 
 1. **Identify** a use case not covered by existing examples
 2. **Create** a complete, working specification
-3. **Validate** using OpenAPIA validators
+3. **Validate** using APAI validators
 4. **Document** the example with clear descriptions
 5. **Submit** a pull request with your example
 
 ### Example Requirements
 
 - **Complete**: All required sections populated
-- **Valid**: Passes OpenAPIA validation
+- **Valid**: Passes APAI validation
 - **Documented**: Clear descriptions and comments
 - **Realistic**: Uses realistic data and scenarios
 - **Educational**: Demonstrates best practices
 
 ## Support
 
-- **Issues**: [Report problems with examples](https://github.com/FabioGuin/OpenAPIA/issues)
-- **Discussions**: [Ask questions about examples](https://github.com/FabioGuin/OpenAPIA/discussions)
-- **Documentation**: [Complete OpenAPIA documentation](../docs/)
+- **Issues**: [Report problems with examples](https://github.com/FabioGuin/APAI/issues)
+- **Discussions**: [Ask questions about examples](https://github.com/FabioGuin/APAI/discussions)
+- **Documentation**: [Complete APAI documentation](../docs/)
 
 ---
 
-**Note**: All examples are compatible with OpenAPIA 0.1.0. Check the [CHANGELOG](../CHANGELOG.md) for updates.
+**Note**: All examples are compatible with APAI 0.1.0. Check the [CHANGELOG](../CHANGELOG.md) for updates.

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to OpenAPIA will be documented in this file.
+All notable changes to APAI will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Security Best Practices**: Comprehensive security framework for managing sensitive data
-  - New `.env.example` template with all variables used in OpenAPIA examples and documentation
+  - New `.env.example` template with all variables used in APAI examples and documentation
   - Complete analysis of environment variables across all files (examples, docs, templates)
   - Fixed hardcoded webhook URLs in automation examples, replaced with environment variables
   - New `docs/ai-security-considerations.md` with comprehensive AI security framework
@@ -68,8 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2025-09-03
 
 ### Added
-- Initial OpenAPIA v0.1.0 specification and validators
-- Core sections: `openapia`, `info`, `models`, `prompts`, `constraints`, `tasks`, `context`, `evaluation`
+- Initial APAI v0.1.0 specification and validators
+- Core sections: `apai`, `info`, `models`, `prompts`, `constraints`, `tasks`, `context`, `evaluation`
 - Example specifications for customer support AI, content moderation, and multilingual chatbot
 - Multi-language validators (JavaScript, PHP, Python, Go)
 - Hierarchical composition support for complex AI systems
@@ -97,7 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 - Comprehensive README with examples
-- Formal OpenAPIA 0.1 specification documentation
+- Formal APAI 0.1 specification documentation
 - Hierarchical composition documentation
 - Contributing guidelines
 - Governance documentation

@@ -1,8 +1,8 @@
-# OpenAPIA Governance
+# APAI Governance
 
 ## Current Phase: Bootstrap
 
-OpenAPIA is currently in the **Bootstrap Phase** with a single maintainer model. This governance structure is designed to be lightweight and efficient while the project establishes its foundation.
+APAI is currently in the **Bootstrap Phase** with a single maintainer model. This governance structure is designed to be lightweight and efficient while the project establishes its foundation.
 
 ## Maintainer
 
@@ -120,13 +120,13 @@ Contributors grant patent licenses under the Apache License 2.0.
 
 ### Trademarks
 
-"OpenAPIA" is a trademark. Use in compliance with trademark guidelines.
+"APAI" is a trademark. Use in compliance with trademark guidelines.
 
 ## Contact
 
 - **Security Issues**: Use GitHub Issues with security label
-- **GitHub Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
+- **GitHub Issues**: [GitHub Issues](https://github.com/FabioGuin/APAI/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/APAI/discussions)
 
 ## History
 

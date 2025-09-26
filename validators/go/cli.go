@@ -47,7 +47,7 @@ func handleValidate(options []string) {
 		}
 	}
 
-	fmt.Printf("Validating OpenAPIA specification")
+	fmt.Printf("Validating APAI specification")
 	if hierarchical {
 		fmt.Printf(" with inheritance")
 	}
@@ -103,7 +103,7 @@ func handleTree(options []string) {
 
 	filePath := options[0]
 
-	fmt.Println("OpenAPIA Specification Hierarchy Tree")
+	fmt.Println("APAI Specification Hierarchy Tree")
 	fmt.Println(strings.Repeat("=", 50))
 
 	validator := NewAPAIValidator()
@@ -120,7 +120,7 @@ func handleMerge(options []string) {
 	outputPath := options[0]
 	inputFiles := options[1:]
 
-	fmt.Println("Merging OpenAPIA specifications...")
+	fmt.Println("Merging APAI specifications...")
 	fmt.Printf("Output: %s\n", outputPath)
 	fmt.Printf("Input files: %s\n", strings.Join(inputFiles, ", "))
 	fmt.Println(strings.Repeat("-", 60))
@@ -160,7 +160,7 @@ func handleMerge(options []string) {
 }
 
 func showHelp() {
-	fmt.Println("OpenAPIA Validator CLI - Go Implementation")
+	fmt.Println("APAI Validator CLI - Go Implementation")
 	fmt.Println("==========================================")
 	fmt.Println("")
 	
@@ -169,7 +169,7 @@ func showHelp() {
 	fmt.Println("")
 	
 	fmt.Println("COMMANDS:")
-	fmt.Println("  validate <file> [--hierarchical]  Validate OpenAPIA specification")
+	fmt.Println("  validate <file> [--hierarchical]  Validate APAI specification")
 	fmt.Println("  tree <file>                       Show hierarchy tree for specification")
 	fmt.Println("  merge <output> <files...>         Merge multiple specifications")
 	fmt.Println("")
@@ -186,5 +186,5 @@ func showHelp() {
 	fmt.Println("  go run cli.go merge output.yaml spec1.yaml spec2.yaml")
 	fmt.Println("")
 	
-	fmt.Println("For more information, visit: https://github.com/openapia/openapia")
+	fmt.Println("For more information, visit: https://github.com/FabioGuin/APAI")
 }

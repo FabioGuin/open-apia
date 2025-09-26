@@ -1,7 +1,7 @@
-# OpenAPIA 0.1 - Security-Focused Template
+# APAI 0.1 - Security-Focused Template
 # Template with comprehensive security configurations for production AI systems
 
-openapia: "0.1.0"
+apai: "0.1.0"
 
 info:
   title: "Secure AI System"

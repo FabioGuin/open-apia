@@ -1,10 +1,10 @@
 {
-    "name": "openapia-validator-js",
+    "name": "apai-validator-js",
     "version": "0.1.0",
-    "description": "JavaScript validator for OpenAPIA specifications",
-    "main": "src/OpenAPIAValidator.js",
+    "description": "JavaScript validator for APAI specifications",
+    "main": "src/APAIValidator.js",
     "bin": {
-        "openapia-validate": "cli.js"
+        "apai-validate": "cli.js"
     },
     "scripts": {
         "test": "jest",
@@ -15,7 +15,7 @@
         "validate": "node cli.js -f ../spec/examples/customer-support.yaml"
     },
     "keywords": [
-        "openapia",
+        "apai",
         "ai",
         "validation",
         "specification",
@@ -26,13 +26,13 @@
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/FabioGuin/OpenAPIA.git",
+        "url": "https://github.com/FabioGuin/APAI.git",
         "directory": "validators/javascript"
     },
     "bugs": {
-        "url": "https://github.com/FabioGuin/OpenAPIA/issues"
+        "url": "https://github.com/FabioGuin/APAI/issues"
     },
-    "homepage": "https://github.com/FabioGuin/OpenAPIA#readme",
+    "homepage": "https://github.com/FabioGuin/APAI#readme",
     "dependencies": {
         "js-yaml": "^4.1.0",
         "ajv": "^8.12.0",

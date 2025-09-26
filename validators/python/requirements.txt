@@ -1,4 +1,4 @@
-# OpenAPIA Python Validator Dependencies
+# APAI Python Validator Dependencies
 
 # Core dependencies
 PyYAML>=6.0

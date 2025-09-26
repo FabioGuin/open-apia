@@ -1,10 +1,10 @@
-# OpenAPIA PHP Validator
+# APAI PHP Validator
 
-A comprehensive PHP validator for OpenAPIA specifications.
+A comprehensive PHP validator for APAI specifications.
 
 ## Features
 
-- **Full Validation**: Validates all OpenAPIA specification sections
+- **Full Validation**: Validates all APAI specification sections
 - **Hierarchical Composition**: Support for inheritance and composition of specifications
 - **Cross-Validation**: Checks references between models, prompts, and tasks
 - **Multiple Formats**: Supports YAML and JSON specifications
@@ -17,7 +17,7 @@ A comprehensive PHP validator for OpenAPIA specifications.
 ### Using Composer
 
 ```bash
-composer require openapia/validator-php
+composer require apai/validator-php
 ```
 
 ### Manual Installation
@@ -51,10 +51,10 @@ php cli.php merge output.yaml spec1.yaml spec2.yaml
 ```php
 <?php
 
-use OpenAPIA\OpenAPIAValidator;
+use APAI\APAIValidator;
 
 // Create validator instance
-$validator = new OpenAPIAValidator();
+$validator = new APAIValidator();
 
 // Basic validation
 $isValid = $validator->validateFile('spec.yaml');
@@ -83,7 +83,7 @@ $warnings = $validator->getWarnings();
 
 The validator checks for the following required sections:
 
-- `openapia` - Specification version
+- `apai` - Specification version
 - `info` - System metadata
 - `models` - AI models
 - `prompts` - Prompt templates
@@ -185,18 +185,18 @@ composer cs-fix
 
 ```
 validators/php/
-├── OpenAPIAValidator.php    # Main validator class
+├── APAIValidator.php    # Main validator class
 ├── cli.php                  # CLI interface
 ├── composer.json            # Dependencies
 ├── README.md               # This file
 └── tests/
-    └── OpenAPIAValidatorTest.php  # Test suite
+    └── APAIValidatorTest.php  # Test suite
 ```
 
 ### Adding New Validation Rules
 
-1. Add the validation logic to the appropriate method in `OpenAPIAValidator`
-2. Add test cases to `OpenAPIAValidatorTest`
+1. Add the validation logic to the appropriate method in `APAIValidator`
+2. Add test cases to `APAIValidatorTest`
 3. Update documentation
 
 ### Contributing
@@ -214,14 +214,14 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](../../
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
+- **Issues**: [GitHub Issues](https://github.com/FabioGuin/APAI/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/APAI/discussions)
 
 ## Changelog
 
 ### 0.1.0
 - Initial release
-- Basic validation for all OpenAPIA sections
+- Basic validation for all APAI sections
 - CLI interface
 - Comprehensive test suite
 - Cross-validation support

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-OpenAPIA Validator - Python Implementation
+APAI Validator - Python Implementation
 
-A comprehensive validator for OpenAPIA specifications.
+A comprehensive validator for APAI specifications.
 """
 
 import yaml
@@ -26,7 +26,7 @@ class APAIValidator:
         self.merge_cache = {}
     
     def validate_file(self, file_path: str) -> bool:
-        """Validate an OpenAPIA specification file."""
+        """Validate an APAI specification file."""
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 if file_path.endswith('.yaml') or file_path.endswith('.yml'):
@@ -53,7 +53,7 @@ class APAIValidator:
             return False
     
     def validate_spec(self, spec: Dict[str, Any]) -> bool:
-        """Validate an OpenAPIA specification dictionary."""
+        """Validate an APAI specification dictionary."""
         self.errors = []
         self.warnings = []
         
@@ -61,8 +61,8 @@ class APAIValidator:
         self._validate_required_sections(spec)
         
         # Validate each section
-        if 'openapia' in spec:
-            self._validate_openapia_version(spec['openapia'])
+        if 'apai' in spec:
+            self._validate_apai_version(spec["apai"])
         
         if 'info' in spec:
             self._validate_info(spec['info'])
@@ -93,7 +93,7 @@ class APAIValidator:
     def _validate_required_sections(self, spec: Dict[str, Any]) -> None:
         """Validate that all required sections are present."""
         required_sections = [
-            'openapia', 'info', 'models', 'prompts', 
+            'apai', 'info', 'models', 'prompts', 
             'constraints', 'tasks', 'context', 'evaluation'
         ]
         
@@ -101,10 +101,10 @@ class APAIValidator:
             if section not in spec:
                 self.errors.append(f"Missing required section: {section}")
     
-    def _validate_openapia_version(self, version: str) -> None:
-        """Validate the OpenAPIA version."""
+    def _validate_apai_version(self, version: str) -> None:
+        """Validate the APAI version."""
         if not isinstance(version, str):
-            self.errors.append("openapia version must be a string")
+            self.errors.append("apai version must be a string")
             return
         
         if not version.startswith('0.1'):
@@ -459,7 +459,7 @@ class APAIValidator:
             return False
     
     def load_spec(self, spec_path: str) -> Optional[Dict[str, Any]]:
-        """Load OpenAPIA specification from file."""
+        """Load APAI specification from file."""
         try:
             with open(spec_path, 'r', encoding='utf-8') as f:
                 if spec_path.endswith('.yaml') or spec_path.endswith('.yml'):
@@ -632,13 +632,13 @@ def handle_validate(options):
     """Handle validate command."""
     if len(options) == 0:
         print("Error: No file specified")
-        print("Usage: python openapia_validator.py validate <file> [--hierarchical]")
+        print("Usage: python apai_validator.py validate <file> [--hierarchical]")
         sys.exit(1)
     
     file_path = options[0]
     hierarchical = '--hierarchical' in options
     
-    print(f"Validating OpenAPIA specification{' with inheritance' if hierarchical else ''}: {file_path}")
+    print(f"Validating APAI specification{' with inheritance' if hierarchical else ''}: {file_path}")
     print('-' * 60)
     
     validator = APAIValidator()
@@ -668,12 +668,12 @@ def handle_tree(options):
     """Handle tree command."""
     if len(options) == 0:
         print("Error: No file specified")
-        print("Usage: python openapia_validator.py tree <file>")
+        print("Usage: python apai_validator.py tree <file>")
         sys.exit(1)
     
     file_path = options[0]
     
-    print("OpenAPIA Specification Hierarchy Tree")
+    print("APAI Specification Hierarchy Tree")
     print("=" * 50)
     
     validator = APAIValidator()
@@ -683,13 +683,13 @@ def handle_merge(options):
     """Handle merge command."""
     if len(options) < 2:
         print("Error: Missing required arguments")
-        print("Usage: python openapia_validator.py merge <output> <file1> [file2] ...")
+        print("Usage: python apai_validator.py merge <output> <file1> [file2] ...")
         sys.exit(1)
     
     output_path = options[0]
     input_files = options[1:]
     
-    print("Merging OpenAPIA specifications...")
+    print("Merging APAI specifications...")
     print(f"Output: {output_path}")
     print(f"Input files: {', '.join(input_files)}")
     print('-' * 60)
@@ -727,16 +727,16 @@ def handle_merge(options):
 
 def show_help():
     """Show help information."""
-    print("OpenAPIA Validator CLI - Python Implementation")
+    print("APAI Validator CLI - Python Implementation")
     print("=" * 50)
     print("")
     
     print("USAGE:")
-    print("  python openapia_validator.py <command> [options]")
+    print("  python apai_validator.py <command> [options]")
     print("")
     
     print("COMMANDS:")
-    print("  validate <file> [--hierarchical]  Validate OpenAPIA specification")
+    print("  validate <file> [--hierarchical]  Validate APAI specification")
     print("  tree <file>                       Show hierarchy tree for specification")
     print("  merge <output> <files...>         Merge multiple specifications")
     print("")
@@ -747,13 +747,13 @@ def show_help():
     print("")
     
     print("EXAMPLES:")
-    print("  python openapia_validator.py validate spec.yaml")
-    print("  python openapia_validator.py validate spec.yaml --hierarchical")
-    print("  python openapia_validator.py tree spec.yaml")
-    print("  python openapia_validator.py merge output.yaml spec1.yaml spec2.yaml")
+    print("  python apai_validator.py validate spec.yaml")
+    print("  python apai_validator.py validate spec.yaml --hierarchical")
+    print("  python apai_validator.py tree spec.yaml")
+    print("  python apai_validator.py merge output.yaml spec1.yaml spec2.yaml")
     print("")
     
-    print("For more information, visit: https://github.com/openapia/openapia")
+    print("For more information, visit: https://github.com/FabioGuin/APAI")
 
 
 if __name__ == '__main__':

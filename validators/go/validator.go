@@ -40,7 +40,7 @@ func NewAPAIValidator() *APAIValidator {
 	}
 }
 
-// ValidateFile validates an OpenAPIA specification file
+// ValidateFile validates an APAI specification file
 func (v *APAIValidator) ValidateFile(filePath string) (bool, error) {
 	content, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -68,7 +68,7 @@ func (v *APAIValidator) ValidateFile(filePath string) (bool, error) {
 	return v.ValidateSpec(spec), nil
 }
 
-// ValidateSpec validates an OpenAPIA specification map
+// ValidateSpec validates an APAI specification map
 func (v *APAIValidator) ValidateSpec(spec map[string]interface{}) bool {
 	v.Errors = make([]string, 0)
 	v.Warnings = make([]string, 0)
@@ -77,8 +77,8 @@ func (v *APAIValidator) ValidateSpec(spec map[string]interface{}) bool {
 	v.validateRequiredSections(spec)
 
 	// Validate each section
-	if openapia, exists := spec["openapia"]; exists {
-		v.validateOpenAPIAVersion(openapia)
+	if apai, exists := spec["apai"]; exists {
+		v.validateAPAIVersion(apai)
 	}
 
 	if info, exists := spec["info"]; exists {
@@ -118,7 +118,7 @@ func (v *APAIValidator) ValidateSpec(spec map[string]interface{}) bool {
 // validateRequiredSections validates that all required sections are present
 func (v *APAIValidator) validateRequiredSections(spec map[string]interface{}) {
 	requiredSections := []string{
-		"openapia", "info", "models", "prompts",
+		"apai", "info", "models", "prompts",
 		"constraints", "tasks", "context", "evaluation",
 	}
 
@@ -129,11 +129,11 @@ func (v *APAIValidator) validateRequiredSections(spec map[string]interface{}) {
 	}
 }
 
-// validateOpenAPIAVersion validates the OpenAPIA version
-func (v *APAIValidator) validateOpenAPIAVersion(version interface{}) {
+// validateAPAIVersion validates the APAI version
+func (v *APAIValidator) validateAPAIVersion(version interface{}) {
 	versionStr, ok := version.(string)
 	if !ok {
-		v.Errors = append(v.Errors, "openapia version must be a string")
+		v.Errors = append(v.Errors, "apai version must be a string")
 		return
 	}
 

@@ -1,6 +1,6 @@
 {
-    "name": "openapia/validator-php",
-    "description": "PHP validator for OpenAPIA specifications",
+    "name": "apai/validator-php",
+    "description": "PHP validator for APAI specifications",
     "type": "library",
     "license": "Apache-2.0",
     "authors": [
@@ -19,12 +19,12 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenAPIA\\": "src/"
+            "APAI\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "OpenAPIA\\Tests\\": "tests/"
+            "APAI\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -33,7 +33,7 @@
         "phpstan": "phpstan analyse",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
-        "validate": "php cli.php -f ../spec/openapia-0.1.yaml"
+        "validate": "php cli.php -f ../spec/apai-0.1.yaml"
     },
     "bin": [
         "cli.php"

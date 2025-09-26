@@ -1,7 +1,7 @@
 # APAI - Architecture Protocol for Artificial Intelligence
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](https://github.com/FabioGuin/OpenAPIA/releases)
+[![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](https://github.com/FabioGuin/APAI/releases)
 
 ## Overview
 
@@ -67,7 +67,7 @@ The APAI YAML specification's structured format makes it suitable for generative
 ### Example: Generative Development Possibilities
 ```yaml
 # Your APAI specification
-openapia: "0.1.0"
+apai: "0.1.0"
 info:
   title: "Customer Support AI"
 models:
@@ -114,7 +114,7 @@ cp .env.example .env
 
 #### Simple Specification
 ```yaml
-openapia: "0.1.0"
+apai: "0.1.0"
 info:
   title: "My AI Assistant"
   version: "1.0.0"
@@ -148,12 +148,12 @@ tasks:
 
 #### Hierarchical Specification
 ```yaml
-openapia: "0.1.0"
+apai: "0.1.0"
 
 # Inherit from parent specifications
 inherits:
-  - "../openapia-global.yaml"
-  - "../../openapia-team.yaml"
+  - "../apai-global.yaml"
+  - "../../apai-team.yaml"
 
 info:
   title: "Feature-Specific AI Assistant"
@@ -218,7 +218,7 @@ Check out our [examples directory](examples/) for complete implementations organ
 
 ### Templates
 - [Basic Template](examples/templates/basic-template.yaml) - Minimal starting template for new specifications
-- [Complete JSON Example](examples/openapia-0.1-example.json) - Machine-readable reference for tools and SDKs
+- [Complete JSON Example](examples/apai-0.1-example.json) - Machine-readable reference for tools and SDKs
 
 See the [Examples README](examples/README.md) for detailed descriptions and learning paths.
 
@@ -235,7 +235,7 @@ APAI supports hierarchical composition for complex organizational structures:
 
 ```yaml
 # Global specification
-openapia: "0.1.0"
+apai: "0.1.0"
 info:
   title: "Global AI Standards"
   ai_metadata:
@@ -244,9 +244,9 @@ info:
       scope: "organization"
 
 # Feature specification inheriting from global
-openapia: "0.1.0"
+apai: "0.1.0"
 inherits:
-  - "../openapia-global.yaml"
+  - "../apai-global.yaml"
 info:
   title: "Feature-Specific AI"
   ai_metadata:
@@ -259,16 +259,16 @@ info:
 
 The APAI specification is available in multiple formats:
 
-- **YAML**: `spec/openapia-0.1.yaml` - Official specification (human-readable)
-- **JSON Example**: `examples/openapia-0.1-example.json` - Complete working example for tools and SDKs
-- **JSON Schema**: `spec/schemas/openapia-0.1-schema.json` - Validation schema
+- **YAML**: `spec/apai-0.1.yaml` - Official specification (human-readable)
+- **JSON Example**: `examples/apai-0.1-example.json` - Complete working example for tools and SDKs
+- **JSON Schema**: `spec/schemas/apai-0.1-schema.json` - Validation schema
 - **Examples**: `examples/*.yaml` - Real-world use case examples
 
 See `spec/README.md` for detailed file structure and usage guide.
 
 The specification includes these core sections:
 
-- **`openapia`** - Specification version
+- **`apai`** - Specification version
 - **`info`** - System metadata and AI-specific information
 - **`models`** - AI models with capabilities, limits, and costs
 - **`prompts`** - Structured prompts with variables and configuration
@@ -306,7 +306,7 @@ Each validator includes a command-line interface for easy validation:
 
 ```bash
 # Python
-python validators/python/openapia_validator.py spec.yaml
+python validators/python/apai_validator.py spec.yaml
 
 # PHP
 php validators/php/cli.php -f spec.yaml

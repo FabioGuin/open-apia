@@ -16,7 +16,7 @@ This whitepaper presents APAI as a comprehensive **AI System Protocol Framework*
 
 1. [Introduction](#introduction)
 2. [The AI Standardization Challenge](#the-ai-standardization-challenge)
-3. [OpenAPIA: A Comprehensive Solution](#openapia-a-comprehensive-solution)
+3. [APAI: A Comprehensive Solution](#apai-a-comprehensive-solution)
 4. [Core Architecture and Features](#core-architecture-and-features)
 5. [Advanced Capabilities](#advanced-capabilities)
 6. [Generative Development Potential](#generative-development-potential)
@@ -37,11 +37,11 @@ Artificial intelligence is evolving quickly, creating new opportunities for inno
 - **Interoperability Issues**: AI systems that cannot communicate or integrate effectively
 - **Documentation Gaps**: Inconsistent or missing documentation for AI system architectures
 
-OpenAPIA addresses these challenges by providing an open framework for AI system architecture specification that functions as a blueprint. Unlike traditional software standards, OpenAPIA is designed specifically for AI systems, treating prompts as core components and supporting multi-agent workflows.
+APAI addresses these challenges by providing an open framework for AI system architecture specification that functions as a blueprint. Unlike traditional software standards, APAI is designed specifically for AI systems, treating prompts as core components and supporting multi-agent workflows.
 
-### What is OpenAPIA?
+### What is APAI?
 
-OpenAPIA is a specification framework for AI system architecture that functions as a blueprint and provides:
+APAI is a specification framework for AI system architecture that functions as a blueprint and provides:
 
 - **Structured Templates**: Templates for designing AI systems
 - **AI-Focused Design**: Built specifically for AI systems, not adapted from existing standards
@@ -49,7 +49,7 @@ OpenAPIA is a specification framework for AI system architecture that functions 
 - **Automated Processing**: Enables automated validation, testing, and deployment
 - **Multi-Agent Support**: Supports complex AI workflows and agent interactions
 
-OpenAPIA aims to improve AI system architecture documentation and integration, providing a standardized approach to describing and managing AI systems.
+APAI aims to improve AI system architecture documentation and integration, providing a standardized approach to describing and managing AI systems.
 
 ## The AI Standardization Challenge
 
@@ -78,9 +78,9 @@ While several AI-related standards exist, they often focus on specific aspects:
 - **IEEE Standards**: Focus on specific AI components rather than system architecture
 - **Industry-Specific Standards**: Limited scope and vendor lock-in
 
-OpenAPIA fills the gap by providing a comprehensive, vendor-agnostic standard that covers all aspects of AI system architecture.
+APAI fills the gap by providing a comprehensive, vendor-agnostic standard that covers all aspects of AI system architecture.
 
-## OpenAPIA: A Comprehensive Solution
+## APAI: A Comprehensive Solution
 
 ### Vision and Mission
 
@@ -90,7 +90,7 @@ OpenAPIA fills the gap by providing a comprehensive, vendor-agnostic standard th
 
 ### Core Principles
 
-OpenAPIA is built on five principles:
+APAI is built on five principles:
 
 1. **AI-Focused Design**: Models, prompts, and constraints as core components
 2. **Provider Independence**: Works with any AI provider (OpenAI, Anthropic, Google, etc.)
@@ -100,7 +100,7 @@ OpenAPIA is built on five principles:
 
 ### Key Differentiators
 
-OpenAPIA offers several key features:
+APAI offers several key features:
 
 - **Complete Scope**: Covers models, prompts, constraints, tasks, context, evaluation, and governance
 - **Hierarchical Composition**: Supports organizational structures through inheritance
@@ -112,9 +112,9 @@ OpenAPIA offers several key features:
 
 ### Specification Structure
 
-OpenAPIA specifications include eight main sections:
+APAI specifications include eight main sections:
 
-#### 1. Specification Metadata (`openapia`, `info`)
+#### 1. Specification Metadata (`apai`, `info`)
 - Version information and system metadata
 - AI-specific metadata including domain, complexity, and deployment environment
 - Hierarchical composition information
@@ -156,7 +156,7 @@ OpenAPIA specifications include eight main sections:
 
 ### Hierarchical Composition
 
-OpenAPIA supports hierarchical composition, allowing organizations to:
+APAI supports hierarchical composition, allowing organizations to:
 
 - **Inherit Configurations**: Child specifications inherit from parent specifications
 - **Specialize Behavior**: Override or extend inherited configurations
@@ -165,7 +165,7 @@ OpenAPIA supports hierarchical composition, allowing organizations to:
 
 #### Hierarchy Levels
 
-OpenAPIA supports seven hierarchy levels:
+APAI supports seven hierarchy levels:
 1. **Global**: Organization-wide standards
 2. **Regional**: Geographic or regulatory region standards
 3. **Department**: Business department standards
@@ -176,10 +176,10 @@ OpenAPIA supports seven hierarchy levels:
 
 ### Multi-Agent Systems
 
-OpenAPIA supports multi-agent systems through three patterns:
+APAI supports multi-agent systems through three patterns:
 
 #### 1. Hierarchical Agent Composition
-- Create specialized agents as separate OpenAPIA specifications
+- Create specialized agents as separate APAI specifications
 - Compose them hierarchically for complex coordination
 - Maintain clear separation of concerns
 
@@ -197,7 +197,7 @@ OpenAPIA supports multi-agent systems through three patterns:
 
 ### Automation Integration
 
-OpenAPIA 0.1 introduces declarative integration with external automation platforms:
+APAI 0.1 introduces declarative integration with external automation platforms:
 
 #### Supported Platforms
 - **n8n**: Complex business process automation
@@ -213,7 +213,7 @@ OpenAPIA 0.1 introduces declarative integration with external automation platfor
 
 ### Model Context Protocol (MCP) Support
 
-OpenAPIA provides comprehensive support for the Model Context Protocol:
+APAI provides comprehensive support for the Model Context Protocol:
 
 - **Server Configuration**: Define MCP servers with transport, capabilities, and security
 - **Tool Integration**: Access external tools and resources through MCP
@@ -222,7 +222,7 @@ OpenAPIA provides comprehensive support for the Model Context Protocol:
 
 ### Comprehensive Evaluation Framework
 
-OpenAPIA includes a robust evaluation framework:
+APAI includes a robust evaluation framework:
 
 #### Metrics
 - **Performance Metrics**: Response time, throughput, accuracy
@@ -238,7 +238,7 @@ OpenAPIA includes a robust evaluation framework:
 
 ### The Generative Map Concept
 
-OpenAPIA's structured YAML specification serves as a generative map - a machine-readable blueprint that functions as an architectural plan for automated development:
+APAI's structured YAML specification serves as a generative map - a machine-readable blueprint that functions as an architectural plan for automated development:
 
 ### Code Generation
 - **API Clients**: Generate client libraries in multiple languages
@@ -268,11 +268,11 @@ OpenAPIA's structured YAML specification serves as a generative map - a machine-
 
 ### Getting Started
 
-OpenAPIA provides multiple entry points for different user types:
+APAI provides multiple entry points for different user types:
 
 #### For Beginners
 1. Start with simple specifications using provided templates
-2. Validate using OpenAPIA validators
+2. Validate using APAI validators
 3. Explore comprehensive examples
 4. Gradually add complexity
 
@@ -285,12 +285,12 @@ OpenAPIA provides multiple entry points for different user types:
 #### For Advanced Users
 1. Create custom validators and tools
 2. Build generative development tools
-3. Contribute to the OpenAPIA ecosystem
+3. Contribute to the APAI ecosystem
 4. Develop enterprise integrations
 
 ### Validation and Tooling
 
-OpenAPIA provides validators in multiple programming languages:
+APAI provides validators in multiple programming languages:
 
 - **Python**: Full-featured validation library with comprehensive error reporting
 - **JavaScript**: Node.js and browser support for web applications
@@ -299,7 +299,7 @@ OpenAPIA provides validators in multiple programming languages:
 
 ### Integration Examples
 
-OpenAPIA includes comprehensive examples covering:
+APAI includes comprehensive examples covering:
 
 - **Core AI Systems**: Customer support, content moderation, multilingual chatbots
 - **Multi-Agent Systems**: Complex customer support with specialized agents
@@ -310,7 +310,7 @@ OpenAPIA includes comprehensive examples covering:
 
 ### Current Governance Model
 
-OpenAPIA is currently in the **Bootstrap Phase** with a single maintainer model:
+APAI is currently in the **Bootstrap Phase** with a single maintainer model:
 
 - **Maintainer**: Fabio Guin (Project Lead and Decision Maker)
 - **Decision Process**: Transparent decision-making with community input
@@ -327,7 +327,7 @@ The project will transition to community governance when:
 
 ### Future Community Structure
 
-When transitioning, OpenAPIA plans to adopt:
+When transitioning, APAI plans to adopt:
 - **Technical Steering Committee (TSC)**: 3-5 members
 - **RFC Process**: Formal proposal and voting system
 - **Regular Meetings**: Weekly/bi-weekly community calls
@@ -336,7 +336,7 @@ When transitioning, OpenAPIA plans to adopt:
 
 ### Contributing
 
-OpenAPIA welcomes contributions in multiple areas:
+APAI welcomes contributions in multiple areas:
 - **Specification Changes**: Improvements and new features
 - **Validators**: Additional language implementations
 - **Tools**: CLI tools, generators, and integrations
@@ -365,7 +365,7 @@ OpenAPIA welcomes contributions in multiple areas:
 
 ## Conclusion
 
-OpenAPIA represents a significant step forward in AI system standardization and governance. By providing a comprehensive, open standard for describing AI systems, OpenAPIA enables organizations to:
+APAI represents a significant step forward in AI system standardization and governance. By providing a comprehensive, open standard for describing AI systems, APAI enables organizations to:
 
 - **Improve Governance**: Better understand, monitor, and control AI systems
 - **Enhance Interoperability**: Enable AI systems to work together effectively
@@ -373,21 +373,21 @@ OpenAPIA represents a significant step forward in AI system standardization and 
 - **Ensure Compliance**: Meet regulatory requirements and industry standards
 - **Enable Innovation**: Create new tools and development paradigms
 
-The structured, machine-readable nature of OpenAPIA specifications opens up unprecedented possibilities for generative development, enabling automated code generation, documentation creation, and system orchestration.
+The structured, machine-readable nature of APAI specifications opens up unprecedented possibilities for generative development, enabling automated code generation, documentation creation, and system orchestration.
 
-As the AI industry continues to evolve, OpenAPIA provides a solid foundation for building transparent, interoperable, and governable AI systems that can scale with organizational needs and regulatory requirements.
+As the AI industry continues to evolve, APAI provides a solid foundation for building transparent, interoperable, and governable AI systems that can scale with organizational needs and regulatory requirements.
 
-The open-source nature of OpenAPIA ensures that it will continue to evolve with the community's needs, making it a sustainable and adaptable solution for the future of AI system architecture.
+The open-source nature of APAI ensures that it will continue to evolve with the community's needs, making it a sustainable and adaptable solution for the future of AI system architecture.
 
 ---
 
-**For more information about OpenAPIA, visit:**
-- **Repository**: https://github.com/FabioGuin/OpenAPIA
-- **Documentation**: https://github.com/FabioGuin/OpenAPIA/tree/main/docs
-- **Examples**: https://github.com/FabioGuin/OpenAPIA/tree/main/examples
+**For more information about APAI, visit:**
+- **Repository**: https://github.com/FabioGuin/APAI
+- **Documentation**: https://github.com/FabioGuin/APAI/tree/main/docs
+- **Examples**: https://github.com/FabioGuin/APAI/tree/main/examples
 
 **License**: Apache License 2.0
 
 ---
 
-*This whitepaper is based on OpenAPIA version 0.1.0. For the most current information, please refer to the official OpenAPIA documentation and specifications.*
+*This whitepaper is based on APAI version 0.1.0. For the most current information, please refer to the official APAI documentation and specifications.*

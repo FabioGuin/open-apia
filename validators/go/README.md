@@ -1,11 +1,11 @@
-# OpenAPIA Go Validator
+# APAI Go Validator
 
-A high-performance Go validator for OpenAPIA specifications.
+A high-performance Go validator for APAI specifications.
 
 ## Features
 
 - **High Performance**: Fast validation with minimal memory usage
-- **Full Validation**: Validates all OpenAPIA specification sections
+- **Full Validation**: Validates all APAI specification sections
 - **Hierarchical Composition**: Support for inheritance and composition of specifications
 - **Cross-Validation**: Checks references between models, prompts, and tasks
 - **Multiple Formats**: Supports YAML and JSON specifications
@@ -18,7 +18,7 @@ A high-performance Go validator for OpenAPIA specifications.
 ### Using go install
 
 ```bash
-go install github.com/FabioGuin/OpenAPIA/validators/go@latest
+go install github.com/FabioGuin/APAI/validators/go@latest
 ```
 
 ### Manual Installation
@@ -26,7 +26,7 @@ go install github.com/FabioGuin/OpenAPIA/validators/go@latest
 1. Clone the repository
 2. Build the validator:
    ```bash
-   go build -o openapia-validator .
+   go build -o apai-validator .
    ```
 
 ## Usage
@@ -59,7 +59,7 @@ import (
 
 func main() {
     // Create validator instance
-    validator := NewOpenAPIAValidator()
+    validator := NewAPAIValidator()
     
     // Validate a file
     isValid, err := validator.ValidateFile("spec.yaml")
@@ -69,7 +69,7 @@ func main() {
     
     // Validate an object
     spec := map[string]interface{}{
-        "openapia": "0.1.0",
+        "apai": "0.1.0",
         "info": map[string]interface{}{
             "title":       "My AI System",
             "version":     "1.0.0",
@@ -143,7 +143,7 @@ func main() {
 
 The validator checks for the following required sections:
 
-- `openapia` - Specification version
+- `apai` - Specification version
 - `info` - System metadata
 - `models` - AI models
 - `prompts` - Prompt templates
@@ -251,12 +251,12 @@ validators/go/
 
 ```bash
 # Build for current platform
-go build -o openapia-validator .
+go build -o apai-validator .
 
 # Build for multiple platforms
-GOOS=linux GOARCH=amd64 go build -o openapia-validator-linux .
-GOOS=windows GOARCH=amd64 go build -o openapia-validator.exe .
-GOOS=darwin GOARCH=amd64 go build -o openapia-validator-macos .
+GOOS=linux GOARCH=amd64 go build -o apai-validator-linux .
+GOOS=windows GOARCH=amd64 go build -o apai-validator.exe .
+GOOS=darwin GOARCH=amd64 go build -o apai-validator-macos .
 ```
 
 ### Adding New Validation Rules
@@ -276,19 +276,19 @@ GOOS=darwin GOARCH=amd64 go build -o openapia-validator-macos .
 
 ## API Reference
 
-### OpenAPIAValidator
+### APAIValidator
 
 #### Constructor
 
 ```go
-validator := NewOpenAPIAValidator()
+validator := NewAPAIValidator()
 ```
 
 #### Methods
 
 ##### `ValidateFile(filePath string) (bool, error)`
 
-Validates an OpenAPIA specification file.
+Validates an APAI specification file.
 
 **Parameters:**
 - `filePath` (string): Path to the specification file
@@ -297,10 +297,10 @@ Validates an OpenAPIA specification file.
 
 ##### `ValidateSpec(spec map[string]interface{}) bool`
 
-Validates an OpenAPIA specification object.
+Validates an APAI specification object.
 
 **Parameters:**
-- `spec` (map[string]interface{}): OpenAPIA specification object
+- `spec` (map[string]interface{}): APAI specification object
 
 **Returns:** bool
 
@@ -353,14 +353,14 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](../../
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
+- **Issues**: [GitHub Issues](https://github.com/FabioGuin/APAI/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/APAI/discussions)
 
 ## Changelog
 
 ### 0.1.0
 - Initial release
-- Basic validation for all OpenAPIA sections
+- Basic validation for all APAI sections
 - CLI interface
 - Comprehensive test suite
 - Cross-validation support

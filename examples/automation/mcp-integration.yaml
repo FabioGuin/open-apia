@@ -1,7 +1,7 @@
-# OpenAPIA 0.1 - MCP Integration Example
-# Example showing how to integrate Model Context Protocol servers with OpenAPIA
+# APAI 0.1 - MCP Integration Example
+# Example showing how to integrate Model Context Protocol servers with APAI
 
-openapia: "0.1.0"
+apai: "0.1.0"
 
 info:
   title: "Customer Support AI with MCP Integration"
@@ -22,7 +22,7 @@ info:
     
     hierarchy_info:
       level: "team"
-      parent_specs: ["../openapia-global.yaml"]
+      parent_specs: ["../apai-global.yaml"]
       scope: "team"
       inheritance_mode: "merge"
 
@@ -314,7 +314,7 @@ extensions:
 
 validation:
   schema_version: "0.1.0"
-  required_sections: ["openapia", "info", "models", "prompts", "tasks", "context"]
+  required_sections: ["apai", "info", "models", "prompts", "tasks", "context"]
   custom_validators:
     - name: "mcp_server_reference_validator"
       description: "Validates that all MCP server references in tasks exist in mcp_servers section"

@@ -12,7 +12,7 @@ Welcome to the APAI documentation. This directory contains guides and references
   - Validation and testing
 
 ### Core Specification
-- **[OpenAPIA 0.1 Specification](openapia-0.1-specification.md)** - Formal specification
+- **[APAI 0.1 Specification](apai-0.1-specification.md)** - Formal specification
   - All specification fields and types
   - Field descriptions
   - Validation rules
@@ -65,7 +65,7 @@ Welcome to the APAI documentation. This directory contains guides and references
 5. Explore the **[examples directory](../examples/)** for inspiration
 
 ### For Intermediate Users
-1. Review the **[OpenAPIA 0.1 Specification](openapia-0.1-specification.md)** for reference
+1. Review the **[APAI 0.1 Specification](apai-0.1-specification.md)** for reference
 2. Learn **[Hierarchical Composition](hierarchical-composition.md)** for complex systems
 3. Study multi-agent patterns in **[Multi-Agent Systems](multi-agent-systems.md)**
 4. Implement security controls from **[AI Security Considerations](ai-security-considerations.md)**
@@ -74,12 +74,12 @@ Welcome to the APAI documentation. This directory contains guides and references
 1. Master **[Automation Integration](automation-integration.md)** for enterprise workflows
 2. Implement security from **[Security Vulnerabilities](security-vulnerabilities.md)**
 3. Build multi-agent systems with security controls
-4. Contribute to the OpenAPIA ecosystem
+4. Contribute to the APAI ecosystem
 
 ## Quick Reference
 
 ### Core Sections
-- **`openapia`** - Specification version
+- **`apai`** - Specification version
 - **`info`** - System metadata and AI-specific information
 - **`models`** - AI models with capabilities, limits, and costs
 - **`prompts`** - Structured prompts with variables and configuration
@@ -110,7 +110,7 @@ See the **[examples directory](../examples/)** for:
 
 ## Tools and Validation
 
-OpenAPIA provides validators in multiple languages:
+APAI provides validators in multiple languages:
 - **[Python Validator](../validators/python/)** - Full-featured validation library
 - **[PHP Validator](../validators/php/)** - PHP validation with Symfony YAML
 - **[JavaScript Validator](../validators/javascript/)** - Node.js and browser support
@@ -118,7 +118,7 @@ OpenAPIA provides validators in multiple languages:
 
 ## Contributing
 
-We welcome contributions to improve OpenAPIA documentation:
+We welcome contributions to improve APAI documentation:
 - Report issues or suggest improvements
 - Submit pull requests for documentation updates
 - Share your use cases and examples
@@ -126,9 +126,9 @@ We welcome contributions to improve OpenAPIA documentation:
 
 ## Support
 
-- **GitHub Issues**: [Report bugs or request features](https://github.com/FabioGuin/OpenAPIA/issues)
-- **GitHub Discussions**: [Ask questions and share ideas](https://github.com/FabioGuin/OpenAPIA/discussions)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/FabioGuin/APAI/issues)
+- **GitHub Discussions**: [Ask questions and share ideas](https://github.com/FabioGuin/APAI/discussions)
 
 ---
 
-**Note**: This documentation is for OpenAPIA 0.1.0. Check the [CHANGELOG](../CHANGELOG.md) for updates and breaking changes.
+**Note**: This documentation is for APAI 0.1.0. Check the [CHANGELOG](../CHANGELOG.md) for updates and breaking changes.

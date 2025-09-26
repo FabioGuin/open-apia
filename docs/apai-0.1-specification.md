@@ -1,18 +1,18 @@
-# OpenAPIA 0.1 Specification
+# APAI 0.1 Specification
 
 ## Machine-Readable Formats
 
 This specification is available in multiple formats for different use cases:
 
 ### Main Specification
-- **YAML**: `spec/openapia-0.1.yaml` - Official specification (human-readable)
+- **YAML**: `spec/apai-0.1.yaml` - Official specification (human-readable)
 
 ### Examples and Templates
-- **JSON Example**: `../examples/openapia-0.1-example.json` - Complete working example in JSON format
+- **JSON Example**: `../examples/apai-0.1-example.json` - Complete working example in JSON format
 - **Domain Examples**: `../examples/*.yaml` - Real-world use case examples
 
 ### Validation
-- **JSON Schema**: `spec/schemas/openapia-0.1-schema.json` - Validation schema for OpenAPIA specifications
+- **JSON Schema**: `spec/schemas/apai-0.1-schema.json` - Validation schema for APAI specifications
 
 See `spec/README.md` for detailed explanation of each file type and usage.
 
@@ -35,9 +35,9 @@ See `spec/README.md` for detailed explanation of each file type and usage.
 
 ## Introduction
 
-OpenAPIA (Open Artificial Intelligence Architecture) is an open standard for describing, documenting, and validating AI systems. This specification provides a comprehensive framework for defining AI architectures in a vendor-agnostic, AI-native manner.
+APAI (Open Artificial Intelligence Architecture) is an open standard for describing, documenting, and validating AI systems. This specification provides a comprehensive framework for defining AI architectures in a vendor-agnostic, AI-native manner.
 
-The OpenAPIA 0.1 specification is designed to:
+The APAI 0.1 specification is designed to:
 - Enable clear documentation of AI system architectures
 - Support hierarchical composition of AI specifications
 - Provide structured validation of AI system configurations
@@ -46,18 +46,18 @@ The OpenAPIA 0.1 specification is designed to:
 
 ## Specification Metadata
 
-### openapia
+### apai
 
 **Type:** `string`  
 **Required:** Yes  
-**Description:** The OpenAPIA specification version being used.
+**Description:** The APAI specification version being used.
 
 **Example:**
 ```yaml
-openapia: "0.1.0"
+apai: "0.1.0"
 ```
 
-This field indicates which version of the OpenAPIA specification the document conforms to, enabling proper validation and tooling support.
+This field indicates which version of the APAI specification the document conforms to, enabling proper validation and tooling support.
 
 ## Hierarchical Composition
 
@@ -65,13 +65,13 @@ This field indicates which version of the OpenAPIA specification the document co
 
 **Type:** `array[string]`  
 **Required:** No  
-**Description:** List of OpenAPIA specifications to inherit from, enabling hierarchical composition of AI system definitions.
+**Description:** List of APAI specifications to inherit from, enabling hierarchical composition of AI system definitions.
 
 **Example:**
 ```yaml
 inherits: 
-  - "../openapia-global.yaml"
-  - "../../openapia-team.yaml"
+  - "../apai-global.yaml"
+  - "../../apai-team.yaml"
 ```
 
 This field allows AI systems to inherit configurations from parent specifications, supporting organizational hierarchies and shared configurations. The inheritance follows a merge strategy where child specifications can override or extend parent configurations.
@@ -745,7 +745,7 @@ This field allows AI systems to inherit configurations from parent specification
 **Required:** No  
 **Description:** External automation workflows that can be triggered by the AI system. This section enables declarative integration with automation platforms like n8n, Zapier, Microsoft Power Automate, and custom webhooks.
 
-**Philosophy:** OpenAPIA follows a declarative approach to automation integration. Instead of describing the internal logic of automation workflows, it declares where and when external automations should be triggered, maintaining clear separation of concerns between AI logic and automation workflows.
+**Philosophy:** APAI follows a declarative approach to automation integration. Instead of describing the internal logic of automation workflows, it declares where and when external automations should be triggered, maintaining clear separation of concerns between AI logic and automation workflows.
 
 **Key Benefits:**
 - **Vendor Agnostic**: Works with any automation platform
@@ -1868,7 +1868,7 @@ This field allows AI systems to inherit configurations from parent specification
 
 **Type:** `object`  
 **Required:** No  
-**Description:** Validation configuration for the OpenAPIA specification.
+**Description:** Validation configuration for the APAI specification.
 
 #### validation.schema_version
 
@@ -2014,6 +2014,6 @@ This field allows AI systems to inherit configurations from parent specification
 
 ## Conclusion
 
-This specification provides a comprehensive framework for describing AI systems using the OpenAPIA 0.1 standard. The specification is designed to be extensible, allowing for future enhancements while maintaining backward compatibility.
+This specification provides a comprehensive framework for describing AI systems using the APAI 0.1 standard. The specification is designed to be extensible, allowing for future enhancements while maintaining backward compatibility.
 
-For more information about OpenAPIA, including examples and implementation guides, please refer to the additional documentation in the `docs/` directory.
+For more information about APAI, including examples and implementation guides, please refer to the additional documentation in the `docs/` directory.

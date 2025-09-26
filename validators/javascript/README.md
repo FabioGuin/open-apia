@@ -1,10 +1,10 @@
-# OpenAPIA JavaScript Validator
+# APAI JavaScript Validator
 
-A comprehensive JavaScript/Node.js validator for OpenAPIA specifications.
+A comprehensive JavaScript/Node.js validator for APAI specifications.
 
 ## Features
 
-- **Full Validation**: Validates all OpenAPIA specification sections
+- **Full Validation**: Validates all APAI specification sections
 - **Hierarchical Composition**: Support for inheritance and composition of specifications
 - **Cross-Validation**: Checks references between models, prompts, and tasks
 - **Multiple Formats**: Supports YAML and JSON specifications
@@ -18,13 +18,13 @@ A comprehensive JavaScript/Node.js validator for OpenAPIA specifications.
 ### Using npm
 
 ```bash
-npm install openapia-validator-js
+npm install apai-validator-js
 ```
 
 ### Using yarn
 
 ```bash
-yarn add openapia-validator-js
+yarn add apai-validator-js
 ```
 
 ### Manual Installation
@@ -56,17 +56,17 @@ node cli.js merge output.yaml spec1.yaml spec2.yaml
 ### Programmatic Usage
 
 ```javascript
-const OpenAPIAValidator = require('openapia-validator-js');
+const APAIValidator = require('apai-validator-js');
 
 // Create validator instance
-const validator = new OpenAPIAValidator();
+const validator = new APAIValidator();
 
 // Validate a file
 const isValid = await validator.validateFile('spec.yaml');
 
 // Validate an object
 const spec = {
-  openapia: '0.1.0',
+  apai: '0.1.0',
   info: {
     title: 'My AI System',
     version: '1.0.0',
@@ -138,12 +138,12 @@ const results = validator.getResults();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>OpenAPIA Validator</title>
+    <title>APAI Validator</title>
 </head>
 <body>
-    <script src="node_modules/openapia-validator-js/dist/index.js"></script>
+    <script src="node_modules/apai-validator-js/dist/index.js"></script>
     <script>
-        const validator = new OpenAPIAValidator();
+        const validator = new APAIValidator();
         const spec = { /* your specification */ };
         const isValid = validator.validateSpec(spec);
         validator.printResults();
@@ -158,7 +158,7 @@ const results = validator.getResults();
 
 The validator checks for the following required sections:
 
-- `openapia` - Specification version
+- `apai` - Specification version
 - `info` - System metadata
 - `models` - AI models
 - `prompts` - Prompt templates
@@ -260,12 +260,12 @@ npm run lint:fix
 ```
 validators/javascript/
 ├── src/
-│   └── OpenAPIAValidator.js    # Main validator class
+│   └── APAIValidator.js    # Main validator class
 ├── cli.js                      # CLI interface
 ├── package.json                # Dependencies and scripts
 ├── README.md                   # This file
 └── tests/
-    └── OpenAPIAValidator.test.js  # Test suite
+    └── APAIValidator.test.js  # Test suite
 ```
 
 ### Building
@@ -280,8 +280,8 @@ npm run dev
 
 ### Adding New Validation Rules
 
-1. Add the validation logic to the appropriate method in `OpenAPIAValidator`
-2. Add test cases to `OpenAPIAValidator.test.js`
+1. Add the validation logic to the appropriate method in `APAIValidator`
+2. Add test cases to `APAIValidator.test.js`
 3. Update documentation
 
 ### Contributing
@@ -295,19 +295,19 @@ npm run dev
 
 ## API Reference
 
-### OpenAPIAValidator
+### APAIValidator
 
 #### Constructor
 
 ```javascript
-const validator = new OpenAPIAValidator();
+const validator = new APAIValidator();
 ```
 
 #### Methods
 
 ##### `validateFile(filePath)`
 
-Validates an OpenAPIA specification file.
+Validates an APAI specification file.
 
 **Parameters:**
 - `filePath` (string): Path to the specification file
@@ -316,10 +316,10 @@ Validates an OpenAPIA specification file.
 
 ##### `validateSpec(spec)`
 
-Validates an OpenAPIA specification object.
+Validates an APAI specification object.
 
 **Parameters:**
-- `spec` (object): OpenAPIA specification object
+- `spec` (object): APAI specification object
 
 **Returns:** boolean
 
@@ -353,14 +353,14 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](../../
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/FabioGuin/OpenAPIA/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/OpenAPIA/discussions)
+- **Issues**: [GitHub Issues](https://github.com/FabioGuin/APAI/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/FabioGuin/APAI/discussions)
 
 ## Changelog
 
 ### 0.1.0
 - Initial release
-- Basic validation for all OpenAPIA sections
+- Basic validation for all APAI sections
 - CLI interface
 - Comprehensive test suite
 - Cross-validation support

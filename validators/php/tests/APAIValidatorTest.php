@@ -1,17 +1,17 @@
 <?php
 
 /**
- * OpenAPIA Validator Tests
+ * APAI Validator Tests
  * 
- * @package OpenAPIA
+ * @package APAI
  * @version 0.1.0
  * @license Apache-2.0
  */
 
-namespace OpenAPIA\Tests;
+namespace APAI\Tests;
 
 use PHPUnit\Framework\TestCase;
-use OpenAPIA\APAIValidator;
+use APAI\APAIValidator;
 
 class APAIValidatorTest extends TestCase
 {
@@ -28,7 +28,7 @@ class APAIValidatorTest extends TestCase
     public function testValidSpecification(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System',
                 'version' => '1.0.0',
@@ -89,7 +89,7 @@ class APAIValidatorTest extends TestCase
     public function testMissingRequiredSections(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System',
                 'version' => '1.0.0',
@@ -110,7 +110,7 @@ class APAIValidatorTest extends TestCase
     public function testMissingRequiredFieldsInInfo(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System'
                 // Missing version and description
@@ -135,7 +135,7 @@ class APAIValidatorTest extends TestCase
     public function testMissingRequiredFieldsInModels(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System',
                 'version' => '1.0.0',
@@ -166,7 +166,7 @@ class APAIValidatorTest extends TestCase
     public function testDuplicateModelIds(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System',
                 'version' => '1.0.0',
@@ -207,7 +207,7 @@ class APAIValidatorTest extends TestCase
     public function testInvalidModelType(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System',
                 'version' => '1.0.0',
@@ -241,7 +241,7 @@ class APAIValidatorTest extends TestCase
     public function testInvalidConstraintSeverity(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System',
                 'version' => '1.0.0',
@@ -273,7 +273,7 @@ class APAIValidatorTest extends TestCase
     public function testCrossValidationModelReferences(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System',
                 'version' => '1.0.0',
@@ -318,7 +318,7 @@ class APAIValidatorTest extends TestCase
     public function testCrossValidationPromptReferences(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System',
                 'version' => '1.0.0',
@@ -361,7 +361,7 @@ class APAIValidatorTest extends TestCase
     public function testAIMetadataValidation(): void
     {
         $spec = [
-            'openapia' => '0.1.0',
+            'apai' => '0.1.0',
             'info' => [
                 'title' => 'Test AI System',
                 'version' => '1.0.0',

@@ -1,4 +1,4 @@
-# OpenAPIA Multi-Agent Systems
+# APAI Multi-Agent Systems
 
 ## Table of Contents
 
@@ -56,29 +56,29 @@
 
 ## Overview
 
-OpenAPIA supports multi-agent systems through its existing features: **Hierarchical Composition**, **MCP Integration**, and **Automation Workflows**. Instead of adding dedicated multi-agent syntax, OpenAPIA leverages these proven patterns to create sophisticated agent coordination.
+APAI supports multi-agent systems through its existing features: **Hierarchical Composition**, **MCP Integration**, and **Automation Workflows**. Instead of adding dedicated multi-agent syntax, APAI leverages these proven patterns to create sophisticated agent coordination.
 
 ## Philosophy
 
-Multi-agent systems in OpenAPIA follow these principles:
+Multi-agent systems in APAI follow these principles:
 
-- **Composition over Configuration**: Build agents by composing existing OpenAPIA specifications
+- **Composition over Configuration**: Build agents by composing existing APAI specifications
 - **Declarative Coordination**: Define agent interactions through clear contracts
 - **Separation of Concerns**: Each agent maintains its own capabilities and constraints
 - **Scalable Architecture**: Easily add, remove, or modify agents without system-wide changes
-- **No Special Syntax**: Multi-agent capabilities are achieved through existing OpenAPIA features
+- **No Special Syntax**: Multi-agent capabilities are achieved through existing APAI features
 
 ## Multi-Agent Patterns
 
 ### Pattern 1: Hierarchical Agent Composition
 
-Create specialized agents as separate OpenAPIA specifications and compose them hierarchically.
+Create specialized agents as separate APAI specifications and compose them hierarchically.
 
 #### Example: Customer Support Multi-Agent System
 
 ```yaml
 # Main orchestrator specification
-openapia: "0.1.0"
+apai: "0.1.0"
 info:
   title: "Customer Support Orchestrator"
   description: "Coordinates multiple specialized agents for customer support"
@@ -131,7 +131,7 @@ tasks:
 
 ```yaml
 # agents/sentiment-analyzer.yaml
-openapia: "0.1.0"
+apai: "0.1.0"
 info:
   title: "Sentiment Analysis Agent"
   description: "Specialized agent for analyzing customer sentiment"
@@ -180,7 +180,7 @@ tasks:
 
 ```yaml
 # agents/order-processor.yaml
-openapia: "0.1.0"
+apai: "0.1.0"
 info:
   title: "Order Processing Agent"
   description: "Specialized agent for handling order-related inquiries"
@@ -233,7 +233,7 @@ Use MCP servers to create agent-like capabilities that can be invoked by other a
 #### Example: Agent Network via MCP
 
 ```yaml
-openapia: "0.1.0"
+apai: "0.1.0"
 info:
   title: "MCP-Based Agent Network"
   description: "Multi-agent system using MCP servers for agent coordination"
@@ -329,7 +329,7 @@ Use automation workflows to coordinate agent interactions and manage complex mul
 #### Example: E-commerce Multi-Agent System
 
 ```yaml
-openapia: "0.1.0"
+apai: "0.1.0"
 info:
   title: "E-commerce Multi-Agent System"
   description: "Multi-agent system for e-commerce using automation workflows"
@@ -564,7 +564,7 @@ See `../examples/core/content-moderator.yaml` for a complete implementation.
 - Define clear interfaces between agents
 
 ### Step 2: Create Agent Specifications
-- Create separate OpenAPIA specifications for each agent
+- Create separate APAI specifications for each agent
 - Define agent-specific models, prompts, and constraints
 - Implement agent-specific MCP servers if needed
 
@@ -585,11 +585,11 @@ See `../examples/core/content-moderator.yaml` for a complete implementation.
 
 ## Conclusion
 
-OpenAPIA's multi-agent capabilities leverage existing, proven features to create sophisticated agent coordination without adding complexity to the core specification. This approach provides:
+APAI's multi-agent capabilities leverage existing, proven features to create sophisticated agent coordination without adding complexity to the core specification. This approach provides:
 
 - **Flexibility**: Multiple patterns for different use cases
 - **Scalability**: Easy to add, remove, or modify agents
-- **Maintainability**: Reuses existing OpenAPIA patterns and tools
-- **Consistency**: Maintains OpenAPIA's declarative philosophy
+- **Maintainability**: Reuses existing APAI patterns and tools
+- **Consistency**: Maintains APAI's declarative philosophy
 
 By using hierarchical composition, MCP integration, and automation workflows, you can build complex multi-agent systems that are both powerful and maintainable.

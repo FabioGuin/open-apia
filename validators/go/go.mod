@@ -1,4 +1,4 @@
-module github.com/FabioGuin/OpenAPIA/validators/go
+module github.com/FabioGuin/APAI/validators/go
 
 go 1.19
 

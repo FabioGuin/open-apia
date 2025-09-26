@@ -1,4 +1,4 @@
-# OpenAPIA Automation Integration
+# APAI Automation Integration
 
 ## Table of Contents
 
@@ -64,7 +64,7 @@
 
 ## Overview
 
-OpenAPIA 0.1 introduces declarative integration with external automation platforms, enabling AI systems to trigger and coordinate with automation workflows without becoming tightly coupled to specific automation tools.
+APAI 0.1 introduces declarative integration with external automation platforms, enabling AI systems to trigger and coordinate with automation workflows without becoming tightly coupled to specific automation tools.
 
 ## Philosophy
 
@@ -77,7 +77,7 @@ The automation integration follows a **declarative approach**:
 
 ## Supported Platforms
 
-OpenAPIA supports integration with various automation platforms:
+APAI supports integration with various automation platforms:
 
 ### n8n
 - **Type**: `external_workflow`
@@ -376,7 +376,7 @@ See the following example files for complete implementations:
 5. Update documentation
 
 ### Version Compatibility
-- OpenAPIA 0.1.0+ supports automation integration
+- APAI 0.1.0+ supports automation integration
 - Backward compatible with existing specifications
 - Automation section is optional
 
@@ -412,7 +412,7 @@ See the following example files for complete implementations:
 
 ## Future Enhancements
 
-Planned features for future OpenAPIA versions:
+Planned features for future APAI versions:
 
 - **Dynamic Automation Discovery**: Automatic discovery of available automations
 - **Advanced Monitoring**: Real-time dashboards and alerting

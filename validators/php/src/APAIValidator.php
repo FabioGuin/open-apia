@@ -1,16 +1,16 @@
 <?php
 
 /**
- * OpenAPIA Validator - PHP Implementation
+ * APAI Validator - PHP Implementation
  * 
- * A comprehensive validator for OpenAPIA specifications.
+ * A comprehensive validator for APAI specifications.
  * 
- * @package OpenAPIA
+ * @package APAI
  * @version 0.1.0
  * @license Apache-2.0
  */
 
-namespace OpenAPIA;
+namespace APAI;
 
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
@@ -26,7 +26,7 @@ class APAIValidator
     private array $mergeCache = [];
     
     /**
-     * Validate an OpenAPIA specification file
+     * Validate an APAI specification file
      */
     public function validateFile(string $filePath): bool
     {
@@ -87,7 +87,7 @@ class APAIValidator
     }
     
     /**
-     * Validate an OpenAPIA specification array
+     * Validate an APAI specification array
      */
     public function validateSpec(array $spec): bool
     {
@@ -98,8 +98,8 @@ class APAIValidator
         $this->validateRequiredSections($spec);
         
         // Validate each section
-        if (isset($spec['openapia'])) {
-            $this->validateOpenAPIAVersion($spec['openapia']);
+        if (isset($spec["apai"])) {
+            $this->validateAPAIVersion($spec["apai"]);
         }
         
         if (isset($spec['info'])) {
@@ -142,7 +142,7 @@ class APAIValidator
     private function validateRequiredSections(array $spec): void
     {
         $requiredSections = [
-            'openapia', 'info', 'models', 'prompts',
+            'apai', 'info', 'models', 'prompts',
             'constraints', 'tasks', 'context', 'evaluation'
         ];
         
@@ -154,12 +154,12 @@ class APAIValidator
     }
     
     /**
-     * Validate the OpenAPIA version
+     * Validate the APAI version
      */
-    private function validateOpenAPIAVersion($version): void
+    private function validateAPAIVersion($version): void
     {
         if (!is_string($version)) {
-            $this->errors[] = "openapia version must be a string";
+            $this->errors[] = "apai version must be a string";
             return;
         }
         

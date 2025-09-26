@@ -2,18 +2,18 @@
 <?php
 
 /**
- * OpenAPIA Validator CLI - PHP Implementation
+ * APAI Validator CLI - PHP Implementation
  * 
- * Command-line interface for validating OpenAPIA specifications.
+ * Command-line interface for validating APAI specifications.
  * 
- * @package OpenAPIA
+ * @package APAI
  * @version 0.1.0
  * @license Apache-2.0
  */
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use OpenAPIA\APAIValidator;
+use APAI\APAIValidator;
 
 /**
  * CLI entry point
@@ -59,7 +59,7 @@ function handleValidate(array $options): void
         exit(1);
     }
     
-    echo "Validating OpenAPIA specification" . ($hierarchical ? " with inheritance" : "") . ": {$filePath}\n";
+    echo "Validating APAI specification" . ($hierarchical ? " with inheritance" : "") . ": {$filePath}\n";
     echo str_repeat('-', 60) . "\n";
     
     $validator = new APAIValidator();
@@ -100,7 +100,7 @@ function handleTree(array $options): void
         exit(1);
     }
     
-    echo "OpenAPIA Specification Hierarchy Tree\n";
+    echo "APAI Specification Hierarchy Tree\n";
     echo str_repeat('=', 50) . "\n";
     
     $validator = new APAIValidator();
@@ -118,7 +118,7 @@ function handleMerge(array $options): void
     $outputPath = $options[0];
     $inputFiles = array_slice($options, 1);
     
-    echo "Merging OpenAPIA specifications...\n";
+    echo "Merging APAI specifications...\n";
     echo "Output: {$outputPath}\n";
     echo "Input files: " . implode(', ', $inputFiles) . "\n";
     echo str_repeat('-', 60) . "\n";
@@ -162,14 +162,14 @@ function handleMerge(array $options): void
  */
 function showHelp(): void
 {
-    echo "OpenAPIA Validator CLI - PHP Implementation\n";
+    echo "APAI Validator CLI - PHP Implementation\n";
     echo "============================================\n\n";
     
     echo "USAGE:\n";
     echo "  php cli.php <command> [options]\n\n";
     
     echo "COMMANDS:\n";
-    echo "  validate <file> [--hierarchical]  Validate OpenAPIA specification\n";
+    echo "  validate <file> [--hierarchical]  Validate APAI specification\n";
     echo "  tree <file>                       Show hierarchy tree for specification\n";
     echo "  merge <output> <files...>         Merge multiple specifications\n\n";
     
@@ -183,7 +183,7 @@ function showHelp(): void
     echo "  php cli.php tree spec.yaml\n";
     echo "  php cli.php merge output.yaml spec1.yaml spec2.yaml\n\n";
     
-    echo "For more information, visit: https://github.com/openapia/openapia\n";
+    echo "For more information, visit: https://github.com/FabioGuin/APAI\n";
 }
 
 // Run CLI

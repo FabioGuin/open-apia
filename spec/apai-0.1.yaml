@@ -1,17 +1,17 @@
-# OpenAPIA 0.1 - Open Artificial Intelligence Architecture Specification
+# APAI 0.1 - Open Artificial Intelligence Architecture Specification
 # An open standard for describing, documenting, and validating AI systems
 # Designed to be AI-native and vendor-agnostic
 
 # =============================================================================
 # SPECIFICATION METADATA
 # =============================================================================
-openapia: "0.1.0"  # OpenAPIA specification version
+apai: "0.1.0"  # APAI specification version
 
 # =============================================================================
 # HIERARCHICAL COMPOSITION
 # =============================================================================
-inherits: [string]  # List of OpenAPIA specifications to inherit from
-# Example: ["../openapia-global.yaml", "../../openapia-team.yaml"]
+inherits: [string]  # List of APAI specifications to inherit from
+# Example: ["../apai-global.yaml", "../../apai-team.yaml"]
 
 # =============================================================================
 # AI SYSTEM METADATA

@@ -1,7 +1,7 @@
-# OpenAPIA 0.1 - Zapier Automation Integration Example
+# APAI 0.1 - Zapier Automation Integration Example
 # Simple example showing integration with Zapier automation workflows
 
-openapia: "0.1.0"
+apai: "0.1.0"
 
 info:
   title: "Customer Support AI with Zapier Integration"
@@ -489,7 +489,7 @@ extensions:
 
 validation:
   schema_version: "0.1.0"
-  required_sections: ["openapia", "info", "models", "prompts", "automations", "tasks"]
+  required_sections: ["apai", "info", "models", "prompts", "automations", "tasks"]
   
   custom_validators:
     - name: "automation_reference_validator"

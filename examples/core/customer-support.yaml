@@ -1,7 +1,7 @@
-# OpenAPIA 0.1 - Customer Support AI Example
+# APAI 0.1 - Customer Support AI Example
 # Complete example of an e-commerce customer support assistant
 
-openapia: "0.1.0"
+apai: "0.1.0"
 
 info:
   title: "E-commerce Customer Support AI"
@@ -395,7 +395,7 @@ extensions:
 
 validation:
   schema_version: "0.1.0"
-  required_sections: ["openapia", "info", "models", "prompts", "constraints", "tasks", "context", "evaluation"]
+  required_sections: ["apai", "info", "models", "prompts", "constraints", "tasks", "context", "evaluation"]
   
   custom_validators:
     - name: "model_compatibility"

@@ -1,9 +1,9 @@
 /**
- * OpenAPIA Validator - JavaScript Implementation
+ * APAI Validator - JavaScript Implementation
  * 
- * A comprehensive validator for OpenAPIA specifications.
+ * A comprehensive validator for APAI specifications.
  * 
- * @package OpenAPIA
+ * @package APAI
  * @version 0.1.0
  * @license Apache-2.0
  */
@@ -26,21 +26,21 @@ class APAIValidator {
         this.ajv = new Ajv({ allErrors: true });
         addFormats(this.ajv);
 
-        // Load OpenAPIA schema
+        // Load APAI schema
         this.schema = this.loadSchema();
     }
 
     /**
-     * Load the OpenAPIA JSON schema
+     * Load the APAI JSON schema
      */
     loadSchema() {
         // In a real implementation, this would load from the schema file
         // For now, we'll define the basic structure
         return {
             type: 'object',
-            required: ['openapia', 'info', 'models', 'prompts', 'constraints', 'tasks', 'context', 'evaluation'],
+            required: ['apai', 'info', 'models', 'prompts', 'constraints', 'tasks', 'context', 'evaluation'],
             properties: {
-                openapia: {
+                apai: {
                     type: 'string',
                     pattern: '^0\\.1\\.\\d+$'
                 },
@@ -125,7 +125,7 @@ class APAIValidator {
     }
 
     /**
-     * Validate an OpenAPIA specification file
+     * Validate an APAI specification file
      */
     async validateFile(filePath) {
         try {
@@ -158,7 +158,7 @@ class APAIValidator {
     }
 
     /**
-     * Validate an OpenAPIA specification object
+     * Validate an APAI specification object
      */
     validateSpec(spec) {
         this.errors = [];
@@ -176,7 +176,7 @@ class APAIValidator {
 
         // Custom validation
         this.validateRequiredSections(spec);
-        this.validateOpenAPIAVersion(spec.openapia);
+        this.validateAPAIVersion(spec.apai);
         this.validateInfo(spec.info);
         this.validateModels(spec.models);
         this.validatePrompts(spec.prompts);
@@ -196,7 +196,7 @@ class APAIValidator {
      */
     validateRequiredSections(spec) {
         const requiredSections = [
-            'openapia', 'info', 'models', 'prompts',
+            'apai', 'info', 'models', 'prompts',
             'constraints', 'tasks', 'context', 'evaluation'
         ];
 
@@ -208,11 +208,11 @@ class APAIValidator {
     }
 
     /**
-     * Validate the OpenAPIA version
+     * Validate the APAI version
      */
-    validateOpenAPIAVersion(version) {
+    validateAPAIVersion(version) {
         if (typeof version !== 'string') {
-            this.errors.push('openapia version must be a string');
+            this.errors.push('apai version must be a string');
             return;
         }
 

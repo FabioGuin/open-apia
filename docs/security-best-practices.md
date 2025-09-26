@@ -1,6 +1,6 @@
-# Security Best Practices for OpenAPIA
+# Security Best Practices for APAI
 
-This document outlines security best practices for managing sensitive data in OpenAPIA specifications and implementations.
+This document outlines security best practices for managing sensitive data in APAI specifications and implementations.
 
 ## Table of Contents
 
@@ -40,7 +40,7 @@ This document outlines security best practices for managing sensitive data in Op
 
 ### Overview
 
-OpenAPIA specifications may contain sensitive information such as API keys, database credentials, tokens, and other secrets. To maintain security and follow industry standards, all sensitive data should be managed through environment variables.
+APAI specifications may contain sensitive information such as API keys, database credentials, tokens, and other secrets. To maintain security and follow industry standards, all sensitive data should be managed through environment variables.
 
 ### File Structure
 
@@ -49,12 +49,12 @@ project/
 ├── .env.example          # Template with placeholder values (committed to git)
 ├── .env                  # Actual values (NEVER committed to git)
 ├── .gitignore           # Excludes .env files
-└── openapia-spec.yaml   # Uses ${VARIABLE_NAME} syntax
+└── apai-spec.yaml   # Uses ${VARIABLE_NAME} syntax
 ```
 
 ### Environment Variables Template
 
-Use the provided `.env.example` file as a template. This file contains only the environment variables actually used in the OpenAPIA examples and documentation:
+Use the provided `.env.example` file as a template. This file contains only the environment variables actually used in the APAI examples and documentation:
 
 - **AI Model Providers**: OpenAI API key
 - **Database Connections**: Database API keys, tokens, passwords, and connection URLs
@@ -67,7 +67,7 @@ Use the provided `.env.example` file as a template. This file contains only the 
 
 ### YAML Configuration
 
-In your OpenAPIA YAML files, use the `${VARIABLE_NAME}` syntax to reference environment variables:
+In your APAI YAML files, use the `${VARIABLE_NAME}` syntax to reference environment variables:
 
 ```yaml
 # ❌ NEVER do this - hardcoded secrets
@@ -254,4 +254,4 @@ This security approach aligns with:
 
 ## Support
 
-For security-related questions or to report vulnerabilities, please contact the OpenAPIA security team or create an issue in the project repository.
+For security-related questions or to report vulnerabilities, please contact the APAI security team or create an issue in the project repository.
