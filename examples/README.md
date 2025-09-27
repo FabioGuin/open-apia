@@ -63,7 +63,7 @@ Basic AI system implementations for common use cases.
 
 #### [Customer Support AI](core/customer-support.yaml)
 **Complexity**: Medium  
-**Domain**: E-commerce  
+**Domain**: Customer Service  
 **Features**: Order management, returns, product assistance, multilingual support
 
 Complete e-commerce customer support assistant with:
@@ -76,7 +76,7 @@ Complete e-commerce customer support assistant with:
 
 #### [Content Moderator](core/content-moderator.yaml)
 **Complexity**: Medium  
-**Domain**: Content Management  
+**Domain**: Content Generation  
 **Features**: Content filtering, safety checks, automated moderation
 
 AI-powered content moderation system with:
@@ -88,7 +88,7 @@ AI-powered content moderation system with:
 - Performance monitoring
 
 #### [Multilingual Chatbot](core/multilingual-chatbot.yaml)
-**Complexity**: Low-Medium  
+**Complexity**: Low  
 **Domain**: Customer Service  
 **Features**: Multi-language support, conversation management
 
@@ -220,12 +220,12 @@ python validators/python/apai_validator.py validate examples/multi-agent/multi-a
 | Example | Complexity | Domain | Key Features |
 |---------|------------|--------|--------------|
 | Multilingual Chatbot | Low | Customer Service | Multi-language, conversation |
-| Customer Support AI | Medium | E-commerce | Orders, returns, recommendations |
-| Content Moderator | Medium | Content Management | Safety, filtering, moderation |
-| Multi-Agent Support | High | Customer Support | Agent orchestration, specialization |
-| E-commerce + n8n | High | E-commerce | Complex workflows, automation |
-| Zapier Integration | Medium | Customer Support | Simple automation, notifications |
-| MCP Integration | Medium | Data Integration | External data, tools, resources |
+| Customer Support AI | Medium | Customer Service | Orders, returns, recommendations |
+| Content Moderator | Medium | Content Generation | Safety, filtering, moderation |
+| Multi-Agent Support | High | Customer Service | Agent orchestration, specialization |
+| E-commerce + n8n | High | Customer Service | Complex workflows, automation |
+| Zapier Integration | Medium | Customer Service | Simple automation, notifications |
+| MCP Integration | Medium | Customer Service | External data, tools, resources |
 
 ## Customization Guide
 

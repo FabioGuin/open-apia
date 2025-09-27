@@ -14,10 +14,10 @@ info:
     url: "https://company.com/global-ai"
   
   ai_metadata:
-    domain: "customer-service"
-    complexity: "high"
+    domain: "customer_service"
+    complexity: "low"
     deployment: "production"
-    last_updated: "2025-09-03T10:30:00Z"
+    last_updated: "2025-01-15T10:30:00Z"
     supported_languages: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar"]
 
 models:

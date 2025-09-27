@@ -17,7 +17,7 @@ info:
     domain: "your_domain"  # e.g., "customer_service", "content_generation", "data_analysis"
     complexity: "low"      # "low", "medium", "high"
     deployment: "development"  # "development", "staging", "production"
-    last_updated: "2025-09-03T10:00:00Z"
+    last_updated: "2025-01-15T10:30:00Z"
     supported_languages: ["en"]
     
     hierarchy_info:

@@ -35,7 +35,7 @@ See `spec/README.md` for detailed explanation of each file type and usage.
 
 ## Introduction
 
-APAI (Open Artificial Intelligence Architecture) is an open standard for describing, documenting, and validating AI systems. This specification provides a comprehensive framework for defining AI architectures in a vendor-agnostic, AI-native manner.
+APAI (Architecture Protocol for Artificial Intelligence) is an open standard for describing, documenting, and validating AI systems. This specification provides a comprehensive framework for defining AI architectures in a vendor-agnostic, AI-native manner.
 
 The APAI 0.1 specification is designed to:
 - Enable clear documentation of AI system architectures
@@ -43,6 +43,7 @@ The APAI 0.1 specification is designed to:
 - Provide structured validation of AI system configurations
 - Facilitate interoperability between different AI systems and providers
 - Ensure compliance with ethical and safety standards
+- Maintain simplicity and readability for easy adoption
 
 ## Specification Metadata
 

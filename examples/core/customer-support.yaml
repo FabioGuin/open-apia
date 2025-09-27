@@ -14,10 +14,10 @@ info:
     url: "https://company.com/ai"
   
   ai_metadata:
-    domain: "e-commerce"
+    domain: "customer_service"
     complexity: "medium"
     deployment: "production"
-    last_updated: "2025-09-03T10:30:00Z"
+    last_updated: "2025-01-15T10:30:00Z"
     supported_languages: ["en", "es", "fr", "de"]
 
 models:

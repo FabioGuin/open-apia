@@ -14,10 +14,10 @@ info:
     url: "https://support.example.com/ai"
   
   ai_metadata:
-    domain: "customer_support"
+    domain: "customer_service"
     complexity: "high"
     deployment: "production"
-    last_updated: "2025-09-03T16:00:00Z"
+    last_updated: "2025-01-15T10:30:00Z"
     supported_languages: ["en", "es", "fr", "de"]
     
     hierarchy_info:
